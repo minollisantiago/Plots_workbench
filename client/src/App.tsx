@@ -1,11 +1,11 @@
-import Hero from '@/components/plots/Canvas'
+import PlotCanvas from '@/components/plots/Canvas'
 import './styles/style.css'
 
 function App() {
 
   return (
     <>
-      <Hero />
+      <PlotCanvas />
     </>
   )
 }
