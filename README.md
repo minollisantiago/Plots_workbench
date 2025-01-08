@@ -1,4 +1,4 @@
-# {project_name}
+# Shadcn + Plotly Plot components
 
 This project was created using HyperPyText and Poetry.
 
