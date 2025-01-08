@@ -1,0 +1,28 @@
+# IDEs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Client Node
+client/node_modules/
+
+# Server Virtual Environment
+server/venv/
+server/env/
+server/.venv/
+
+# Server global environment variables
+server/.envrc
+server/.env
+
+# Server Database files (SQLite)
+server/db/*.sqlite
+server/db/**/*.sqlite
+server/db/*.db
+server/db/**/*.db
+
+# Server Logs
+server/*.log
