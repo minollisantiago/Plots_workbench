@@ -1,0 +1,44 @@
+autosize: true
+title:
+  x: 0.5
+  y: 0.92
+barmode: overlay
+hovermode: y
+legend:
+  orientation: h
+  x: 1
+  xanchor: auto
+  y: 1.1
+margin:
+  b: 50
+  l: 60
+  r: 42
+  t: 16
+transition:
+  duration: 0
+xaxis:
+  hoverformat: .2f
+  showline: true
+  showgrid: false
+  showspikes: false
+  side: left
+  spikethickness: 2
+  linewidth: 2
+  ticklen: 8
+  ticks: outside
+  zeroline: false
+  mirror: True
+yaxis:
+  hoverformat: .2f
+  showline: true
+  showgrid: false
+  showspikes: false
+  spikethickness: 2
+  linewidth: 2
+  ticklen: 8
+  ticks: outside
+  title:
+    standoff: 8
+  zeroline: false
+  mirror: True
+

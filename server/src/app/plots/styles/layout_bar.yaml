@@ -1,0 +1,54 @@
+autosize: true
+title:
+  x: 0.5
+  y: 0.91
+hovermode: x
+legend:
+  orientation: h
+  x: -0.1
+  xanchor: auto
+  y: 1.4
+margin:
+  b: 50
+  l: 60
+  r: 10
+  t: 60
+transition:
+  duration: 0
+xaxis:
+  hoverformat: "%d-%m-%Y %H:%M"
+  showgrid: false
+  showline: true
+  showspikes: false
+  spikethickness: 2
+  zeroline: false
+  title:
+    standoff: 10
+yaxis:
+  hoverformat: .2f
+  linewidth: 0
+  showgrid: true
+  showline: false
+  showspikes: false
+  side: left
+  spikethickness: 2
+  ticklen: 8
+  ticks: outside
+  zeroline: false
+  title:
+    standoff: 10
+yaxis2:
+  automargin: true
+  hoverformat: .2f
+  overlaying: y
+  showgrid: false
+  showline: false
+  showspikes: false
+  side: right
+  spikethickness: 2
+  ticklen: 8
+  ticks: outside
+  zeroline: false
+  title:
+    standoff: 20
+

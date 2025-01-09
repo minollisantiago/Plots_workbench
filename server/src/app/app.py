@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.app.api.routes.root import router as router_root
 
-APP_NAME = "HyperPyText-App"  # You can customize this name
-APP_DESCRIPTION = "A FastAPI application created with HyperPyText"
+APP_NAME = "Plot_Components_Workbench"
+APP_DESCRIPTION = "A FastAPI application created with HyperPyText, by SMinolli"
 APP_VERSION = "0.1.0"
 
 app = FastAPI(
