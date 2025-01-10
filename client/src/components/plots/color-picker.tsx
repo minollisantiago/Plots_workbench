@@ -17,19 +17,21 @@ const ColorPicker = ({ initialColor = "#000000", onChange }: ColorPickerProps) =
 
   return (
 
-    <Popover>
-      <PopoverTrigger>
-        <div className="w-12 h-12 border border-zinc-600 cursor-pointer" style={{ backgroundColor: color }}></div>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-3">
-        <div className="flex flex-col gap-2">
-          <HexColorPicker color={color} onChange={handleChange} />
-          <div className="flex items-center justify-center">
-            <span className="text-sm">{color}</span>
+    <div className="flex items-center justify-center w-16 h-16">
+      <Popover>
+        <PopoverTrigger>
+          <div className="w-12 h-12 border-2 border-muted rounded-md cursor-pointer" style={{ backgroundColor: color }}></div>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-3" align="center">
+          <div className="custom-color-picker w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] xl:w-[260px] flex flex-col gap-2">
+            <HexColorPicker color={color} onChange={handleChange} className="border [&>div]:!rounded-none" />
+            <div className="flex items-center justify-center">
+              <span className="text-base text-muted-foreground font-mono">{color}</span>
+            </div>
           </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+        </PopoverContent>
+      </Popover>
+    </div>
 
   );
 };

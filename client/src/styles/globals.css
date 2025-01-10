@@ -59,48 +59,16 @@
     z-index: -1;
   }
 
-  .mask {
-    background: #F23568;
-    mask-image: url(../assets/mask.svg);
-    mask-repeat: no-repeat;
-    mask-size: 42px;
+  /* React-colorful overrides ----------------------------*/
+
+  .custom-color-picker .react-colorful {
+    width: 100%;
   }
 
-  /* Links ----------------------------*/
-
-  .carousel-content {
-    animation: track-translate 10s infinite linear;
-  }
-
-  @keyframes track-translate {
-    0% {
-      transform: translateX(0);
-    }
-
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .logo-link:hover .logo {
-      animation: logo-spin infinite 20s linear;
-    }
-  }
-
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-
-
-  @keyframes logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+  .custom-color-picker .react-colorful__pointer {
+    border-width: 3px;
+    width: 32px;
+    height: 32px;
   }
 
   :root {
