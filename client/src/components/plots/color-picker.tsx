@@ -1,6 +1,6 @@
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { HexColorPicker } from "react-colorful";
-import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { HexColorPicker } from "react-colorful"
+import { useState } from "react"
 
 interface ColorPickerProps {
   initialColor?: string;
