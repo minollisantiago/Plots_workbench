@@ -17,11 +17,11 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
 
-    return `rgba(${r}, ${g}, ${b}, 0.1)`;
+    return `rgba(${r}, ${g}, ${b}, 0.15)`;
   };
 
   return (
-    <Card className="relative flex items-center gap-3 p-2 pr-8 hover:bg-accent/50 transition-colors"
+    <Card className="relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-xl border-0 h-10"
       style={{
         backgroundColor: getRgbaBackground(color),
         '--hover-bg-color': getRgbaBackground(color).replace('0.1', '0.2')
@@ -29,12 +29,12 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
     >
 
       {/* Color indicator */}
-      <div className="w-1 h-6 rounded-full" style={{ backgroundColor: color }} />
+      <div className="absolute w-3 h-full rounded-l-full" style={{ backgroundColor: color }} />
 
       {/* Label */}
-      <div className="flex flex-col">
-        <span className="text-sm font-medium font-mono">{label}</span>
-        {subLabel && (<span className="text-xs text-muted-foreground">{subLabel}</span>)}
+      <div className="flex flex-row items-center gap-2 ml-8">
+        <span className="text-md font-medium font-mono">{label}</span>
+        {subLabel && (<span className="text-sm text-muted-foreground">{subLabel}</span>)}
       </div>
 
       {/* Remove Button */}

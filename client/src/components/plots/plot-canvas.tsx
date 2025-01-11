@@ -8,13 +8,13 @@ const PlotCanvas = () => {
       id: "1",
       label: "NVDA",
       subLabel: "Share Price",
-      color: "#8B5CF6",
+      color: "#489FFA",
     },
     {
       id: "2",
       label: "AMZN",
       subLabel: "Share Price",
-      color: "#10B981",
+      color: "#E9EC89",
     },
   ]
 

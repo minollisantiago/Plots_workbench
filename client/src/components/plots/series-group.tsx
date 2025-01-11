@@ -15,7 +15,7 @@ interface SeriesSelectionProps {
 
 const seriesGroup = ({ series, onRemoveSeries }: SeriesSelectionProps) => {
   return (
-    <ScrollArea className="h-full w-[312px] p-4 rounded-md border">
+    <ScrollArea className="h-full w-[342px] p-4 rounded-md border bg-background">
       <div className="space-y-2">
         {series.map((item) => (
           <SeriesCard
