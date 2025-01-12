@@ -21,7 +21,7 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
   };
 
   return (
-    <Card className="relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-xl border-0 h-10"
+    <Card className="relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8"
       style={{
         backgroundColor: getRgbaBackground(color),
         '--hover-bg-color': getRgbaBackground(color).replace('0.1', '0.2')
@@ -29,11 +29,11 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
     >
 
       {/* Color indicator */}
-      <div className="absolute w-3 h-full rounded-l-full" style={{ backgroundColor: color }} />
+      <div className="absolute w-[0.60rem] h-full rounded-l-lg" style={{ backgroundColor: color }} />
 
       {/* Label */}
-      <div className="flex flex-row items-center gap-2 ml-8">
-        <span className="text-md font-medium font-mono">{label}</span>
+      <div className="flex flex-row items-center gap-2 ml-6">
+        <span className="text-sm font-semibold">{label}</span>
         {subLabel && (<span className="text-sm text-muted-foreground">{subLabel}</span>)}
       </div>
 

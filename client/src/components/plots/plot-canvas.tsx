@@ -22,7 +22,7 @@ const PlotCanvas = () => {
 
     <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
 
-      < SeriesGroup series={exampleSeries} onRemoveSeries={(id) => console.log('Remove series:', id)} />
+      < SeriesGroup header="Strategies" series={exampleSeries} onRemoveSeries={(id) => console.log('Remove series:', id)} />
       < ColorPicker />
 
     </div>

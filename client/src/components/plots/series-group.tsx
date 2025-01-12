@@ -9,13 +9,17 @@ interface Series {
 }
 
 interface SeriesSelectionProps {
+  header: string
   series: Series[]
   onRemoveSeries: (id: string) => void
 }
 
-const seriesGroup = ({ series, onRemoveSeries }: SeriesSelectionProps) => {
+const seriesGroup = ({ header, series, onRemoveSeries }: SeriesSelectionProps) => {
   return (
-    <ScrollArea className="h-full w-[342px] p-4 rounded-md border bg-background">
+    <ScrollArea className="h-full w-[324px] p-4 rounded-md border bg-background">
+      <div className="mb-2">
+        <h2 className="text-md font-medium">{header}</h2>
+      </div>
       <div className="space-y-2">
         {series.map((item) => (
           <SeriesCard
