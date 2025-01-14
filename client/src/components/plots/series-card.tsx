@@ -18,7 +18,7 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
     const b = parseInt(hex.substring(4, 6), 16);
 
     return `rgba(${r}, ${g}, ${b}, 0.15)`;
-  };
+  }
 
   return (
     <Card className="relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8"
@@ -44,7 +44,7 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
         </button>
       )}
     </Card>
-  );
-};
+  )
+}
 
-export default SeriesCard;
+export default SeriesCard
