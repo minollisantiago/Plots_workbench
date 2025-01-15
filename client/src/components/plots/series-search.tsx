@@ -20,7 +20,13 @@ interface SeriesSearchProps {
   onSelect: (series: SeriesOption) => void
 }
 
-const SeriesSearch = ({ placeholder = "Find series", tooltip = "Find series", label = "Add series", options, onSelect }: SeriesSearchProps) => {
+const SeriesSearch = ({
+  placeholder = "Find series",
+  tooltip = "Click to start searching",
+  label = "Add series",
+  options, onSelect
+}: SeriesSearchProps) => {
+
   const [open, setOpen] = useState(false)
 
   return (
