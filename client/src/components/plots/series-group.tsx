@@ -5,24 +5,25 @@ import SeriesSearch from "@/components/plots/series-search"
 
 interface SeriesSelectionProps {
   header: string
+  searchPlaceholder: string
   series: Series[]
   availableSeries: Series[]
   onRemoveSeries: (id: string) => void
   onAddSeries: (series: Series) => void
 }
 
-const seriesGroup = ({ header, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
+const seriesGroup = ({ header, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
   return (
     <div className="h-full w-[324px] p-4 rounded-md border bg-background">
       <div className="space-y-4">
         <SeriesSearch
           options={availableSeries}
           onSelect={(selectedSeries) => onAddSeries(selectedSeries as Series)}
-          placeholder="Search series"
+          placeholder={searchPlaceholder}
         />
         <ScrollArea className="h-full w-full">
           <div className="mb-2">
-            <h2 className="text-md font-medium">{header}</h2>
+            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
           </div>
           <div className="space-y-2">
             {series.map((item) => (

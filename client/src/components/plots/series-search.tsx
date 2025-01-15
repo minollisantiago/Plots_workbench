@@ -15,30 +15,30 @@ interface SeriesSearchProps {
 }
 
 const SeriesSearch = ({ placeholder = "Find series", options, onSelect }: SeriesSearchProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
-    <Command className="rounded-xl border shadow-md">
+    <Command className="rounded-lg border border-b-1">
       <CommandInput
+        className="border-0 focus-visible:ring-0"
         placeholder={placeholder}
-        onFocus={() => setIsOpen(true)}
-        onBlur={() => { setTimeout(() => setIsOpen(false), 200) }}
-        className="border-0"
+        onFocus={() => setOpen(true)}
+        onBlur={() => { setTimeout(() => setOpen(false), 200) }}
       />
-      {isOpen && (
+      {open && (
 
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup heading="Series">
             {options.map((series) => (
               <CommandItem
                 key={series.id}
                 onSelect={() => {
                   onSelect(series)
-                  setIsOpen(false)
+                  setOpen(false)
                 }}
               >
-                <div className="flex flex-col">
+                <div className="flex flex-row justify-between w-full">
                   <span>{series.label}</span>
                   <span className="text-sm text-muted-foreground">{series.subLabel}</span>
                 </div>

@@ -45,6 +45,7 @@ const PlotCanvas = () => {
 
       < SeriesGroup
         header="Strategies"
+        searchPlaceholder="Search strategies"
         series={SelectedSeries}
         availableSeries={exampleSeries}
         onAddSeries={handleAddSeries}
