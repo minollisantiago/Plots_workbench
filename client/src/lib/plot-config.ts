@@ -57,3 +57,5 @@ export class PlotConfig {
   }
 }
 
+export type { PlotType } from "@/config/plots/layouts"
+export type { ThemeType } from "@/config/plots/themes"

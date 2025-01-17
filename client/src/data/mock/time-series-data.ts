@@ -14,20 +14,45 @@ const generateDates = (days: number): string[] => {
 // Generate 30 days of mock data
 const dates = generateDates(30);
 
+// Separate metadata from plot data
+export interface SeriesMetadata {
+  id: string;
+  label: string;
+  subLabel: string;
+  color: string;
+  group: string;
+}
+
+export interface PlotData {
+  x: (number | string)[];
+  y: number[];
+  name: string;
+  line: {
+    color: string;
+  };
+}
+
+export interface TimeSeriesData extends SeriesMetadata {
+  plotData: PlotData;
+}
+
 export const mockTimeSeriesData = {
-  // Series metadata
   series: [
     {
+      // Metadata
       id: "1",
       label: "NVDA",
       subLabel: "Share Price",
       color: "#E9EC89",
       group: "Tech",
-      data: {
+      // Plot data
+      plotData: {
         x: dates,
-        y: dates.map(() => Math.random() * 800 + 400), // Random values between 400-1200
-        type: 'scatter',
-        mode: 'lines+markers',
+        y: dates.map(() => Math.random() * 800 + 400),
+        name: "NVDA",
+        line: {
+          color: "#E9EC89"
+        }
       }
     },
     {
@@ -36,11 +61,13 @@ export const mockTimeSeriesData = {
       subLabel: "Share Price",
       color: "#489FFA",
       group: "Consumer",
-      data: {
+      plotData: {
         x: dates,
-        y: dates.map(() => Math.random() * 150 + 120), // Random values between 120-270
-        type: 'scatter',
-        mode: 'lines+markers',
+        y: dates.map(() => Math.random() * 150 + 120),
+        name: "AMZN",
+        line: {
+          color: "#489FFA"
+        }
       }
     },
     {
@@ -49,27 +76,14 @@ export const mockTimeSeriesData = {
       subLabel: "Share Price",
       color: "#C88FCF",
       group: "Tech",
-      data: {
+      plotData: {
         x: dates,
-        y: dates.map(() => Math.random() * 100 + 150), // Random values between 150-250
-        type: 'scatter',
-        mode: 'lines+markers',
+        y: dates.map(() => Math.random() * 100 + 150),
+        name: "TSLA",
+        line: {
+          color: "#C88FCF"
+        }
       }
     },
   ]
 };
-
-// You might also want to define a type for the data structure
-export interface TimeSeriesData {
-  id: string;
-  label: string;
-  subLabel: string;
-  color: string;
-  group: string;
-  data: {
-    x: string[];
-    y: number[];
-    type: 'scatter';
-    mode: 'lines+markers';
-  };
-}

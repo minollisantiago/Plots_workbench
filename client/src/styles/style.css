@@ -1105,6 +1105,14 @@ body {
           user-select: none;
 }
 
+.grid-cols-\[300px_1fr\] {
+  grid-template-columns: 300px 1fr;
+}
+
+.grid-cols-\[324px_1fr\] {
+  grid-template-columns: 324px 1fr;
+}
+
 .flex-row {
   flex-direction: row;
 }
@@ -1291,6 +1299,10 @@ body {
 .bg-zinc-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
+}
+
+.bg-background\/95 {
+  background-color: hsl(var(--background) / 0.95);
 }
 
 .p-0 {

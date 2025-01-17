@@ -1,16 +1,16 @@
-import { Series } from "@/components/plots/types"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import SeriesCard from "@/components/plots/series-card"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import SeriesSearch from "@/components/plots/series-search"
+import { TimeSeriesData } from "@/data/mock/time-series-data"
 
 interface SeriesSelectionProps {
   header: string
   searchTriggerLabel: string
   searchPlaceholder: string
-  series: Series[]
-  availableSeries: Series[]
+  series: TimeSeriesData[]
+  availableSeries: TimeSeriesData[]
   onRemoveSeries: (id: string) => void
-  onAddSeries: (series: Series) => void
+  onAddSeries: (series: TimeSeriesData) => void
 }
 
 const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
@@ -21,7 +21,7 @@ const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, av
         {/* Series Search */}
         <SeriesSearch
           options={availableSeries}
-          onSelect={(selectedSeries) => onAddSeries(selectedSeries as Series)}
+          onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
           placeholder={searchPlaceholder}
           label={searchTriggerLabel}
         />
