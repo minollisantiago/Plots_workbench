@@ -916,14 +916,6 @@ body {
   top: 50%;
 }
 
-.right-0 {
-  right: 0px;
-}
-
-.left-0 {
-  left: 0px;
-}
-
 .z-50 {
   z-index: 50;
 }
@@ -1005,14 +997,6 @@ body {
   height: 100vh;
 }
 
-.h-6 {
-  height: 1.5rem;
-}
-
-.h-5 {
-  height: 1.25rem;
-}
-
 .max-h-\[300px\] {
   max-height: 300px;
 }
@@ -1057,6 +1041,10 @@ body {
   width: 324px;
 }
 
+.w-\[var\(--radix-popover-trigger-width\)\] {
+  width: var(--radix-popover-trigger-width);
+}
+
 .w-auto {
   width: auto;
 }
@@ -1067,18 +1055,6 @@ body {
 
 .w-screen {
   width: 100vw;
-}
-
-.w-\[var\(--radix-popover-trigger-width\)\] {
-  width: var(--radix-popover-trigger-width);
-}
-
-.w-6 {
-  width: 1.5rem;
-}
-
-.w-5 {
-  width: 1.25rem;
 }
 
 .min-w-\[var\(--radix-popover-trigger-width\)\] {
@@ -1256,14 +1232,6 @@ body {
   border-top-width: 1px;
 }
 
-.border-b-0 {
-  border-bottom-width: 0px;
-}
-
-.border-b-2 {
-  border-bottom-width: 2px;
-}
-
 .border-input {
   border-color: hsl(var(--input));
 }
@@ -1314,19 +1282,6 @@ body {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.bg-muted-foreground {
-  background-color: hsl(var(--muted-foreground));
-}
-
-.bg-muted {
-  background-color: hsl(var(--muted));
-}
-
-.bg-zinc-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(39 39 42 / var(--tw-bg-opacity, 1));
 }
 
 .bg-zinc-900 {
@@ -1596,12 +1551,34 @@ body {
   --tw-enter-translate-y: initial;
 }
 
+.animate-out {
+  animation-name: exit;
+  animation-duration: 150ms;
+  --tw-exit-opacity: initial;
+  --tw-exit-scale: initial;
+  --tw-exit-rotate: initial;
+  --tw-exit-translate-x: initial;
+  --tw-exit-translate-y: initial;
+}
+
 .fade-in-0 {
   --tw-enter-opacity: 0;
 }
 
+.fade-out-0 {
+  --tw-exit-opacity: 0;
+}
+
 .zoom-in-95 {
   --tw-enter-scale: .95;
+}
+
+.zoom-out-95 {
+  --tw-exit-scale: .95;
+}
+
+.slide-in-from-top-2 {
+  --tw-enter-translate-y: -0.5rem;
 }
 
 .duration-200 {
@@ -1616,10 +1593,6 @@ body {
   color: hsl(var(--muted-foreground));
 }
 
-.hover\:border:hover {
-  border-width: 1px;
-}
-
 .hover\:bg-accent:hover {
   background-color: hsl(var(--accent));
 }
@@ -1628,34 +1601,16 @@ body {
   background-color: hsl(var(--destructive) / 0.9);
 }
 
+.hover\:bg-muted:hover {
+  background-color: hsl(var(--muted));
+}
+
 .hover\:bg-primary\/90:hover {
   background-color: hsl(var(--primary) / 0.9);
 }
 
 .hover\:bg-secondary\/80:hover {
   background-color: hsl(var(--secondary) / 0.8);
-}
-
-.hover\:bg-background:hover {
-  background-color: hsl(var(--background));
-}
-
-.hover\:bg-muted-foreground:hover {
-  background-color: hsl(var(--muted-foreground));
-}
-
-.hover\:bg-zinc-800:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(39 39 42 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-zinc-900:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-muted:hover {
-  background-color: hsl(var(--muted));
 }
 
 .hover\:text-accent-foreground:hover {
@@ -1697,12 +1652,6 @@ body {
 .focus-visible\:ring-1:focus-visible {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
-.focus-visible\:ring-0:focus-visible {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
@@ -1850,10 +1799,6 @@ body {
   .md\:w-\[220px\] {
     width: 220px;
   }
-
-  .md\:min-w-\[450px\] {
-    min-width: 450px;
-  }
 }
 
 @media (min-width: 1024px) {
@@ -1866,11 +1811,6 @@ body {
   .xl\:w-\[260px\] {
     width: 260px;
   }
-}
-
-.dark\:hover\:bg-zinc-800:hover:where(class, class *) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(39 39 42 / var(--tw-bg-opacity, 1));
 }
 
 .\[\&\>div\]\:\!rounded-none>div {

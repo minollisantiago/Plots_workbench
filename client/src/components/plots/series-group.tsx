@@ -5,6 +5,7 @@ import SeriesSearch from "@/components/plots/series-search"
 
 interface SeriesSelectionProps {
   header: string
+  searchTriggerLabel: string
   searchPlaceholder: string
   series: Series[]
   availableSeries: Series[]
@@ -12,20 +13,27 @@ interface SeriesSelectionProps {
   onAddSeries: (series: Series) => void
 }
 
-const seriesGroup = ({ header, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
+const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
   return (
     <div className="h-full w-[324px] p-4 rounded-md border bg-background">
       <div className="space-y-4">
+
+        {/* Series Search */}
         <SeriesSearch
           options={availableSeries}
           onSelect={(selectedSeries) => onAddSeries(selectedSeries as Series)}
           placeholder={searchPlaceholder}
+          label={searchTriggerLabel}
         />
+
+        {/* Selected series group */}
         <ScrollArea className="h-full w-full">
           <div className="mb-2">
             <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
           </div>
           <div className="space-y-2">
+
+            {/* Selected series card */}
             {series.map((item) => (
               <SeriesCard
                 key={item.id}
@@ -42,4 +50,4 @@ const seriesGroup = ({ header, searchPlaceholder, series, availableSeries, onRem
   )
 }
 
-export default seriesGroup
+export default SeriesGroup

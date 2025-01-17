@@ -2,37 +2,20 @@ import { useState } from "react"
 import { Series } from "@/components/plots/types"
 import SeriesGroup from "@/components/plots/series-group"
 import ColorPicker from "@/components/plots/color-picker"
+import { mockTimeSeriesData } from "@/data/mock/time-series-data"
 
 const PlotCanvas = () => {
 
   const [SelectedSeries, setSelectedSeries] = useState([] as Series[])
-
-  const exampleSeries = [
-    {
-      id: "1",
-      label: "NVDA",
-      subLabel: "Share Price",
-      color: "#E9EC89",
-      group: "Tech"
-    },
-    {
-      id: "2",
-      label: "AMZN",
-      subLabel: "Share Price",
-      color: "#489FFA",
-      group: "Consumer"
-    },
-    {
-      id: "3",
-      label: "TSLA",
-      subLabel: "Share Price",
-      color: "#C88FCF",
-      group: "Tech"
-    },
-  ]
+  const exampleSeries = mockTimeSeriesData.series
 
   const handleAddSeries = (series: Series) => {
-    setSelectedSeries((prev) => [...prev, series])
+    setSelectedSeries((prev) => {
+      if (!prev.some(s => s.id == series.id)) {
+        return [...prev, series]
+      }
+      return prev;
+    })
   }
 
   const handleRemoveSeries = (id: string) => {
@@ -45,6 +28,7 @@ const PlotCanvas = () => {
 
       < SeriesGroup
         header="Strategies"
+        searchTriggerLabel="Add strategies"
         searchPlaceholder="Search strategies"
         series={SelectedSeries}
         availableSeries={exampleSeries}
