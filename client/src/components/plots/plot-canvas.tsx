@@ -1,7 +1,7 @@
 import { useState } from "react"
 import SeriesGroup from "@/components/plots/series-group"
 import ColorPicker from "@/components/plots/color-picker"
-import { TimeSeriesData } from "@/components/plots/types"
+import { TimeSeriesData } from "@/components/plots/types";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data"
 import { PlotLine } from "@/components/plots/plot-line"
 
@@ -27,7 +27,7 @@ const PlotCanvas = () => {
 
     <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
 
-      <div className="grid grid-cols-[324px_1fr] gap-2 p-4 h-full">
+      <div className="grid grid-cols-[324px_1fr] gap-2 p-4 h-full border rounded-lg bg-background/95">
         <div className="flex flex-col space-y-2">
           < SeriesGroup
             header="Strategies"
@@ -41,13 +41,12 @@ const PlotCanvas = () => {
           < ColorPicker />
         </div>
 
-        <div className="bg-background/95 border rounded-lg p-4 h-full">
+        <div className="h-full">
           {selectedSeries.length > 0 ? (
             <PlotLine
               data={selectedSeries.map(series => series.plotData)}
               title="Test plot"
               theme="dark"
-              height="100%"
             />
           ) : (
             <div className="h-full flex items-center justify-center text-muted-foreground">

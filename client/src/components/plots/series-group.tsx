@@ -1,7 +1,7 @@
 import SeriesCard from "@/components/plots/series-card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { TimeSeriesData } from "@/components/plots/types"
 import SeriesSearch from "@/components/plots/series-search"
+import { TimeSeriesData } from "@/components/plots/types";
 
 interface SeriesSelectionProps {
   header: string
@@ -15,7 +15,7 @@ interface SeriesSelectionProps {
 
 const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
   return (
-    <div className="h-full w-[324px] p-4 rounded-md border bg-background">
+    <div className="h-full w-[324px] p-4 bg-background">
       <div className="space-y-4">
 
         {/* Series Search */}
