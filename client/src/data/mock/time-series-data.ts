@@ -2,7 +2,7 @@
 const generateDates = (days: number): string[] => {
   const dates: string[] = [];
   const today = new Date();
-  
+
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
@@ -14,27 +14,6 @@ const generateDates = (days: number): string[] => {
 // Generate 30 days of mock data
 const dates = generateDates(30);
 
-// Separate metadata from plot data
-export interface SeriesMetadata {
-  id: string;
-  label: string;
-  subLabel: string;
-  color: string;
-  group: string;
-}
-
-export interface PlotData {
-  x: (number | string)[];
-  y: number[];
-  name: string;
-  line: {
-    color: string;
-  };
-}
-
-export interface TimeSeriesData extends SeriesMetadata {
-  plotData: PlotData;
-}
 
 export const mockTimeSeriesData = {
   series: [

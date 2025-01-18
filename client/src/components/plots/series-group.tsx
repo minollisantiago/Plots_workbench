@@ -1,7 +1,7 @@
 import SeriesCard from "@/components/plots/series-card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { TimeSeriesData } from "@/components/plots/types"
 import SeriesSearch from "@/components/plots/series-search"
-import { TimeSeriesData } from "@/data/mock/time-series-data"
 
 interface SeriesSelectionProps {
   header: string

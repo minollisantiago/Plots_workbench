@@ -1,7 +1,7 @@
 import { useState } from "react"
 import SeriesGroup from "@/components/plots/series-group"
 import ColorPicker from "@/components/plots/color-picker"
-import { TimeSeriesData } from "@/data/mock/time-series-data"
+import { TimeSeriesData } from "@/components/plots/types"
 import { mockTimeSeriesData } from "@/data/mock/time-series-data"
 import { PlotLine } from "@/components/plots/plot-line"
 
