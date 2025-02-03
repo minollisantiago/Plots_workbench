@@ -1,25 +1,22 @@
+import { useState } from "react"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card } from "@/components/ui/card"
-import { useState, useEffect } from "react"
 
-interface SeriesCardProps {
+interface Props {
   label: string
   subLabel?: string
   color: string
   onRemove?: () => void
 }
 
-const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
+export const SeriesCard = ({ label, subLabel, color, onRemove }: Props) => {
+  const [isVisible, setIsVisible] = useState(true)
 
   const handleRemove = () => {
     setIsVisible(false)
     // Wait for animation to complete before calling onRemove
+    // The state change triggers a re-render of the card with the close animation
     if (onRemove) {
       setTimeout(onRemove, 100)
     }
@@ -41,10 +38,7 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
           ? "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
           : "animate-out fade-out-0 zoom-out-95",
       )}
-      style={{
-        backgroundColor: getRgbaBackground(color),
-        '--hover-bg-color': getRgbaBackground(color).replace('0.1', '0.2')
-      } as React.CSSProperties}
+      style={{ backgroundColor: getRgbaBackground(color) }}
     >
 
       {/* Color indicator */}
@@ -66,4 +60,3 @@ const SeriesCard = ({ label, subLabel, color, onRemove }: SeriesCardProps) => {
   )
 }
 
-export default SeriesCard

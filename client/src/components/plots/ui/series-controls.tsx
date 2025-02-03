@@ -1,9 +1,9 @@
-import SeriesCard from "@/components/plots/series-card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import SeriesSearch from "@/components/plots/series-search"
+import { SeriesCard } from "@/components/plots/ui";
+import { SeriesSearch } from "@/components/plots/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimeSeriesData } from "@/components/plots/types";
 
-interface SeriesSelectionProps {
+interface Props {
   header: string
   searchTriggerLabel: string
   searchPlaceholder: string
@@ -13,7 +13,7 @@ interface SeriesSelectionProps {
   onAddSeries: (series: TimeSeriesData) => void
 }
 
-const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: SeriesSelectionProps) => {
+export const SeriesControls = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: Props) => {
   return (
     <div className="h-full w-[324px] p-4 bg-background">
       <div className="space-y-4">
@@ -22,8 +22,8 @@ const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, av
         <SeriesSearch
           options={availableSeries}
           onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
-          placeholder={searchPlaceholder}
-          label={searchTriggerLabel}
+          searchPlaceholder={searchPlaceholder}
+          triggerLabel={searchTriggerLabel}
         />
 
         {/* Selected series group */}
@@ -50,4 +50,3 @@ const SeriesGroup = ({ header, searchTriggerLabel, searchPlaceholder, series, av
   )
 }
 
-export default SeriesGroup

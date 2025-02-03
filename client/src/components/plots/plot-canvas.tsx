@@ -1,9 +1,8 @@
-import { useState } from "react"
-import SeriesGroup from "@/components/plots/series-group"
-import ColorPicker from "@/components/plots/color-picker"
+import { useState } from "react";
+import { PlotLine } from "@/components/plots/plot-line";
+import { SeriesControls } from "@/components/plots/ui";
 import { TimeSeriesData } from "@/components/plots/types";
-import { mockTimeSeriesData } from "@/data/mock/time-series-data"
-import { PlotLine } from "@/components/plots/plot-line"
+import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 
 const PlotCanvas = () => {
 
@@ -23,13 +22,14 @@ const PlotCanvas = () => {
     setSelectedSeries((prev) => prev.filter(series => series.id !== id))
   }
 
+  // if i increase the height if this container the plots dont render properly
   return (
 
     <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
 
       <div className="grid grid-cols-[324px_1fr] gap-2 p-4 h-full border rounded-lg bg-background/95">
         <div className="flex flex-col space-y-2">
-          < SeriesGroup
+          < SeriesControls
             header="Strategies"
             searchTriggerLabel="Add strategies"
             searchPlaceholder="Search strategies"
@@ -38,7 +38,6 @@ const PlotCanvas = () => {
             onAddSeries={handleAddSeries}
             onRemoveSeries={handleRemoveSeries}
           />
-          < ColorPicker />
         </div>
 
         <div className="h-full">
