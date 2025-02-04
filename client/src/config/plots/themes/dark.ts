@@ -1,4 +1,4 @@
-import type { PlotTheme } from '@/types/plots';
+import type { PlotTheme } from '@/config/plots/models';
 
 export const darkTheme: PlotTheme = {
   base: {
@@ -28,7 +28,7 @@ export const darkTheme: PlotTheme = {
       font: {
         color: "#9E9EAA",
         family: "Geist Mono, FiraCode Nerd Font Mono",
-        size: 13
+        size: 16
       }
     },
     modebar: {

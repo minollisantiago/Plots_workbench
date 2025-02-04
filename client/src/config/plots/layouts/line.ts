@@ -14,6 +14,7 @@ export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {
     ...baseAxisConfig,
     hoverformat: '%d-%m-%Y %H:%M',
     showspikes: false,
+    showgrid: false,
     spikethickness: 2,
     linewidth: 2,
     title: {

@@ -1,4 +1,4 @@
-import type { PlotTheme } from '@/types/plots';
+import type { PlotTheme } from '@/config/plots/models';
 
 export const lightTheme: PlotTheme = {
   base: {
