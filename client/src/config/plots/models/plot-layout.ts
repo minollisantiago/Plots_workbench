@@ -35,13 +35,15 @@ export interface AxisLayout {
   hoverformat?: string;
   showline?: boolean;
   showgrid?: boolean;
+  griddash?: 'solid' | 'dot' | 'dash' | 'longdash' | 'dashdot' | 'longdashdot';
   showspikes?: boolean;
   side?: 'left' | 'right';
   spikethickness?: number;
   linewidth?: number;
   zeroline?: boolean;
   ticklen?: number;
-  ticks?: 'outside' | 'inside';
+  ticks?: '' | 'outside' | 'inside';
+  ticklabelstandoff?: number;
   mirror?: boolean;
   title?: {
     text?: string;
@@ -88,4 +90,5 @@ interface FontConfig {
   family: string;
   color: string;
   size: number;
+  weight: number;
 }

@@ -2,12 +2,13 @@ import type { PlotTheme } from '@/config/plots/models';
 
 export const darkTheme: PlotTheme = {
   base: {
-    paper_bgcolor: "rgba(0, 0, 0, 0)",
-    plot_bgcolor: "rgba(0, 0, 0, 0)",
+    paper_bgcolor: "#09090b",
+    plot_bgcolor: "#09090b",
     font: {
-      family: "Geist Mono, FiraCode Nerd Font Mono",
+      family: "Geist, FiraCode Nerd Font Mono",
       color: "#9E9EAA",
-      size: 13
+      weight: 400,
+      size: 12,
     }
   },
   components: {
@@ -20,15 +21,18 @@ export const darkTheme: PlotTheme = {
       bgcolor: "#111",
       bordercolor: "#363940",
       font: {
-        color: "#D5D8DD"
+        color: "#D5D8DD",
+        family: "Geist, FiraCode Nerd Font Mono",
+        size: 12,
       }
     },
     legend: {
       bgcolor: "rgba(0, 0, 0, 0)",
       font: {
         color: "#9E9EAA",
-        family: "Geist Mono, FiraCode Nerd Font Mono",
-        size: 16
+        family: "Geist, FiraCode Nerd Font Mono",
+        weight: 400,
+        size: 13
       }
     },
     modebar: {
@@ -44,7 +48,7 @@ export const darkTheme: PlotTheme = {
       tickcolor: "#303136",
       font: {
         color: "#9E9EAA",
-        family: "Geist Mono, FiraCode Nerd Font Mono",
+        family: "Geist, FiraCode Nerd Font Mono",
         size: 13
       }
     }

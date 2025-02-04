@@ -13,8 +13,9 @@ export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   xaxis: {
     ...baseAxisConfig,
     hoverformat: '%d-%m-%Y %H:%M',
-    showspikes: false,
+    showline: true,
     showgrid: false,
+    showspikes: false,
     spikethickness: 2,
     linewidth: 2,
     title: {
@@ -27,6 +28,7 @@ export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {
     side: 'left',
     spikethickness: 2,
     linewidth: 2,
+    ticks: '',
     title: {
       standoff: 8
     }

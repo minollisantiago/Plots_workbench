@@ -7,7 +7,7 @@ export const baseLayout: Partial<PlotLayout> = {
     y: 0.9
   },
   legend: {
-    x: 1.02,
+    x: 1.04,
     y: 1.02,
     xanchor: 'left',
     orientation: 'v',
@@ -24,13 +24,15 @@ export const baseLayout: Partial<PlotLayout> = {
 };
 
 export const baseAxisConfig: Partial<AxisLayout> = {
-  showline: true,
+  showline: false,
   showgrid: true,
   showspikes: false,
   spikethickness: 2,
   linewidth: 2,
-  ticklen: 8,
-  ticks: 'outside',
+  ticklen: 6,
+  ticks: 'inside',
+  ticklabelstandoff: 8,
+  griddash: 'solid',
   zeroline: false,
-  mirror: true
+  mirror: false
 };

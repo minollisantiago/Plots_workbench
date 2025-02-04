@@ -5,9 +5,10 @@ export const lightTheme: PlotTheme = {
     paper_bgcolor: "rgba(0, 0, 0, 0)",
     plot_bgcolor: "#D5D8DD",
     font: {
-      family: "Geist Sans, FiraCode Nerd Font Mono",
+      family: "Geist, FiraCode Nerd Font Mono",
       color: "#1E2326",
-      size: 13
+      weight: 400,
+      size: 12,
     }
   },
   components: {
@@ -21,14 +22,16 @@ export const lightTheme: PlotTheme = {
       bordercolor: "#363940",
       font: {
         color: "#D5D8DD",
-        family: "Geist Mono, FiraCode Nerd Font Mono"
+        family: "Geist, FiraCode Nerd Font Mono",
+        size: 12,
       }
     },
     legend: {
       bgcolor: "rgba(0, 0, 0, 0)",
       font: {
         color: "#1E2326",
-        family: "Geist Mono, FiraCode Nerd Font Mono",
+        family: "Geist, FiraCode Nerd Font Mono",
+        weight: 400,
         size: 13
       }
     },
@@ -45,7 +48,7 @@ export const lightTheme: PlotTheme = {
       tickcolor: "#303136",
       font: {
         color: "#1E2326",
-        family: "Geist Mono, FiraCode Nerd Font Mono",
+        family: "Geist, FiraCode Nerd Font Mono",
         size: 13
       }
     }
