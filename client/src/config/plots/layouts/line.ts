@@ -1,5 +1,5 @@
 import { merge } from 'lodash';
-import { PlotLayout } from '@/types/plots';
+import { PlotLayout } from '@/config/plots/models';
 import { baseLayout, baseAxisConfig } from './base';
 
 export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {

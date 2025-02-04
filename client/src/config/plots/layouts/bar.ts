@@ -1,6 +1,6 @@
-import { PlotLayout } from '@/types/plots';
-import { baseLayout, baseAxisConfig } from './base';
 import { merge } from 'lodash';
+import { PlotLayout } from '@/config/plots/models';
+import { baseLayout, baseAxisConfig } from './base';
 
 export const barLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   hovermode: 'x',
