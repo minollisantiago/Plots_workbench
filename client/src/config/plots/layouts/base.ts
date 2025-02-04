@@ -6,11 +6,17 @@ export const baseLayout: Partial<PlotLayout> = {
     x: 0.5,
     y: 0.9
   },
+  legend: {
+    x: 1.02,
+    y: 1.02,
+    xanchor: 'left',
+    orientation: 'v',
+  },
   margin: {
-    b: 50,
+    b: 44,
     l: 60,
-    r: 42,
-    t: 60
+    r: 120,
+    t: 0
   },
   transition: {
     duration: 150

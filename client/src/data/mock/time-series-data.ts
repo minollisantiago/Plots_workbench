@@ -63,5 +63,66 @@ export const mockTimeSeriesData = {
         }
       }
     },
+    {
+      id: "4",
+      label: "GOOG",
+      subLabel: "Share Price",
+      color: "#D84F68",
+      group: "Tech",
+      plotData: {
+        x: dates,
+        y: dates.map(() => Math.random() * 120 + 200),
+        name: "GOOG",
+        line: {
+          color: "#D84F68"
+        }
+      }
+    },
+    {
+      id: "5",
+      label: "MSFT",
+      subLabel: "Share Price",
+      color: "#4DBE95",
+      group: "Tech",
+      plotData: {
+        x: dates,
+        y: dates.map(() => Math.random() * 250 + 300),
+        name: "MSFT",
+        line: {
+          color: "#4DBE95"
+        }
+      }
+    },
+    {
+      id: "6",
+      label: "AAPL",
+      subLabel: "Share Price",
+      color: "#F6C86A",
+      group: "Tech",
+      plotData: {
+        x: dates,
+        y: dates.map(() => Math.random() * 180 + 150),
+        name: "AAPL",
+        line: {
+          color: "#F6C86A"
+        }
+      }
+    },
+    {
+      id: "7",
+      label: "META",
+      subLabel: "Share Price",
+      color: "#8085FF",
+      group: "Tech",
+      plotData: {
+        x: dates,
+        y: dates.map(() => Math.random() * 200 + 250),
+        name: "META",
+        line: {
+          color: "#8085FF"
+        }
+      }
+    }
+
   ]
 };

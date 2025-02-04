@@ -1051,10 +1051,6 @@ body {
   max-height: 300px;
 }
 
-.min-h-80 {
-  min-height: 20rem;
-}
-
 .w-12 {
   width: 3rem;
 }
@@ -1429,6 +1425,14 @@ body {
 
 .pt-0 {
   padding-top: 0px;
+}
+
+.pt-4 {
+  padding-top: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
 }
 
 .text-center {

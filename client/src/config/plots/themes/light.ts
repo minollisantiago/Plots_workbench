@@ -5,7 +5,7 @@ export const lightTheme: PlotTheme = {
     paper_bgcolor: "rgba(0, 0, 0, 0)",
     plot_bgcolor: "#D5D8DD",
     font: {
-      family: "Geist Mono, FiraCode Nerd Font Mono",
+      family: "Geist Sans, FiraCode Nerd Font Mono",
       color: "#1E2326",
       size: 13
     }

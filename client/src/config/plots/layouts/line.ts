@@ -4,17 +4,11 @@ import { baseLayout, baseAxisConfig } from './base';
 
 export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   hovermode: 'x',
-  legend: {
-    orientation: 'h',
-    x: 1,
-    xanchor: 'right',
-    y: 1.12
-  },
   margin: {
-    b: 50,
+    b: 44,
     l: 60,
-    r: 42,
-    t: 60
+    r: 120,
+    t: 0
   },
   xaxis: {
     ...baseAxisConfig,

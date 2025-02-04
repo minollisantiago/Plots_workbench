@@ -40,11 +40,10 @@ const PlotCanvas = () => {
           />
         </div>
 
-        <div className="h-full">
+        <div className="h-full pt-4 pb-4">
           {selectedSeries.length > 0 ? (
             <PlotLine
               data={selectedSeries.map(series => series.plotData)}
-              title="Test plot"
               theme="dark"
             />
           ) : (

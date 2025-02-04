@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import Plot from 'react-plotly.js';
 import { Data, Layout } from 'plotly.js';
 import { PlotConfig, ThemeType } from '@/lib/plot-config';
@@ -16,13 +15,7 @@ interface PlotLineProps {
   height?: number | string;
 }
 
-export const PlotLine: FC<PlotLineProps> = ({
-  data,
-  title,
-  theme = 'dark',
-  width = '100%',
-  height = '100%'
-}) => {
+export const PlotLine = ({ data, title, theme = 'dark', width = '100%', height = '100%' }: PlotLineProps) => {
   // Get the combined layout and theme configuration
   const config = PlotConfig.getConfig('line', theme);
 
@@ -48,9 +41,11 @@ export const PlotLine: FC<PlotLineProps> = ({
       useResizeHandler
       style={{ width, height }}
       config={{
-        displayModeBar: true,
+        displaylogo: false,
+        displayModeBar: 'hover',
         responsive: true,
-        scrollZoom: true
+        autosizable: true,
+        scrollZoom: true,
       }}
     />
   );
