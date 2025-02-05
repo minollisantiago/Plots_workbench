@@ -9,11 +9,15 @@ interface Props {
   searchPlaceholder: string
   series: TimeSeriesData[]
   availableSeries: TimeSeriesData[]
+  toggledSeries: Record<string, boolean>
   onRemoveSeries: (id: string) => void
   onAddSeries: (series: TimeSeriesData) => void
+  onTogglePlotVisibility: (id: string) => void
 }
 
-export const SeriesControls = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: Props) => {
+export const SeriesControls = ({
+  header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries, onRemoveSeries, onAddSeries, onTogglePlotVisibility
+}: Props) => {
   return (
     <div className="h-full w-[324px] bg-background">
       <div className="space-y-4">
@@ -40,7 +44,9 @@ export const SeriesControls = ({ header, searchTriggerLabel, searchPlaceholder, 
                 label={item.label}
                 subLabel={item.subLabel}
                 color={item.color}
+                toggled={toggledSeries[item.id] ?? true}
                 onRemove={() => onRemoveSeries(item.id)}
+                onToggleVisibility={() => onTogglePlotVisibility(item.id)}
               />
             ))}
           </div>

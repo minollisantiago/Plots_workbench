@@ -7,18 +7,22 @@ interface Props {
   label: string
   subLabel?: string
   color: string
+  toggled?: boolean
   onRemove?: () => void
+  onToggleVisibility?: () => void
 }
 
-export const SeriesCard = ({ label, subLabel, color, onRemove }: Props) => {
+export const SeriesCard = ({ label, subLabel, color, toggled, onRemove, onToggleVisibility }: Props) => {
   const [isVisible, setIsVisible] = useState(true)
 
-  const handleRemove = () => {
-    setIsVisible(false)
+  const handleRemove = (e: React.MouseEvent) => {
+    // Stop propagation to avoid triggering onToggleVisibility
+    e.stopPropagation();
+    setIsVisible(false);
     // Wait for animation to complete before calling onRemove
     // The state change triggers a re-render of the card with the close animation
     if (onRemove) {
-      setTimeout(onRemove, 100)
+      setTimeout(onRemove, 100);
     }
   }
 
@@ -33,12 +37,14 @@ export const SeriesCard = ({ label, subLabel, color, onRemove }: Props) => {
   return (
     <Card
       className={cn(
-        "relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8",
+        "relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8 cursor-pointer",
         isVisible
           ? "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
           : "animate-out fade-out-0 zoom-out-95",
+        !toggled && "opacity-50"
       )}
       style={{ backgroundColor: getRgbaBackground(color) }}
+      onClick={onToggleVisibility}
     >
 
       {/* Color indicator */}

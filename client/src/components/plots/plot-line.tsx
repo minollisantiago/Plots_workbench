@@ -8,6 +8,7 @@ interface PlotLineProps {
     y: number[];
     name?: string;
     yaxis?: 'y' | 'y2';
+    visible?: boolean;
   }>;
   title?: string;
   theme?: ThemeType;
@@ -31,6 +32,7 @@ export const PlotLine = ({ data, title, theme = 'dark', width = '100%', height =
   const plotData: Data[] = data.map(series => ({
     type: 'scatter',
     mode: 'lines',
+    visible: series.visible ?? true,
     ...series
   }));
 

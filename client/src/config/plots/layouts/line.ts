@@ -7,7 +7,7 @@ export const lineLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   margin: {
     b: 44,
     l: 60,
-    r: 120,
+    r: 0,
     t: 0
   },
   xaxis: {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { TimeSeriesData } from "@/models";
-import { SeriesControls, TimePeriod } from "@/components/plots/ui";
 import { PlotLine } from "@/components/plots/plot-line";
 import { TimePeriodSelector } from "@/components/plots/ui";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
+import { SeriesControls, TimePeriod } from "@/components/plots/ui";
 
 interface Props {
   title: string
@@ -11,6 +11,7 @@ interface Props {
 
 export const PlotCanvas = ({ title }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([])
+  const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({})
 
   const exampleSeries = mockTimeSeriesData.series
 
@@ -27,6 +28,16 @@ export const PlotCanvas = ({ title }: Props) => {
 
   const handleRemoveSeries = (id: string) => {
     setSelectedSeries((prev) => prev.filter(series => series.id !== id))
+    setVisibleSeries((prev) => {
+      const { [id]: _, ...rest } = prev
+      return rest
+    })
+  }
+
+  const handleTogglePlotVisibility = (id: string) => {
+    setVisibleSeries(prev => ({
+      ...prev, [id]: !(prev[id] ?? true)
+    }))
   }
 
   const handleSelectPeriod = (period: TimePeriod) => {
@@ -47,8 +58,10 @@ export const PlotCanvas = ({ title }: Props) => {
             searchPlaceholder="Search strategies"
             series={selectedSeries}
             availableSeries={exampleSeries}
+            toggledSeries={visibleSeries}
             onAddSeries={handleAddSeries}
             onRemoveSeries={handleRemoveSeries}
+            onTogglePlotVisibility={handleTogglePlotVisibility}
           />
         </div>
 
@@ -63,7 +76,9 @@ export const PlotCanvas = ({ title }: Props) => {
               />
             </div>
             <PlotLine
-              data={selectedSeries.map(series => series.plotData)}
+              data={selectedSeries.map(series => ({
+                ...series.plotData, visible: visibleSeries[series.id] ?? true
+              }))}
               theme="dark"
             />
           </div>

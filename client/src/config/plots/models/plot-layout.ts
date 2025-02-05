@@ -1,5 +1,6 @@
 export interface PlotLayout {
   autosize?: boolean;
+  showlegend?: boolean;
   title?: {
     x?: number;
     y?: number;
