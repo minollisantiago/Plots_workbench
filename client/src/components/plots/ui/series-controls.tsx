@@ -15,7 +15,7 @@ interface Props {
 
 export const SeriesControls = ({ header, searchTriggerLabel, searchPlaceholder, series, availableSeries, onRemoveSeries, onAddSeries }: Props) => {
   return (
-    <div className="h-full w-[324px] p-4 bg-background">
+    <div className="h-full w-[324px] bg-background">
       <div className="space-y-4">
 
         {/* Series Search */}
