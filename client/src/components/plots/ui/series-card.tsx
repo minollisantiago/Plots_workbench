@@ -46,7 +46,7 @@ export const SeriesCard = ({ label, subLabel, color, onRemove }: Props) => {
 
       {/* Label */}
       <div className="flex flex-row items-center gap-2 ml-6">
-        <span className="text-sm font-semibold">{label}</span>
+        <span className="text-sm font-medium">{label}</span>
         {subLabel && (<span className="text-sm text-muted-foreground">{subLabel}</span>)}
       </div>
 

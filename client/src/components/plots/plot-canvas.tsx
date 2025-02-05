@@ -1,13 +1,20 @@
 import { useState } from "react";
+import { TimeSeriesData } from "@/models";
+import { SeriesControls, TimePeriod } from "@/components/plots/ui";
 import { PlotLine } from "@/components/plots/plot-line";
-import { SeriesControls } from "@/components/plots/ui";
-import { TimeSeriesData } from "@/components/plots/types";
+import { TimePeriodSelector } from "@/components/plots/ui";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 
-const PlotCanvas = () => {
+interface Props {
+  title: string
+}
 
+export const PlotCanvas = ({ title }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([])
+
   const exampleSeries = mockTimeSeriesData.series
+
+  const periods: TimePeriod[] = ["1W", "1M", "3M", "6M", "YTD", "1Y", "All"]
 
   const handleAddSeries = (series: TimeSeriesData) => {
     setSelectedSeries((prev) => {
@@ -22,12 +29,24 @@ const PlotCanvas = () => {
     setSelectedSeries((prev) => prev.filter(series => series.id !== id))
   }
 
+  const handleSelectPeriod = (period: TimePeriod) => {
+    console.log(`Selected period: ${period}`)
+  }
+
   // if i increase the height if this container the plots dont render properly
   return (
 
-    <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
+    <div className="flex flex-col gap-2 p-4 h-full border rounded-lg bg-background/95">
+      <div className="flex justify-between px-4">
+        <h2 className="py-2 text-lg font-semibold">{title}</h2>
+        <TimePeriodSelector
+          periods={periods}
+          defaultSelected="All"
+          onSelect={(period) => handleSelectPeriod(period)}
+        />
+      </div>
 
-      <div className="grid grid-cols-[324px_1fr] gap-2 p-4 h-full border rounded-lg bg-background/95">
+      <div className="grid grid-cols-[324px_1fr] gap-2">
         <div className="flex flex-col space-y-2">
           < SeriesControls
             header="Strategies"
@@ -57,4 +76,3 @@ const PlotCanvas = () => {
   )
 }
 
-export default PlotCanvas
