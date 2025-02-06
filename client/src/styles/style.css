@@ -1051,8 +1051,32 @@ body {
   height: 100vh;
 }
 
+.h-\[420px\] {
+  height: 420px;
+}
+
+.h-\[500px\] {
+  height: 500px;
+}
+
+.h-\[400px\] {
+  height: 400px;
+}
+
+.h-\[220px\] {
+  height: 220px;
+}
+
+.h-\[120px\] {
+  height: 120px;
+}
+
 .max-h-\[300px\] {
   max-height: 300px;
+}
+
+.max-h-\[420px\] {
+  max-height: 420px;
 }
 
 .w-10 {
@@ -1159,6 +1183,10 @@ body {
           user-select: none;
 }
 
+.resize {
+  resize: both;
+}
+
 .grid-cols-\[324px_1fr\] {
   grid-template-columns: 324px 1fr;
 }
@@ -1227,6 +1255,10 @@ body {
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.overflow-auto {
+  overflow: auto;
 }
 
 .overflow-hidden {

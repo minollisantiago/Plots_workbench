@@ -2,6 +2,8 @@ import { PlotLayout, AxisLayout } from "@/config/plots/models";
 
 export const baseLayout: Partial<PlotLayout> = {
   autosize: true,
+  width: undefined,
+  height: undefined,
   showlegend: false,
   title: {
     x: 0.5,

@@ -2,7 +2,7 @@ import Plot from 'react-plotly.js';
 import { Data, Layout } from 'plotly.js';
 import { PlotConfig, ThemeType } from '@/lib/plot-config';
 
-interface PlotLineProps {
+interface Props {
   data: Array<{
     x: (number | string)[];
     y: number[];
@@ -16,17 +16,9 @@ interface PlotLineProps {
   height?: number | string;
 }
 
-export const PlotLine = ({ data, title, theme = 'dark', width = '100%', height = '100%' }: PlotLineProps) => {
+export const PlotLine = ({ data, title, theme, width = "100%", height = "100%" }: Props) => {
   // Get the combined layout and theme configuration
-  const config = PlotConfig.getConfig('line', theme);
-
-  // Add the title if provided
-  if (title) {
-    config.title = {
-      ...config.title,
-      text: title
-    };
-  }
+  const layout = PlotConfig.getConfig('line', theme);
 
   // Transform the data to match Plotly's expected format
   const plotData: Data[] = data.map(series => ({
@@ -36,19 +28,29 @@ export const PlotLine = ({ data, title, theme = 'dark', width = '100%', height =
     ...series
   }));
 
+  // Add the title if provided
+  if (title) {
+    layout.title = { ...layout.title, text: title };
+  }
+
+  // Force data refresh (and re-render on any modification that dont change the data structure)
+  const finalLayout = { ...layout, datarevision: Date.now() }
+
   return (
     <Plot
       data={plotData}
-      layout={config as Partial<Layout>}
-      useResizeHandler
+      layout={finalLayout as Partial<Layout>}
+      useResizeHandler={true}
       style={{ width, height }}
       config={{
-        displaylogo: false,
-        displayModeBar: 'hover',
+        scrollZoom: true,
         responsive: true,
         autosizable: true,
-        scrollZoom: true,
+        displaylogo: false,
+        displayModeBar: 'hover',
       }}
+      // Force rerender when series count changes
+      revision={data.length}
     />
   );
 };

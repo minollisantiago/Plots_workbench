@@ -1,5 +1,7 @@
 export interface PlotLayout {
   autosize?: boolean;
+  height?: number | undefined;
+  width?: number | undefined;
   showlegend?: boolean;
   title?: {
     x?: number;
