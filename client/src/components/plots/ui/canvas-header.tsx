@@ -24,7 +24,7 @@ export const CanvasHeader = ({ title, onTitleChange }: Props) => {
   }
 
   return (
-    <div className="flex items-center h-8 w-full pr-3 overflow-auto">
+    <div className="flex items-center h-8 w-full pr-3 overflow-auto group">
       {isEditing ? (
         <Input
           type="text"
@@ -43,7 +43,7 @@ export const CanvasHeader = ({ title, onTitleChange }: Props) => {
         size="sm"
         pressed={isEditing}
         onPressedChange={setIsEditing}
-        className="data-[state=on]:bg-transparent hover:bg-transparent [&>svg]:hover:text-primary"
+        className="data-[state=on]:bg-transparent hover:bg-transparent [&>svg]:hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity"
       >
         <PencilLine className="h-4 w-4 text-muted-foreground" />
       </Toggle>
