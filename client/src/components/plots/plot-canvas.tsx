@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { TimeSeriesData } from "@/models";
 import { PlotLine } from "@/components/plots/plot-line";
@@ -7,9 +8,10 @@ import { SeriesControls, TimePeriod } from "@/components/plots/ui";
 
 interface Props {
   title: string
+  canvasHeight: string
 }
 
-export const PlotCanvas = ({ title }: Props) => {
+export const PlotCanvas = ({ title, canvasHeight }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([])
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({})
 
@@ -49,27 +51,32 @@ export const PlotCanvas = ({ title }: Props) => {
 
   // if i increase the height if this container the plots dont render properly
   return (
-    <div className="grid grid-cols-[324px_1fr] h-[420px] gap-4 p-6 border rounded-lg bg-background/95">
+    <div className={cn(
+      "grid grid-cols-[324px_1fr] gap-2 p-4 border rounded-lg bg-background/95",
+      canvasHeight ? canvasHeight : "h-[472px]"
+    )}>
 
       {/* Controls */}
-      <div className="flex flex-col space-y-4 h-full">
+      <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
         <h3 className="text-medium font-semibold">{title}</h3>
-        < SeriesControls
-          header="Strategies"
-          searchTriggerLabel="Add strategies"
-          searchPlaceholder="Search strategies"
-          series={selectedSeries}
-          availableSeries={exampleSeries}
-          toggledSeries={visibleSeries}
-          onAddSeries={handleAddSeries}
-          onRemoveSeries={handleRemoveSeries}
-          onTogglePlotVisibility={handleTogglePlotVisibility}
-        />
+        <div className="flex-1 min-h-0">
+          < SeriesControls
+            header="Strategies"
+            searchTriggerLabel="Add strategies"
+            searchPlaceholder="Search strategies"
+            series={selectedSeries}
+            availableSeries={exampleSeries}
+            toggledSeries={visibleSeries}
+            onAddSeries={handleAddSeries}
+            onRemoveSeries={handleRemoveSeries}
+            onTogglePlotVisibility={handleTogglePlotVisibility}
+          />
+        </div>
       </div>
 
       {/* Figure */}
       {selectedSeries.length > 0 ? (
-        <div className="flex flex-col space-y-4 h-full">
+        <div className="flex flex-col space-y-4 p-2 h-full">
           <div className="flex justify-end">
             <TimePeriodSelector
               periods={periods}

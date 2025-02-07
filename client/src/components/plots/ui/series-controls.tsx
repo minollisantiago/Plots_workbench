@@ -32,10 +32,10 @@ export const SeriesControls = ({
       </div>
 
       {/* Selected series group */}
-      <div className="flex flex-col space-y-2 h-[278px]">
+      <div className="flex flex-col space-y-2 overflow-hidden">
         <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
-        <ScrollArea className="pr-3">
-          <div className="flex flex-col space-y-2">
+        <ScrollArea className="h-full w-full pr-3">
+          <div className="space-y-2">
             {/* Selected series card */}
             {series.map((item) => (
               <SeriesCard
