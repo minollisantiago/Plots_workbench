@@ -19,24 +19,23 @@ export const SeriesControls = ({
   header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries, onRemoveSeries, onAddSeries, onTogglePlotVisibility
 }: Props) => {
   return (
-    <div className="h-full w-[324px] bg-background">
-      <div className="space-y-4">
+    <div className="flex flex-col space-y-4 h-full bg-background">
 
-        {/* Series Search */}
+      {/* Series Search */}
+      <div className="pr-3">
         <SeriesSearch
           options={availableSeries}
           onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
           searchPlaceholder={searchPlaceholder}
           triggerLabel={searchTriggerLabel}
         />
+      </div>
 
-        {/* Selected series group */}
-        <ScrollArea className="h-full w-full">
-          <div className="mb-2">
-            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
-          </div>
-          <div className="space-y-2">
-
+      {/* Selected series group */}
+      <div className="flex flex-col space-y-2 h-[278px]">
+        <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+        <ScrollArea className="pr-3">
+          <div className="flex flex-col space-y-2">
             {/* Selected series card */}
             {series.map((item) => (
               <SeriesCard

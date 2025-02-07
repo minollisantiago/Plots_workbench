@@ -49,7 +49,7 @@ export const PlotCanvas = ({ title }: Props) => {
 
   // if i increase the height if this container the plots dont render properly
   return (
-    <div className="grid grid-cols-[324px_1fr] h-[220px] gap-4 p-6 border rounded-lg bg-background/95">
+    <div className="grid grid-cols-[324px_1fr] h-[420px] gap-4 p-6 border rounded-lg bg-background/95">
 
       {/* Controls */}
       <div className="flex flex-col space-y-4 h-full">
