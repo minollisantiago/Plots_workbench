@@ -2,9 +2,8 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { TimeSeriesData } from "@/models";
 import { PlotLine } from "@/components/plots/plot-line";
-import { TimePeriodSelector } from "@/components/plots/ui";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { SeriesControls, TimePeriod } from "@/components/plots/ui";
+import { SeriesControls, TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 
 interface Props {
   title: string
@@ -58,7 +57,7 @@ export const PlotCanvas = ({ title, canvasHeight }: Props) => {
 
       {/* Controls */}
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
-        <h3 className="text-medium font-semibold">{title}</h3>
+        <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
           < SeriesControls
             header="Strategies"

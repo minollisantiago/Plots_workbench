@@ -1,5 +1,6 @@
 export * from '@/components/plots/ui/series-card.tsx'
 export * from '@/components/plots/ui/color-picker.tsx'
+export * from '@/components/plots/ui/canvas-header.tsx'
 export * from '@/components/plots/ui/series-search.tsx'
 export * from '@/components/plots/ui/series-controls.tsx'
 export * from '@/components/plots/ui/date-range-picker.tsx'
