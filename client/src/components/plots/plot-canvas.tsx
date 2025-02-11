@@ -1,22 +1,16 @@
-import { cn } from "@/lib/utils";
-import { Grip } from "lucide-react";
+import { useState } from "react";
 import { TimeSeriesData } from "@/models";
-import { useState, useRef, MouseEvent } from "react";
 import { PlotLine } from "@/components/plots/plot-line";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 import { SeriesControls, TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 
 interface Props {
   title: string
-  canvasHeight?: string
 }
 
-export const PlotCanvas = ({ title, canvasHeight }: Props) => {
+export const PlotCanvas = ({ title }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});
-  const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState<Record<string, number>>({ x: 0, y: 0 });
-  const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
 
   const exampleSeries = mockTimeSeriesData.series
 
@@ -52,93 +46,50 @@ export const PlotCanvas = ({ title, canvasHeight }: Props) => {
     console.log(`Selected period: ${period}`)
   };
 
-  const handleDragStart = (e: MouseEvent) => {
-    setIsDragging(true);
-    dragOffset.current = {
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    };
-  };
-
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  }
-
-  const handleDrag = (e: MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - dragOffset.current.x,
-        y: e.clientY - dragOffset.current.y,
-      });
-    }
-  };
-
-  // if i increase the height if this container the plots dont render properly
   return (
-    <div
-      className={cn(
-        "flex flex-col p-0 border rounded-lg bg-background/95",
-        canvasHeight ? canvasHeight : "h-[472px]"
-      )}
-      style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        cursor: isDragging ? 'grabbing' : 'default'
-      }}
-      onMouseMove={handleDrag}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
-    >
 
-      <div
-        className="group flex justify-start h-8 cursor-grab active:cursor-grabbing"
-        onMouseDown={handleDragStart}
-      >
-        <Grip className="w-4 h-4 ml-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-      </div>
+    <div className="grid grid-cols-[324px_1fr] gap-2 p-4 pt-0 h-full">
 
-      <div className="grid grid-cols-[324px_1fr] gap-2 p-4 pt-0 h-full">
-
-        {/* Controls */}
-        <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
-          <CanvasHeader title={title} />
-          <div className="flex-1 min-h-0">
-            < SeriesControls
-              header="Strategies"
-              searchTriggerLabel="Add strategies"
-              searchPlaceholder="Search strategies"
-              series={selectedSeries}
-              availableSeries={exampleSeries}
-              toggledSeries={visibleSeries}
-              onAddSeries={handleAddSeries}
-              onRemoveSeries={handleRemoveSeries}
-              onTogglePlotVisibility={handleTogglePlotVisibility}
-            />
-          </div>
+      {/* Controls */}
+      <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
+        <CanvasHeader title={title} />
+        <div className="flex-1 min-h-0">
+          < SeriesControls
+            header="Strategies"
+            searchTriggerLabel="Add strategies"
+            searchPlaceholder="Search strategies"
+            series={selectedSeries}
+            availableSeries={exampleSeries}
+            toggledSeries={visibleSeries}
+            onAddSeries={handleAddSeries}
+            onRemoveSeries={handleRemoveSeries}
+            onTogglePlotVisibility={handleTogglePlotVisibility}
+          />
         </div>
+      </div>
 
-        {/* Figure */}
-        {selectedSeries.length > 0 ? (
-          <div className="flex flex-col space-y-4 p-2 h-full">
-            <div className="flex justify-end">
-              <TimePeriodSelector
-                periods={periods}
-                defaultSelected="All"
-                onSelect={(period) => handleSelectPeriod(period)}
-              />
-            </div>
-            <PlotLine
-              data={selectedSeries.map(series => ({
-                ...series.plotData, visible: visibleSeries[series.id] ?? true
-              }))}
-              theme="dark"
+      {/* Figure */}
+      {selectedSeries.length > 0 ? (
+        <div className="flex flex-col space-y-4 p-2 h-full">
+          <div className="flex justify-end">
+            <TimePeriodSelector
+              periods={periods}
+              defaultSelected="All"
+              onSelect={(period) => handleSelectPeriod(period)}
             />
           </div>
-        ) : (
-          <div className="flex items-center justify-center text-muted-foreground">
-            Select Series to display the plot
-          </div>
-        )}
-      </div>
+          <PlotLine
+            data={selectedSeries.map(series => ({
+              ...series.plotData, visible: visibleSeries[series.id] ?? true
+            }))}
+            theme="dark"
+          />
+        </div>
+      ) : (
+        <div className="flex items-center justify-center text-muted-foreground">
+          Select Series to display the plot
+        </div>
+      )}
     </div>
   )
 }
