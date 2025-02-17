@@ -36,7 +36,7 @@ export const CanvasContainer = ({ canvasHeight, children }: Props) => {
   return (
     <div
       className={cn(
-        "flex flex-col p-0 border rounded-lg bg-background/95",
+        "flex flex-col p-0 border-2 rounded-lg bg-background/95",
         canvasHeight ? canvasHeight : "h-[472px]"
       )}
       style={{
