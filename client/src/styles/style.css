@@ -766,6 +766,10 @@ select {
   grid-column: content;
 }
 
+.popout {
+  grid-column: popout;
+}
+
 /* App container ----------------------------*/
 
 #mainContainer {
@@ -1224,6 +1228,10 @@ body {
 
 .grid-cols-\[324px_1fr\] {
   grid-template-columns: 324px 1fr;
+}
+
+.grid-cols-\[424px_1fr\] {
+  grid-template-columns: 424px 1fr;
 }
 
 .flex-row {

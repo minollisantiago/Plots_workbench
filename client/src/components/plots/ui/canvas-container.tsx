@@ -5,13 +5,26 @@ import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
   canvasHeight?: string
+  canvasWidth?: string
+  initialPosition?: { x: number, y: number }
   onClose?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ canvasHeight, onClose, children }: Props) => {
+export const CanvasContainer = ({ canvasHeight, canvasWidth, initialPosition, onClose, children }: Props) => {
+
+  const defaultSize = { width: 876, height: 472 }
+
+  const [position, setPosition] = useState<Record<string, number>>(() => {
+    if (initialPosition) return initialPosition;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    return {
+      x: Math.max(0, (viewportWidth - defaultSize.width) / 2),
+      y: Math.max(0, (viewportHeight - defaultSize.height) / 2),
+    };
+  });
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState<Record<string, number>>({ x: 0, y: 0 });
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
 
   const handleDragStart = (e: MouseEvent) => {
@@ -39,7 +52,8 @@ export const CanvasContainer = ({ canvasHeight, onClose, children }: Props) => {
     <div
       className={cn(
         "flex flex-col p-0 border-2 rounded-lg bg-background/95",
-        canvasHeight ? canvasHeight : "h-[472px]"
+        canvasHeight ? canvasHeight : `h-[${defaultSize.height}px]`,
+        canvasWidth ? canvasWidth : `w-[${defaultSize.width}px]`,
       )}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
