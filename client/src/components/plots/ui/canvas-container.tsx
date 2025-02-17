@@ -1,13 +1,15 @@
 import { cn } from "@/lib/utils";
-import { Grip } from "lucide-react";
+import { Grip, X } from "lucide-react";
+import { Button } from "@/components/ui/button"
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
   canvasHeight?: string
+  onClose?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ canvasHeight, children }: Props) => {
+export const CanvasContainer = ({ canvasHeight, onClose, children }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState<Record<string, number>>({ x: 0, y: 0 });
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
@@ -49,10 +51,18 @@ export const CanvasContainer = ({ canvasHeight, children }: Props) => {
     >
 
       <div
-        className="group flex justify-start h-8 cursor-grab active:cursor-grabbing"
+        className="group flex justify-between h-10 pt-2 px-2 cursor-grab active:cursor-grabbing"
         onMouseDown={handleDragStart}
       >
-        <Grip className="w-4 h-4 ml-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        {/* Drag handle */}
+        <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        {/* Close button */}
+        <Button variant="ghost" size="sm" className="rounded-md hover:bg-muted" onClick={onClose}>
+          <X className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+        </Button>
+
       </div>
 
       {children}
