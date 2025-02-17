@@ -43,7 +43,7 @@
   /* Gradient background */
   #mainContainer::before {
     --size: 20px;
-    --dot-size: 1px;
+    --dot-size: 2px;
     --dot-color: hsl(216 3% 75% / 0.15);
     content: '';
     position: absolute;

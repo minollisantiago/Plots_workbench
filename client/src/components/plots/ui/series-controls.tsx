@@ -33,7 +33,9 @@ export const SeriesControls = ({
 
       {/* Selected series group */}
       <div className="flex flex-col space-y-2 overflow-hidden">
-        <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+        {series.length > 0 &&
+          <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+        }
         <ScrollArea className="h-full w-full pr-3">
           <div className="space-y-2">
             {/* Selected series card */}
