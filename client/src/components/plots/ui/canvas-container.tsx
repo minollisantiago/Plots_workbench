@@ -6,24 +6,21 @@ import { useState, useRef, MouseEvent, ReactNode } from "react";
 interface Props {
   canvasHeight?: string
   canvasWidth?: string
-  initialPosition?: { x: number, y: number }
+  canvasOffset?: number
   onClose?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ canvasHeight, canvasWidth, initialPosition, onClose, children }: Props) => {
-
+export const CanvasContainer = ({ canvasHeight, canvasWidth, canvasOffset, onClose, children }: Props) => {
   const defaultSize = { width: 876, height: 472 }
 
   const [position, setPosition] = useState<Record<string, number>>(() => {
-    if (initialPosition) return initialPosition;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
     return {
-      x: Math.max(0, (viewportWidth - defaultSize.width) / 2),
-      y: Math.max(0, (viewportHeight - defaultSize.height) / 2),
-    };
+      x: Math.max(0, (window.innerWidth - defaultSize.width) / 2) + (canvasOffset ? canvasOffset : 0),
+      y: Math.max(0, (window.innerHeight - defaultSize.height) / 2) + (canvasOffset ? canvasOffset : 0),
+    }
   });
+
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
 
@@ -51,9 +48,9 @@ export const CanvasContainer = ({ canvasHeight, canvasWidth, initialPosition, on
   return (
     <div
       className={cn(
-        "flex flex-col p-0 border-2 rounded-lg bg-background/95",
-        canvasHeight ? canvasHeight : `h-[${defaultSize.height}px]`,
-        canvasWidth ? canvasWidth : `w-[${defaultSize.width}px]`,
+        "full flex flex-col p-0 border-2 rounded-lg bg-background/95 absolute",
+        canvasHeight || `h-[${defaultSize.height}px]`,
+        canvasWidth || `w-[${defaultSize.width}px]`,
       )}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
@@ -73,7 +70,7 @@ export const CanvasContainer = ({ canvasHeight, canvasWidth, initialPosition, on
         <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
 
         {/* Close button */}
-        <Button variant="ghost" size="sm" className="rounded-md hover:bg-muted" onClick={onClose}>
+        <Button variant="ghost" size="sm" className="rounded-md hover:bg-transparent" onClick={onClose}>
           <X className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
         </Button>
 

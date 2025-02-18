@@ -28,7 +28,10 @@ export const Dock = ({ onSelect }: Props) => {
   }
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 p-2 rounded-lg bg-background/90 backdrop-blur-sm border-2 border-white/10">
+    <div
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center
+      gap-2 p-2 rounded-lg bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50"
+    >
 
       {tools.map((tool) => {
         const Icon = tool.icon

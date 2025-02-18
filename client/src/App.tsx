@@ -21,9 +21,10 @@ function App() {
 
       <Dock onSelect={handleDockSelect} />
 
-      {canvases.map((id) => (
+      {canvases.map((id, index) => (
         <CanvasContainer
           key={id}
+          canvasOffset={index * 12}
           onClose={() => setCanvases(prev => prev.filter(canvasId => canvasId !== id))}
         >
           <PlotCanvas title="Line Plot" />

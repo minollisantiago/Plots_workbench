@@ -770,6 +770,10 @@ select {
   grid-column: popout;
 }
 
+.full {
+  grid-column: full;
+}
+
 /* App container ----------------------------*/
 
 #mainContainer {
@@ -1151,6 +1155,10 @@ body {
 
 .w-14 {
   width: 3.5rem;
+}
+
+.w-\[876px\] {
+  width: 876px;
 }
 
 .min-w-10 {
