@@ -35,7 +35,7 @@ function App() {
           canvasOffset={index * 12}
           zIndex={canvases.indexOf(id) + 1}
           onFocus={handleCanvasFocus}
-          onClose={() => setCanvases(prev => prev.filter(canvasId => canvasId !== id))}
+          onRemove={() => setCanvases(prev => prev.filter(canvasId => canvasId !== id))}
         >
           <PlotCanvas title="Line Plot" />
         </CanvasContainer>

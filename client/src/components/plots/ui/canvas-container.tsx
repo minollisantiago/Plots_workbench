@@ -10,12 +10,15 @@ interface Props {
   canvasOffset?: number
   zIndex: number
   onFocus: (id: string) => void
-  onClose?: () => void
+  onRemove?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onClose, children }: Props) => {
+export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onRemove, children }: Props) => {
+
   const defaultSize = { width: 876, height: 472 }
+
+  const [isVisible, setIsVisible] = useState(true)
 
   const [position, setPosition] = useState<Record<string, number>>(() => {
     return {
@@ -29,6 +32,13 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
 
   const handleClick = () => {
     onFocus(id);
+  }
+
+  const handleRemove = () => {
+    setIsVisible(false);
+    if (onRemove) {
+      console.log("test closing canvas")
+    }
   }
 
   const handleDragStart = (e: MouseEvent) => {
@@ -53,41 +63,43 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
   };
 
   return (
-    <div
-      className={cn(
-        "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
-        canvasHeight || `h-[${defaultSize.height}px]`,
-        canvasWidth || `w-[${defaultSize.width}px]`,
-      )}
-      style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        cursor: isDragging ? 'grabbing' : 'default',
-        zIndex: zIndex
-      }}
-      onClick={handleClick}
-      onMouseMove={handleDrag}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={handleDragEnd}
-    >
-
+    isVisible && (
       <div
-        className="group flex justify-between h-10 pt-2 px-2 cursor-grab active:cursor-grabbing"
-        onMouseDown={handleDragStart}
+        className={cn(
+          "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
+          canvasHeight ?? `h-[${defaultSize.height}px]`,
+          canvasWidth ?? `w-[${defaultSize.width}px]`,
+        )}
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          cursor: isDragging ? 'grabbing' : 'default',
+          zIndex: zIndex
+        }}
+        onClick={handleClick}
+        onMouseMove={handleDrag}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
       >
 
-        {/* Drag handle */}
-        <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div
+          className="group flex justify-between h-10 pt-2 px-2 cursor-grab active:cursor-grabbing"
+          onMouseDown={handleDragStart}
+        >
 
-        {/* Close button */}
-        <Button variant="ghost" size="sm" className="rounded-md hover:bg-transparent" onClick={onClose}>
-          <X className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-        </Button>
+          {/* Drag handle */}
+          <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+          {/* Close button */}
+          <Button variant="ghost" size="sm" className="rounded-md hover:bg-transparent" onClick={handleRemove}>
+            <X className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </Button>
+
+        </div>
+
+        {children}
 
       </div>
-
-      {children}
-
-    </div>
+    )
   )
 }
 
