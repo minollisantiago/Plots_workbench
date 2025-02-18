@@ -16,6 +16,13 @@ function App() {
     }
   };
 
+  const handleCanvasFocus = (id: string) => {
+    setCanvases(prev => {
+      const filtered = prev.filter(canvasId => canvasId !== id);
+      return [...filtered, id];
+    });
+  };
+
   return (
     <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
 
@@ -24,7 +31,10 @@ function App() {
       {canvases.map((id, index) => (
         <CanvasContainer
           key={id}
+          id={id}
           canvasOffset={index * 12}
+          zIndex={canvases.indexOf(id) + 1}
+          onFocus={handleCanvasFocus}
           onClose={() => setCanvases(prev => prev.filter(canvasId => canvasId !== id))}
         >
           <PlotCanvas title="Line Plot" />

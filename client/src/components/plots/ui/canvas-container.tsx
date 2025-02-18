@@ -4,14 +4,17 @@ import { Button } from "@/components/ui/button"
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
+  id: string
   canvasHeight?: string
   canvasWidth?: string
   canvasOffset?: number
+  zIndex: number
+  onFocus: (id: string) => void
   onClose?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ canvasHeight, canvasWidth, canvasOffset, onClose, children }: Props) => {
+export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onClose, children }: Props) => {
   const defaultSize = { width: 876, height: 472 }
 
   const [position, setPosition] = useState<Record<string, number>>(() => {
@@ -23,6 +26,10 @@ export const CanvasContainer = ({ canvasHeight, canvasWidth, canvasOffset, onClo
 
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
+
+  const handleClick = () => {
+    onFocus(id);
+  }
 
   const handleDragStart = (e: MouseEvent) => {
     setIsDragging(true);
@@ -48,14 +55,16 @@ export const CanvasContainer = ({ canvasHeight, canvasWidth, canvasOffset, onClo
   return (
     <div
       className={cn(
-        "full flex flex-col p-0 border-2 rounded-lg bg-background/95 absolute",
+        "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
         canvasHeight || `h-[${defaultSize.height}px]`,
         canvasWidth || `w-[${defaultSize.width}px]`,
       )}
       style={{
         transform: `translate(${position.x}px, ${position.y}px)`,
-        cursor: isDragging ? 'grabbing' : 'default'
+        cursor: isDragging ? 'grabbing' : 'default',
+        zIndex: zIndex
       }}
+      onClick={handleClick}
       onMouseMove={handleDrag}
       onMouseUp={handleDragEnd}
       onMouseLeave={handleDragEnd}
