@@ -42,7 +42,7 @@ export const Dock = ({ onSelect }: Props) => {
               <TooltipTrigger asChild>
                 <button
                   className={cn(
-                    "relative group p-2 rounded-md transition-colors",
+                    "group p-2 rounded-md transition-colors",
                     selected === tool.id
                       ? "bg-zinc-800 hover:bg-zinc-800"
                       : "hover:bg-muted"
