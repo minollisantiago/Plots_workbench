@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { TooltipConfig } from "@/config/ui";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Hand, Trash2, LineChart, BarChart3, ScatterChart, ChartColumnBig, ChartNoAxesCombined } from "lucide-react";
 
@@ -36,7 +37,7 @@ export const Dock = ({ onSelect }: Props) => {
       {tools.map((tool) => {
         const Icon = tool.icon
         return (
-          <TooltipProvider key={tool.id} delayDuration={25}>
+          <TooltipProvider key={tool.id} delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
@@ -51,7 +52,7 @@ export const Dock = ({ onSelect }: Props) => {
                   <Icon size={20} className="text-white" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent sideOffset={16} className="bg-background text-white border">
+              <TooltipContent sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
                 <p>{tool.label}</p>
               </TooltipContent>
             </Tooltip>

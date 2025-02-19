@@ -1,1 +1,1 @@
-export * from './timeseries.models.ts'
+export * from './tooltip.models.ts'
