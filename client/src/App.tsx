@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dock, DockTool } from '@/components/ui';
 import { CanvasContainer } from '@/components/plots/ui';
+import { Dock, DockTool, Bookmarks } from '@/components/ui';
 import { PlotCanvas } from '@/components/plots/plot-canvas';
 import './styles/style.css';
 
@@ -27,6 +27,7 @@ function App() {
     <div id="mainContainer" className="content-grid place-content-center h-screen w-screen relative">
 
       <Dock onSelect={handleDockSelect} />
+      <Bookmarks />
 
       {canvases.map((id, index) => (
         <CanvasContainer
