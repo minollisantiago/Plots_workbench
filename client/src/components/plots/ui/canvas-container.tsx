@@ -17,6 +17,7 @@ interface Props {
 export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onRemove, children }: Props) => {
 
   const defaultSize = { width: 876, height: 472 }
+  const defaultSizeTailwind = { width: "w-[876px]", height: "h-[472px]" }
 
   const [isVisible, setIsVisible] = useState(true)
 
@@ -67,8 +68,8 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
       <div
         className={cn(
           "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
-          canvasHeight ?? `h-[${defaultSize.height}px]`,
-          canvasWidth ?? `w-[${defaultSize.width}px]`,
+          canvasHeight ? canvasHeight : defaultSizeTailwind.height,
+          canvasWidth ? canvasWidth : defaultSizeTailwind.width
         )}
         style={{
           transform: `translate(${position.x}px, ${position.y}px)`,
