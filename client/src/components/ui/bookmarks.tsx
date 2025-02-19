@@ -39,7 +39,7 @@ export const Bookmarks = ({ onOpen }: Props) => {
                   )}
                   onClick={handleOpen}
                 >
-                  <Bookmark size={24} className="text-white" />
+                  <Bookmark size={24} className="text-foreground" />
                 </button>
               </TooltipTrigger>
             </SheetTrigger>
@@ -53,7 +53,7 @@ export const Bookmarks = ({ onOpen }: Props) => {
         <SheetContent>
           <SheetHeader>
             <div className="flex flex-row gap-2">
-              <Bookmark size={20} className="text-white" />
+              <Bookmark size={20} className="text-foreground" />
               <SheetTitle>Bookmarked Plots</SheetTitle>
             </div>
           </SheetHeader>

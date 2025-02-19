@@ -1944,6 +1944,10 @@ body {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-muted-foreground:hover {
+  background-color: hsl(var(--muted-foreground));
+}
+
 .hover\:pr-3:hover {
   padding-right: 0.75rem;
 }

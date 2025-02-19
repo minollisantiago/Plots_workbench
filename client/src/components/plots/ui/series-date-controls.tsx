@@ -31,7 +31,7 @@ export const TimePeriodSelector = ({ periods, defaultSelected, onSelect }: Props
             className={cn(
               "h-8 w-10 px-2 rounded-md text-sm text-muted-foreground",
               selected === period
-                ? "text-muted-foreground bg-zinc-900 hover:bg-zinc-900 hover:text-muted-foreground"
+                ? "text-muted-foreground bg-muted hover:bg-muted hover:text-muted-foreground"
                 : "hover:bg-muted"
             )}
             onClick={() => handleSelect(period)}

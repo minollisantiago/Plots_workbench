@@ -42,14 +42,14 @@ export const Dock = ({ onSelect }: Props) => {
               <TooltipTrigger asChild>
                 <button
                   className={cn(
-                    "group p-2 rounded-md transition-colors",
+                    "group p-2 rounded-md transition-colors hover:bg-muted",
                     selected === tool.id
-                      ? "bg-zinc-800 hover:bg-zinc-800"
+                      ? "bg-muted"
                       : "hover:bg-muted"
                   )}
                   onClick={() => handleSelect(tool.id)}
                 >
-                  <Icon size={20} className="text-white" />
+                  <Icon size={20} className="text-foreground" />
                 </button>
               </TooltipTrigger>
               <TooltipContent sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>

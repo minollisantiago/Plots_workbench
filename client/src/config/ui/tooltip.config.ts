@@ -13,6 +13,6 @@ export const TooltipConfig: TooltipParams = {
   skipDelayDuration: 0,
   sideOffset: 16,
   tailwindClasses: {
-    content: "bg-background text-white border",
+    content: "bg-background text-foreground border",
   }
 }
