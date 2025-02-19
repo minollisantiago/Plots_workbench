@@ -7,47 +7,43 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 
 // We use the hack of setting a state variable to render the tooltip content
 // conditionally to avoid a bug where when the sheet is closed, the focus return
-// to the trigger, causing the tooltip to re-render. We use the onOpenChange function
-// from the Sheet component to set the state to false and change it to true when the mouse
-// enters on the trigger component. The idea came from this issue:
+// to the trigger, causing the tooltip to re-render. We can use the onOpenChange function
+// from the Sheet component or our own method handleOpen to set the state to true and (opened sheet)
+// change it to false when the mouse enters the trigger component (sheet closed). The idea came from this issue:
 // https://github.com/radix-ui/primitives/issues/617
 
 interface Props {
-  onToggle?: () => void
+  onOpen?: () => void
 }
 
-export const Bookmarks = ({ onToggle }: Props) => {
-  const [toggle, setToggle] = useState(false)
+export const Bookmarks = ({ onOpen }: Props) => {
   const [open, setOpen] = useState(false)
 
-  const handleToggle = () => {
-    setToggle(true);
-    if (onToggle) {
-      onToggle()
+  const handleOpen = () => {
+    setOpen(true);
+    if (onOpen) {
+      onOpen()
     }
   };
 
   return (
     <div className="fixed right-0 top-4">
-      <Sheet onOpenChange={() => setOpen(false)}>
+      <Sheet>
         <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
           <Tooltip>
-            <SheetTrigger asChild onMouseEnter={() => setOpen(true)}>
+            <SheetTrigger asChild onMouseEnter={() => setOpen(false)}>
               <TooltipTrigger asChild>
                 <button
                   className={cn(
-                    "py-2 pl-3 pr-1 rounded-l-full transition-colors bg-muted",
-                    toggle
-                      ? "bg-zinc-800 hover:bg-zinc-800"
-                      : "hover:bg-muted"
+                    "py-2 pl-3 pr-1 rounded-l-full transition-all duration-200 bg-muted hover:pr-3",
                   )}
-                  onClick={handleToggle}
+                  onClick={handleOpen}
                 >
                   <Bookmark size={24} className="text-white" />
                 </button>
               </TooltipTrigger>
             </SheetTrigger>
-            {open &&
+            {!open &&
               <TooltipContent side="left" sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
                 <p>Bookmarked plots</p>
               </TooltipContent>

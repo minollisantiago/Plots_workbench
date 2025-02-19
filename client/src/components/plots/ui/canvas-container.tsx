@@ -69,7 +69,7 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
         className={cn(
           "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
           canvasHeight ? canvasHeight : defaultSizeTailwind.height,
-          canvasWidth ? canvasWidth : defaultSizeTailwind.width
+          canvasWidth ? canvasWidth : defaultSizeTailwind.width,
         )}
         style={{
           transform: `translate(${position.x}px, ${position.y}px)`,
