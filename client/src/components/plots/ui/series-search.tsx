@@ -31,7 +31,7 @@ export const SeriesSearch = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button className="flex justify-start w-full bg-muted hover:bg-muted">
+        <Button className="flex justify-start w-full bg-muted rounded-lg hover:bg-muted">
           <Plus className="h-4 w-4 text-muted-foreground" />
           <span className="text-muted-foreground text-sm">{triggerLabel}</span>
         </Button>

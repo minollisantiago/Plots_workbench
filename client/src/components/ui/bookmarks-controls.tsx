@@ -24,7 +24,7 @@ export const BookmarksControls = ({ onSelect }: Props) => {
   ]
   return (
     <div
-      className="flex flex-row gap-1"
+      className="flex flex-row gap-2"
     >
 
       {controls.map((tool) => {
@@ -35,7 +35,7 @@ export const BookmarksControls = ({ onSelect }: Props) => {
               <TooltipTrigger asChild>
                 <button
                   className={cn(
-                    "group p-2 rounded-md transition-colors hover:bg-muted",
+                    "group p-2 rounded-lg transition-colors bg-primary-foreground hover:bg-muted",
                     selected === tool.id
                       ? "bg-muted"
                       : "hover:bg-muted"
@@ -45,7 +45,7 @@ export const BookmarksControls = ({ onSelect }: Props) => {
                   <Icon size={20} className="text-foreground" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
+              <TooltipContent sideOffset={TooltipConfig.sideOffsetSmall} className={TooltipConfig.tailwindClasses.content}>
                 <p>{tool.label}</p>
               </TooltipContent>
             </Tooltip>

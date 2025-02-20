@@ -34,24 +34,26 @@ export const SeriesControls = ({
       {/* Selected series group */}
       <div className="flex flex-col space-y-2 overflow-hidden">
         {series.length > 0 &&
-          <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+          <>
+            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+            <ScrollArea className="h-full w-full pr-3">
+              <div className="space-y-2">
+                {/* Selected series card */}
+                {series.map((item) => (
+                  <SeriesCard
+                    key={item.id}
+                    label={item.label}
+                    subLabel={item.subLabel}
+                    color={item.color}
+                    toggled={toggledSeries[item.id] ?? true}
+                    onRemove={() => onRemoveSeries(item.id)}
+                    onToggleVisibility={() => onTogglePlotVisibility(item.id)}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          </>
         }
-        <ScrollArea className="h-full w-full pr-3">
-          <div className="space-y-2">
-            {/* Selected series card */}
-            {series.map((item) => (
-              <SeriesCard
-                key={item.id}
-                label={item.label}
-                subLabel={item.subLabel}
-                color={item.color}
-                toggled={toggledSeries[item.id] ?? true}
-                onRemove={() => onRemoveSeries(item.id)}
-                onToggleVisibility={() => onTogglePlotVisibility(item.id)}
-              />
-            ))}
-          </div>
-        </ScrollArea>
       </div>
     </div>
   )

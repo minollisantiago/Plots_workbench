@@ -25,7 +25,7 @@ export const DateRangePicker = ({ numberOfMonths = 2, onDateRangeChange }: Props
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" className="h-8 w-10 rounded-md">
+        <Button variant="ghost" className="h-8 w-10 rounded-lg">
           <CalendarIcon className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
