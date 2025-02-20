@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Bookmark } from "lucide-react";
 import { TooltipConfig } from "@/config/ui";
+import { BookmarksControls } from "@/components/ui";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
@@ -50,16 +51,21 @@ export const Bookmarks = ({ onOpen }: Props) => {
             }
           </Tooltip>
         </TooltipProvider>
-        <SheetContent>
+        <SheetContent showClose={false} className="border-l-2">
+
           <SheetHeader>
-            <div className="flex flex-row gap-2">
-              <Bookmark size={20} className="text-foreground" />
-              <SheetTitle>Bookmarked Plots</SheetTitle>
+            <div className="flex flex-row justify-between gap-2 items-center">
+              <SheetTitle>Bookmarks</SheetTitle>
+              <BookmarksControls />
             </div>
           </SheetHeader>
-          <div className="flex items-center justify-center text-muted-foreground">
-            Start bookmarking plots to see them here
+
+          {/* Empty state */}
+          <div className="flex flex-col items-center justify-center h-full relative text-muted-foreground">
+            <Bookmark size={192} className="absolute opacity-5" />
+            <p className="text-xl font-medium text-center">Start bookmarking plots to see them here</p>
           </div>
+
         </SheetContent>
       </Sheet>
     </div>

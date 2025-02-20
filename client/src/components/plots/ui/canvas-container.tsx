@@ -17,7 +17,7 @@ interface Props {
 export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onRemove, children }: Props) => {
 
   const defaultSize = { width: 876, height: 472 }
-  const defaultSizeTailwind = { width: "w-[876px]", height: "h-[472px]" }
+  const defaultSizeTailwind = { width: "w-[972px]", height: "h-[472px]" }
 
   const [isVisible, setIsVisible] = useState(true)
 
