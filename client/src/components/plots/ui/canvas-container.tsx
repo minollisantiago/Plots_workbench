@@ -96,16 +96,18 @@ export const CanvasContainer = ({
 
         <div
           className={cn(
-            "group flex justify-between h-10 pt-2 px-2",
+            "group flex h-10 pt-2 px-2",
             isDraggable
-              ? "cursor-grab active:cursor-grabbing"
-              : "cursor-default"
+              ? "justify-between cursor-grab active:cursor-grabbing"
+              : "justify-end cursor-default"
           )}
           onMouseDown={handleDragStart}
         >
 
           {/* Drag icon */}
-          <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          {isDraggable &&
+            <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          }
 
           {/* Close button */}
           <Button variant="ghost" size="sm" className="rounded-md hover:bg-transparent" onClick={handleRemove}>
