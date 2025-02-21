@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Bookmark } from "lucide-react";
 import { TooltipConfig } from "@/config/ui";
-import { BookmarksControls } from "@/components/ui";
+import { BookmarksControls } from "@/components/ui/custom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 

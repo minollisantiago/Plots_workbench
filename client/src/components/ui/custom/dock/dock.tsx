@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils";
 import { TooltipConfig } from "@/config/ui";
+import { DockTool, DOCK_TOOLS } from "./dock.models";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Hand, Trash2, LineChart, BarChart3, ScatterChart, ChartColumnBig, ChartNoAxesCombined } from "lucide-react";
-
-export type DockTool = string
 
 interface Props {
   selectedTool: DockTool
@@ -11,16 +9,6 @@ interface Props {
 }
 
 export const Dock = ({ selectedTool, onSelect }: Props) => {
-
-  const tools = [
-    { id: "hand", icon: Hand, label: "Hand tool" },
-    { id: "clear", icon: Trash2, label: "Clear workspace" },
-    { id: "line", icon: LineChart, label: "Add line plot" },
-    { id: "scatter", icon: ScatterChart, label: "Add scatter plot" },
-    { id: "bar", icon: ChartColumnBig, label: "Add bar plot" },
-    { id: "histogram", icon: BarChart3, label: "Add histogram plot" },
-    { id: "curve", icon: ChartNoAxesCombined, label: "Add curve plot" },
-  ]
 
   const handleSelect = (tool: DockTool) => {
     onSelect?.(tool)
@@ -32,7 +20,7 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
       gap-2 p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50"
     >
 
-      {tools.map((tool) => {
+      {DOCK_TOOLS.map((tool) => {
         const Icon = tool.icon
         return (
           <TooltipProvider key={tool.id} delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>

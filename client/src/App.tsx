@@ -2,7 +2,7 @@ import './styles/style.css';
 import { useState } from 'react';
 import { CanvasContainer } from '@/components/plots/ui';
 import { PlotCanvas } from '@/components/plots/plot-canvas';
-import { CanvasWorkspace, Dock, DockTool, Bookmarks } from '@/components/ui';
+import { CanvasWorkspace, Dock, DockTool, Bookmarks } from '@/components/ui/custom';
 
 function App() {
   const [canvases, setCanvases] = useState<string[]>([]);
