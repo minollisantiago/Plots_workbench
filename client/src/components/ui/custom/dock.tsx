@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { TooltipConfig } from "@/config/ui";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Hand, Trash2, LineChart, BarChart3, ScatterChart, ChartColumnBig, ChartNoAxesCombined } from "lucide-react";
@@ -7,11 +6,11 @@ import { Hand, Trash2, LineChart, BarChart3, ScatterChart, ChartColumnBig, Chart
 export type DockTool = string
 
 interface Props {
+  selectedTool: DockTool
   onSelect?: (tool: DockTool) => void
 }
 
-export const Dock = ({ onSelect }: Props) => {
-  const [selected, setSelected] = useState<string>("hand")
+export const Dock = ({ selectedTool, onSelect }: Props) => {
 
   const tools = [
     { id: "hand", icon: Hand, label: "Hand tool" },
@@ -24,7 +23,6 @@ export const Dock = ({ onSelect }: Props) => {
   ]
 
   const handleSelect = (tool: DockTool) => {
-    setSelected(tool)
     onSelect?.(tool)
   }
 
@@ -42,8 +40,8 @@ export const Dock = ({ onSelect }: Props) => {
               <TooltipTrigger asChild>
                 <button
                   className={cn(
-                    "group p-2 rounded-lg transition-colors hover:bg-muted",
-                    selected === tool.id
+                    "group p-2 rounded-lg hover:bg-muted",
+                    selectedTool === tool.id
                       ? "bg-muted"
                       : "hover:bg-muted"
                   )}

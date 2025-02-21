@@ -28,7 +28,7 @@ export const Bookmarks = ({ onOpen }: Props) => {
   };
 
   return (
-    <div className="fixed right-0 top-4">
+    <div className="fixed right-0 top-4 z-50">
       <Sheet>
         <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
           <Tooltip>

@@ -15,6 +15,6 @@ export const TooltipConfig: TooltipParams = {
   sideOffset: 16,
   sideOffsetSmall: 8,
   tailwindClasses: {
-    content: "bg-background text-foreground border",
+    content: "py-2 px-3 bg-background border rounded-lg text-foreground font-medium",
   }
 }

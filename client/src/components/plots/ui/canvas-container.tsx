@@ -9,12 +9,23 @@ interface Props {
   canvasWidth?: string
   canvasOffset?: number
   zIndex: number
+  isDraggable: boolean
   onFocus: (id: string) => void
   onRemove?: () => void
   children?: ReactNode
 }
 
-export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, zIndex, onFocus, onRemove, children }: Props) => {
+export const CanvasContainer = ({
+  id,
+  canvasHeight,
+  canvasWidth,
+  canvasOffset,
+  zIndex,
+  isDraggable,
+  onFocus,
+  onRemove,
+  children
+}: Props) => {
 
   const defaultSize = { width: 876, height: 472 }
   const defaultSizeTailwind = { width: "w-[972px]", height: "h-[472px]" }
@@ -43,6 +54,7 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
   }
 
   const handleDragStart = (e: MouseEvent) => {
+    if (!isDraggable) return;
     setIsDragging(true);
     dragOffset.current = {
       x: e.clientX - position.x,
@@ -67,7 +79,7 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
     isVisible && (
       <div
         className={cn(
-          "full flex flex-col p-0 border-2 rounded-lg bg-background absolute",
+          "flex flex-col p-0 border-2 rounded-lg bg-background absolute",
           canvasHeight ? canvasHeight : defaultSizeTailwind.height,
           canvasWidth ? canvasWidth : defaultSizeTailwind.width,
         )}
@@ -83,11 +95,16 @@ export const CanvasContainer = ({ id, canvasHeight, canvasWidth, canvasOffset, z
       >
 
         <div
-          className="group flex justify-between h-10 pt-2 px-2 cursor-grab active:cursor-grabbing"
+          className={cn(
+            "group flex justify-between h-10 pt-2 px-2",
+            isDraggable
+              ? "cursor-grab active:cursor-grabbing"
+              : "cursor-default"
+          )}
           onMouseDown={handleDragStart}
         >
 
-          {/* Drag handle */}
+          {/* Drag icon */}
           <Grip className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
 
           {/* Close button */}
