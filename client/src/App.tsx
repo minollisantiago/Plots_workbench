@@ -1,37 +1,19 @@
 import './styles/style.css';
-import { useState } from 'react';
+import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
 import { PlotCanvas } from '@/components/plots/plot-canvas';
-import { CanvasWorkspace, Dock, DockTool, Bookmarks } from '@/components/ui/custom';
+import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 
 function App() {
-  const [canvases, setCanvases] = useState<string[]>([]);
-  const [selectedDockTool, setSelectedDockTool] = useState<DockTool>("hand");
 
-  const IsWorkspaceDraggable: boolean = selectedDockTool === "hand";
-  const IsCanvasDraggable: boolean = !IsWorkspaceDraggable;
-
-  const handleDockSelect = (tool: DockTool) => {
-    setSelectedDockTool(tool);
-
-    if (tool === "line") {
-      const newCanvasId = `canvas-${Date.now()}`;
-      setCanvases(prev => [...prev, newCanvasId]);
-    } else if (tool === "clear") {
-      setCanvases([]);
-    }
-  };
-
-  const handleCanvasFocus = (id: string) => {
-    setCanvases(prev => {
-      const filtered = prev.filter(canvasId => canvasId !== id);
-      return [...filtered, id];
-    });
-  };
+  const {
+    selectedDockTool, canvases, IsWorkspaceDraggable,
+    IsCanvasDraggable, handleToolSelect, handleCanvasFocus, handleCanvasRemove,
+  } = useToolState()
 
   return (
     <>
-      <Dock selectedTool={selectedDockTool} onSelect={handleDockSelect} />
+      <Dock selectedTool={selectedDockTool} onSelect={handleToolSelect} />
 
       <Bookmarks />
 
@@ -44,7 +26,7 @@ function App() {
             zIndex={canvases.indexOf(id) + 1}
             isDraggable={IsCanvasDraggable}
             onFocus={handleCanvasFocus}
-            onRemove={() => setCanvases(prev => prev.filter(canvasId => canvasId !== id))}
+            onRemove={() => handleCanvasRemove}
           >
             <PlotCanvas title="Line Plot" />
           </CanvasContainer>
