@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { TooltipConfig } from "@/config/ui";
-import { DockTool, DOCK_TOOLS } from "./dock.models";
+import { DockTool, DOCK_TOOLS, DockToolConfig } from "./dock.models";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useEffect } from "react";
 
 interface Props {
   selectedTool: DockTool
@@ -13,6 +14,48 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
   const handleSelect = (tool: DockTool) => {
     onSelect?.(tool)
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const isCtrlKey = event.ctrlKey;
+
+      DOCK_TOOLS.forEach((tool: DockToolConfig) => {
+        if (!tool.keybind) return;
+
+        const keybind = tool.keybind.toLowerCase();
+        const keyPressed = event.key.toLowerCase();
+
+        if (keybind.includes('+')) {
+          const [modifier, targetKey] = keybind.split('+');
+
+          if (modifier === 'ctrl' && isCtrlKey) {
+            // Handle ctrl+number cases
+            if (targetKey.match(/[1-5]/)) {
+              const numberPressed = event.code.replace('Digit', '');
+              if (numberPressed === targetKey) {
+                event.preventDefault();
+                handleSelect(tool.id);
+                return;
+              }
+            }
+            // Handle ctrl+del case
+            else if (targetKey === 'del' && keyPressed === 'delete') {
+              event.preventDefault();
+              handleSelect(tool.id);
+              return;
+            }
+          }
+        } else if (keyPressed === keybind) {
+          // Handle simple keybinds (h, v)
+          event.preventDefault();
+          handleSelect(tool.id);
+        }
+      });
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div
@@ -39,7 +82,14 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
                 </button>
               </TooltipTrigger>
               <TooltipContent sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
-                <p>{tool.label}</p>
+                <div className="flex items-center justify-between gap-4">
+                  <p>{tool.label}</p>
+                  {tool.keybind &&
+                    <kbd className="px-2 py-1 pointer-events-none inline-flex select-none items-center gap-1 rounded-sm font-mono font-bold bg-muted text-foreground">
+                      {tool.keybind.toUpperCase()}
+                    </kbd>
+                  }
+                </div>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
