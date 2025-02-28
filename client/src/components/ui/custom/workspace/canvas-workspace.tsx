@@ -1,9 +1,12 @@
 import { cn } from "@/lib/utils";
+import { Crosshair } from "lucide-react";
+import { TooltipConfig } from "@/config/ui";
 import { useState, useRef, MouseEvent, ReactNode } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Props {
-  isDraggable: boolean
-  children: ReactNode
+  isDraggable: boolean;
+  children: ReactNode;
 }
 
 export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
@@ -21,10 +24,6 @@ export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
     };
   };
 
-  const handleDragEnd = () => {
-    setIsDragging(false);
-  }
-
   const handleDrag = (e: MouseEvent) => {
     if (!isDragging) return;
     setPosition({
@@ -32,6 +31,15 @@ export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
       y: e.clientY - dragOffset.current.y,
     });
   };
+
+  const handleDragEnd = () => {
+    if (!isDraggable) return;
+    setIsDragging(false);
+  };
+
+  const resetPosition = () => {
+    setPosition({ x: 0, y: 0 });
+  }
 
   return (
     <div
@@ -47,6 +55,28 @@ export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
       onMouseLeave={handleDragEnd}
       onMouseDown={handleDragStart}
     >
+      {
+        (Math.abs(position.x) > 1000 || Math.abs(position.y) > 1000) &&
+        <div className="fixed bottom-6 left-1 flex items-center p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50">
+          <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  className="group p-2 rounded-lg hover:bg-muted"
+                  onClick={resetPosition}
+                >
+                  <Crosshair size={20} className="text-foreground" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
+                <div className="flex items-center justify-between gap-2">
+                  <p>Center workspace</p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      }
       <div
         className="absolute h-screen w-screen inset-0 bg-inherit"
         style={{

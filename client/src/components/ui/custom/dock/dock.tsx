@@ -82,10 +82,12 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
                 </button>
               </TooltipTrigger>
               <TooltipContent sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
-                <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center justify-between gap-2">
                   <p>{tool.label}</p>
                   {tool.keybind &&
-                    <kbd className="px-2 py-1 pointer-events-none inline-flex select-none items-center gap-1 rounded-sm font-mono font-bold bg-muted text-foreground">
+                    <kbd
+                      className="px-2 py-1 pointer-events-none inline-flex select-none
+                      items-center gap-1 rounded-sm font-mono font-bold bg-muted text-foreground">
                       {tool.keybind.toUpperCase()}
                     </kbd>
                   }
