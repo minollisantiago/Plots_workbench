@@ -6,14 +6,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 interface Props {
   isDraggable: boolean;
+  resetPositionThreshold?: number;
   children: ReactNode;
 }
 
-export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
+export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children }: Props) => {
   const [position, setPosition] = useState<Record<string, number>>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
+
+  const resetThreshold = resetPositionThreshold ?? 1000;
 
   const handleDragStart = (e: MouseEvent) => {
     if (!isDraggable) return;
@@ -56,7 +59,7 @@ export const CanvasWorkspace = ({ isDraggable, children }: Props) => {
       onMouseDown={handleDragStart}
     >
       {
-        (Math.abs(position.x) > 1000 || Math.abs(position.y) > 1000) &&
+        (Math.abs(position.x) > resetThreshold || Math.abs(position.y) > resetThreshold) &&
         <div className="fixed bottom-6 left-1 flex items-center p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50">
           <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
             <Tooltip>

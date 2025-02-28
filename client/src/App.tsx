@@ -17,7 +17,7 @@ function App() {
 
       <Bookmarks />
 
-      <CanvasWorkspace isDraggable={IsWorkspaceDraggable}>
+      <CanvasWorkspace isDraggable={IsWorkspaceDraggable} resetPositionThreshold={1000}>
         {canvases.map((id, index) => (
           <CanvasContainer
             key={id}
