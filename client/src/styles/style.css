@@ -967,6 +967,10 @@ body {
   bottom: 2.5rem;
 }
 
+.left-2 {
+  left: 0.5rem;
+}
+
 .z-50 {
   z-index: 50;
 }

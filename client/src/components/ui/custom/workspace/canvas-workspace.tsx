@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Crosshair } from "lucide-react";
 import { TooltipConfig } from "@/config/ui";
+import { useKeybind } from "@/hooks/use-keybind";
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -44,6 +45,9 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
     setPosition({ x: 0, y: 0 });
   }
 
+  // custom hook for keybind actions
+  useKeybind([{ keybind: 'ctrl+c', action: resetPosition }]);
+
   return (
     <div
       id="mainContainer"
@@ -60,7 +64,7 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
     >
       {
         (Math.abs(position.x) > resetThreshold || Math.abs(position.y) > resetThreshold) &&
-        <div className="fixed bottom-6 left-1 flex items-center p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50">
+        <div className="fixed bottom-6 left-2 flex items-center p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50">
           <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
             <Tooltip>
               <TooltipTrigger asChild>

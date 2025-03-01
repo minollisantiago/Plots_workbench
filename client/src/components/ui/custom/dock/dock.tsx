@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
 import { TooltipConfig } from "@/config/ui";
+import { useKeybind } from "@/hooks/use-keybind";
 import { DockTool, DOCK_TOOLS, DockToolConfig } from "./dock.models";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useEffect } from "react";
 
 interface Props {
   selectedTool: DockTool
@@ -15,47 +15,13 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
     onSelect?.(tool)
   }
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isCtrlKey = event.ctrlKey;
-
-      DOCK_TOOLS.forEach((tool: DockToolConfig) => {
-        if (!tool.keybind) return;
-
-        const keybind = tool.keybind.toLowerCase();
-        const keyPressed = event.key.toLowerCase();
-
-        if (keybind.includes('+')) {
-          const [modifier, targetKey] = keybind.split('+');
-
-          if (modifier === 'ctrl' && isCtrlKey) {
-            // Handle ctrl+number cases
-            if (targetKey.match(/[1-5]/)) {
-              const numberPressed = event.code.replace('Digit', '');
-              if (numberPressed === targetKey) {
-                event.preventDefault();
-                handleSelect(tool.id);
-                return;
-              }
-            }
-            // Handle ctrl+del case
-            else if (targetKey === 'del' && keyPressed === 'delete') {
-              event.preventDefault();
-              handleSelect(tool.id);
-              return;
-            }
-          }
-        } else if (keyPressed === keybind) {
-          // Handle simple keybinds (h, v)
-          event.preventDefault();
-          handleSelect(tool.id);
-        }
-      });
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  // custom hook for keybind actions
+  useKeybind(
+    DOCK_TOOLS.map((tool: DockToolConfig) => ({
+      keybind: tool.keybind || '',
+      action: () => handleSelect(tool.id),
+    }))
+  );
 
   return (
     <div
