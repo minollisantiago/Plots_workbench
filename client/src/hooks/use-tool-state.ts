@@ -1,19 +1,24 @@
 import { useState, useCallback } from "react";
 import { DockTool } from '@/components/ui/custom';
 
+type xyPosition = { x: number, y: number };
+
 interface UseToolStateReturn {
   selectedDockTool: DockTool;
   canvases: string[];
   IsWorkspaceDraggable: boolean;
   IsCanvasDraggable: boolean;
+  workspacePosition: xyPosition;
   handleToolSelect: (tool: DockTool) => void;
   handleCanvasFocus: (id: string) => void;
   handleCanvasRemove: (id: string) => void;
+  setWorkspacePosition: (position: xyPosition) => void;
 }
 
 export function useToolState(): UseToolStateReturn {
   const [selectedDockTool, setSelectedDockTool] = useState<DockTool>("hand");
   const [canvases, setCanvases] = useState<string[]>([]);
+  const [workspacePosition, setWorkspacePosition] = useState<xyPosition>({ x: 0, y: 0 });
 
   const IsWorkspaceDraggable: boolean = selectedDockTool === "hand";
   const IsCanvasDraggable: boolean = !IsWorkspaceDraggable;
@@ -52,9 +57,11 @@ export function useToolState(): UseToolStateReturn {
     canvases,
     IsWorkspaceDraggable,
     IsCanvasDraggable,
+    workspacePosition,
     handleToolSelect,
     handleCanvasFocus,
     handleCanvasRemove,
+    setWorkspacePosition,
   };
 
 };
