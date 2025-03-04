@@ -8,10 +8,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 interface Props {
   isDraggable: boolean;
   resetPositionThreshold?: number;
+  onPositionChange?: (position: { x: number, y: number }) => void;
   children: ReactNode;
 }
 
-export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children }: Props) => {
+export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, onPositionChange, children }: Props) => {
   const [position, setPosition] = useState<Record<string, number>>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
@@ -30,10 +31,12 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
 
   const handleDrag = (e: MouseEvent) => {
     if (!isDragging) return;
-    setPosition({
+    const newPosition = {
       x: e.clientX - dragOffset.current.x,
       y: e.clientY - dragOffset.current.y,
-    });
+    }
+    setPosition(newPosition);
+    onPositionChange?.(newPosition);
   };
 
   const handleDragEnd = () => {
@@ -42,7 +45,9 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
   };
 
   const resetPosition = () => {
-    setPosition({ x: 0, y: 0 });
+    const newPosition = { x: 0, y: 0 };
+    setPosition(newPosition);
+    onPositionChange?.(newPosition);
   }
 
   // custom hook for keybind actions
@@ -62,9 +67,14 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
       onMouseLeave={handleDragEnd}
       onMouseDown={handleDragStart}
     >
+
+      {/* Center workspace button */}
       {
         (Math.abs(position.x) > resetThreshold || Math.abs(position.y) > resetThreshold) &&
-        <div className="fixed bottom-6 left-2 flex items-center p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50">
+        <div
+          className="fixed bottom-6 left-2 flex items-center p-2 rounded-2xl
+          bg-background/90 backdrop-blur-sm border-2 z-50"
+        >
           <TooltipProvider delayDuration={TooltipConfig.delayDuration} skipDelayDuration={TooltipConfig.skipDelayDuration}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -84,6 +94,16 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, children 
           </TooltipProvider>
         </div>
       }
+
+      {/* Coordinates display */}
+      <div
+        className="fixed bottom-2 right-2 h-14 w-auto p-2 px-4 flex flex-row gap-4 items-center justify-center z-50"
+      >
+        <p className="text-sm font-mono">{`x:${position.x}`}</p>
+        <p className="text-sm font-mono">{`y:${position.y}`}</p>
+      </div>
+
+      {/* Workspace & children */}
       <div
         className="absolute h-screen w-screen inset-0 bg-inherit"
         style={{

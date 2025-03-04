@@ -26,7 +26,7 @@ export const Dock = ({ selectedTool, onSelect }: Props) => {
   return (
     <div
       className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center
-      gap-2 p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 border-white/10 z-50"
+      gap-2 p-2 rounded-2xl bg-background/90 backdrop-blur-sm border-2 z-50"
     >
 
       {DOCK_TOOLS.map((tool) => {

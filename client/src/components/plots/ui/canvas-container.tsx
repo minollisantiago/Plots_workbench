@@ -4,21 +4,23 @@ import { Button } from "@/components/ui/button"
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
-  id: string
-  canvasHeight?: string
-  canvasWidth?: string
-  canvasOffset?: number
-  zIndex: number
-  isDraggable: boolean
-  onFocus: (id: string) => void
-  onRemove?: () => void
-  children?: ReactNode
+  id: string;
+  canvasHeight?: string;
+  canvasWidth?: string;
+  parentPosition?: { x: number, y: number };
+  canvasOffset?: number;
+  zIndex: number;
+  isDraggable: boolean;
+  onFocus: (id: string) => void;
+  onRemove?: () => void;
+  children?: ReactNode;
 }
 
 export const CanvasContainer = ({
   id,
   canvasHeight,
   canvasWidth,
+  parentPosition = { x: 0, y: 0 },
   canvasOffset,
   zIndex,
   isDraggable,
@@ -34,8 +36,8 @@ export const CanvasContainer = ({
 
   const [position, setPosition] = useState<Record<string, number>>(() => {
     return {
-      x: Math.max(0, (window.innerWidth - defaultSize.width) / 2) + (canvasOffset ? canvasOffset : 0),
-      y: Math.max(0, (window.innerHeight - defaultSize.height) / 2) + (canvasOffset ? canvasOffset : 0),
+      x: Math.max(0, (window.innerWidth - defaultSize.width) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.x,
+      y: Math.max(0, (window.innerHeight - defaultSize.height) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.y,
     }
   });
 
