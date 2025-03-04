@@ -14,6 +14,7 @@ function App() {
     IsWorkspaceDraggable,
     IsCanvasDraggable,
     workspacePosition,
+    offsetIndex,
     handleToolSelect,
     handleCanvasFocus,
     handleCanvasRemove,
@@ -31,12 +32,12 @@ function App() {
         resetPositionThreshold={1000}
         onPositionChange={setWorkspacePosition}
       >
-        {canvases.map((id, index) => (
+        {canvases.map((id) => (
           <CanvasContainer
             key={id}
             id={id}
             parentPosition={workspacePosition}
-            canvasOffset={index * 12}
+            canvasOffset={offsetIndex[id] * 12}
             zIndex={canvases.indexOf(id) + 1}
             isDraggable={IsCanvasDraggable}
             onFocus={handleCanvasFocus}
