@@ -4,8 +4,6 @@ import { CanvasContainer } from '@/components/plots/ui';
 import { PlotCanvas } from '@/components/plots/plot-canvas';
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 
-// TODO: Add a keybind for workspace centering using the new custom hook useKeybind
-
 function App() {
 
   const {

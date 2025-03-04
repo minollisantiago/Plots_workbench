@@ -88,6 +88,11 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, onPositio
               <TooltipContent side="right" sideOffset={TooltipConfig.sideOffset} className={TooltipConfig.tailwindClasses.content}>
                 <div className="flex items-center justify-between gap-2">
                   <p>Center workspace</p>
+                  <kbd
+                    className="px-2 py-1 pointer-events-none inline-flex select-none
+                    items-center gap-1 rounded-sm font-mono font-bold bg-muted text-foreground">
+                    CTRL+C
+                  </kbd>
                 </div>
               </TooltipContent>
             </Tooltip>
