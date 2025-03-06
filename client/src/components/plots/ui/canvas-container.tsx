@@ -5,21 +5,34 @@ import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
   id: string;
-  canvasHeight?: string;
-  canvasWidth?: string;
+  canvasHeight?: number;
+  canvasWidth?: number;
   parentPosition?: { x: number, y: number };
   canvasOffset?: number;
   zIndex: number;
   isDraggable: boolean;
   onFocus: (id: string) => void;
-  onRemove?: () => void;
+  onRemove?: (id: string) => void;
   children?: ReactNode;
-}
+};
+
+const BOUND_SIZE = {
+  minwidth: 972,
+  minheight: 472,
+  maxwidth: 1072,
+  maxheight: 572,
+} as const;
+
+// Bound canvas size
+const getSize = (height: number, width: number) => ({
+  height: Math.max(BOUND_SIZE.minheight, Math.min(BOUND_SIZE.maxheight, height)),
+  width: Math.max(BOUND_SIZE.minwidth, Math.min(BOUND_SIZE.maxwidth, width)),
+});
 
 export const CanvasContainer = ({
   id,
-  canvasHeight,
-  canvasWidth,
+  canvasHeight = 472,
+  canvasWidth = 972,
   parentPosition = { x: 0, y: 0 },
   canvasOffset,
   zIndex,
@@ -28,32 +41,30 @@ export const CanvasContainer = ({
   onRemove,
   children
 }: Props) => {
+  const { width, height } = getSize(canvasHeight, canvasWidth);
 
-  const defaultSize = { width: 876, height: 472 }
-  const defaultSizeTailwind = { width: "w-[972px]", height: "h-[472px]" }
+  const [isVisible, setIsVisible] = useState(true);
 
-  const [isVisible, setIsVisible] = useState(true)
-
+  // Position and Drag interaction state
   const [position, setPosition] = useState<Record<string, number>>(() => {
     return {
-      x: Math.max(0, (window.innerWidth - defaultSize.width) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.x,
-      y: Math.max(0, (window.innerHeight - defaultSize.height) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.y,
+      x: Math.max(0, (window.innerWidth - width) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.x,
+      y: Math.max(0, (window.innerHeight - height) / 2) + (canvasOffset ? canvasOffset : 0) - parentPosition.y,
     }
   });
-
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef<Record<string, number>>({ x: 0, y: 0 });
 
   const handleClick = () => {
     onFocus(id);
-  }
+  };
 
   const handleRemove = () => {
     setIsVisible(false);
     if (onRemove) {
-      console.log("test closing canvas")
+      onRemove(id);
     }
-  }
+  };
 
   const handleDragStart = (e: MouseEvent) => {
     if (!isDraggable) return;
@@ -80,12 +91,10 @@ export const CanvasContainer = ({
   return (
     isVisible && (
       <div
-        className={cn(
-          "flex flex-col p-0 border-2 rounded-lg bg-background absolute",
-          canvasHeight ? canvasHeight : defaultSizeTailwind.height,
-          canvasWidth ? canvasWidth : defaultSizeTailwind.width,
-        )}
+        className="flex flex-col p-0 border-2 rounded-lg bg-background absolute"
         style={{
+          height: height,
+          width: width,
           transform: `translate(${position.x}px, ${position.y}px)`,
           cursor: isDragging ? 'grabbing' : 'default',
           zIndex: zIndex

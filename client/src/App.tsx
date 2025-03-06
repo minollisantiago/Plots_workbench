@@ -39,7 +39,7 @@ function App() {
             zIndex={canvases.indexOf(id) + 1}
             isDraggable={IsCanvasDraggable}
             onFocus={handleCanvasFocus}
-            onRemove={() => handleCanvasRemove}
+            onRemove={handleCanvasRemove}
           >
             <PlotCanvas title="Line Plot" />
           </CanvasContainer>

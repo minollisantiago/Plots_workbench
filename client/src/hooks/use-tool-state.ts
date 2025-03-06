@@ -39,9 +39,10 @@ export function useToolState(): UseToolStateReturn {
         setCanvases(prev => [...prev, newCanvasId]);
 
         // Wrote by monke:
-        // As new canvases are created we store their index for offseting purposes (set at the App level)
-        // If the workspace position changes, the Offset index is reset back to 0, so new canvases begin offseting
-        // their position relative to the first canvas rendered at the center of the workspace after the user is done panning
+        // As new canvases are created we store their index for position offseting purposes (set at the App level)
+        // If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0,
+        // this way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
+        // after the user is done panning.
         setOffsetIndex(prev => {
           const newOffset = Object.keys(prev).length;
           return { ...prev, [newCanvasId]: newOffset };
