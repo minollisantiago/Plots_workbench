@@ -1,6 +1,7 @@
 export * from './series-card.tsx'
 export * from './color-picker.tsx'
 export * from './canvas-header.tsx'
+export * from './canvas-shadow.tsx'
 export * from './series-search.tsx'
 export * from './series-controls.tsx'
 export * from './canvas-container.tsx'

@@ -8,6 +8,8 @@ interface Props {
   title: string
 }
 
+// TODO: Prepare this component to support all plot types, has to be more generic
+
 export const PlotCanvas = ({ title }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});

@@ -90,6 +90,7 @@ export const CanvasContainer = ({
 
   return (
     isVisible && (
+
       <div
         className="flex flex-col p-0 border-2 rounded-lg bg-background absolute"
         style={{
@@ -105,6 +106,7 @@ export const CanvasContainer = ({
         onMouseLeave={handleDragEnd}
       >
 
+        {/* Drag section */}
         <div
           className={cn(
             "group flex h-10 pt-2 px-2",
