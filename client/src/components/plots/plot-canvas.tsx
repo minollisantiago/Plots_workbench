@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { TimeSeriesData } from "@/models";
-import { PlotLine } from "@/components/plots/plot-line";
+import { PlotLine } from "@/components/plots/line/plot-line";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { SeriesControls, TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
+import { LineControls } from "@/components/plots/line/plot-line-controls";
+import { TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 
 interface Props {
-  title: string
+  title: string;
 }
-
-// TODO: Prepare this component to support all plot types, has to be more generic
 
 export const PlotCanvas = ({ title }: Props) => {
   const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
@@ -56,7 +55,7 @@ export const PlotCanvas = ({ title }: Props) => {
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
         <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
-          < SeriesControls
+          < LineControls
             header="Strategies"
             searchTriggerLabel="Add strategies"
             searchPlaceholder="Search strategies"

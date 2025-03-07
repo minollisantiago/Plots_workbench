@@ -1,1 +1,1 @@
-export * from './plot-layout.ts'
+export * from './plot.layout.ts'
