@@ -220,14 +220,14 @@ The components are split into two main groups:
     └── tooltip.tsx
 ```
 
-**plots/**
+**plots**
 The plots group contains the components for the plotting functionality. Its organized in a vertical slice architecture, each plot type has its own folder, and inside it has the models, utils, controls and the plot component itself.
 
 The folder contains a subfolder named ui/, where we have the ui components, that are used for the control menus for the plot components, some of these are going to be reused between the different plot component types.
 
 At the highest level of the plots folder, we have a common plotting component, the  @plot-canvas.tsx, that handles the common plotting logic, and the state management for the plot components.
 
-**ui/**
+**ui**
 The ui group contains the reusable components for the UI. These are for the most part the most generic components, like buttons, dialogs, popovers, etc. And they are all shadcn components. 
 
 Additionally, we have a custom folder, where we have the components that are not part of shadcn, but are still generic enough to be reusable throught the app, at the highest level, basically for the application UI. In this folder, we are also using the vertical slice architecture, each component has its own folder, and inside it has the models, utils, controls and the component itself.
