@@ -43,6 +43,7 @@ We are working with typescript for a better dev experience, as types are importa
 ### Current project structure
 To map out the current state of the app, here is the file structure:
 
+```
 ├── client
 │   ├── components.json
 │   ├── eslint.config.js
@@ -150,6 +151,114 @@ To map out the current state of the app, here is the file structure:
 │   ├── tsconfig.json
 │   ├── tsconfig.node.json
 │   └── vite.config.ts
+├── client
+│   ├── components.json
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── public
+│   │   └── favicon.svg
+│   ├── README.md
+│   ├── src
+│   │   ├── App.tsx
+│   │   ├── assets
+│   │   ├── components
+│   │   │   ├── plots
+│   │   │   │   ├── bar
+│   │   │   │   ├── curve
+│   │   │   │   ├── histogram
+│   │   │   │   ├── line
+│   │   │   │   │   ├── line.models.ts
+│   │   │   │   │   ├── line.utils.ts
+│   │   │   │   │   ├── plot-line-controls.tsx
+│   │   │   │   │   └── plot-line.tsx
+│   │   │   │   ├── plot-canvas.tsx
+│   │   │   │   ├── scatter
+│   │   │   │   │   ├── plot-scatter-controls.tsx
+│   │   │   │   │   ├── plot-scatter.tsx
+│   │   │   │   │   ├── scatter.models.ts
+│   │   │   │   │   └── scatter.utils.ts
+│   │   │   │   └── ui
+│   │   │   │       ├── canvas-container.tsx
+│   │   │   │       ├── canvas-header.tsx
+│   │   │   │       ├── canvas-shadow.tsx
+│   │   │   │       ├── color-picker.tsx
+│   │   │   │       ├── date-range-picker.tsx
+│   │   │   │       ├── index.ts
+│   │   │   │       ├── series-card.tsx
+│   │   │   │       ├── series-controls.tsx
+│   │   │   │       ├── series-date-controls.tsx
+│   │   │   │       └── series-search.tsx
+│   │   │   └── ui
+│   │   │       ├── button.tsx
+│   │   │       ├── calendar.tsx
+│   │   │       ├── card.tsx
+│   │   │       ├── command.tsx
+│   │   │       ├── custom
+│   │   │       │   ├── bookmarks
+│   │   │       │   │   ├── bookmarks-controls.tsx
+│   │   │       │   │   └── bookmarks.tsx
+│   │   │       │   ├── dock
+│   │   │       │   │   ├── dock.models.ts
+│   │   │       │   │   └── dock.tsx
+│   │   │       │   ├── index.ts
+│   │   │       │   └── workspace
+│   │   │       │       └── canvas-workspace.tsx
+│   │   │       ├── dialog.tsx
+│   │   │       ├── input.tsx
+│   │   │       ├── label.tsx
+│   │   │       ├── popover.tsx
+│   │   │       ├── scroll-area.tsx
+│   │   │       ├── separator.tsx
+│   │   │       ├── sheet.tsx
+│   │   │       ├── toggle.tsx
+│   │   │       └── tooltip.tsx
+│   │   ├── config
+│   │   │   ├── index.ts
+│   │   │   ├── plots
+│   │   │   │   ├── layouts
+│   │   │   │   │   ├── bar.ts
+│   │   │   │   │   ├── base.ts
+│   │   │   │   │   ├── histogram.ts
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   ├── line.ts
+│   │   │   │   │   └── scatter.ts
+│   │   │   │   ├── models
+│   │   │   │   │   ├── index.ts
+│   │   │   │   │   └── plot.layout.ts
+│   │   │   │   └── themes
+│   │   │   │       ├── dark.ts
+│   │   │   │       ├── index.ts
+│   │   │   │       └── light.ts
+│   │   │   └── ui
+│   │   │       ├── index.ts
+│   │   │       └── tooltip.config.ts
+│   │   ├── data
+│   │   │   └── mock
+│   │   │       └── time-series-data.ts
+│   │   ├── hooks
+│   │   │   ├── use-keybind.ts
+│   │   │   └── use-tool-state.ts
+│   │   ├── lib
+│   │   │   ├── plot.config.ts
+│   │   │   └── utils.ts
+│   │   ├── main.tsx
+│   │   ├── models
+│   │   │   ├── index.ts
+│   │   │   └── timeseries.models.ts
+│   │   ├── styles
+│   │   │   ├── fonts.css
+│   │   │   ├── globals.css
+│   │   │   └── style.css
+│   │   └── vite-env.d.ts
+│   ├── tailwind.config.js
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+```
 
 ### Structure description
 We are using a mix between vectical slice architecture and a layered architecture.
@@ -165,6 +274,7 @@ The components are split into two main groups:
 - plots
 - ui
 
+```
 ├── plots
 │   ├── bar
 │   ├── curve
@@ -215,6 +325,7 @@ The components are split into two main groups:
     ├── sheet.tsx
     ├── toggle.tsx
     └── tooltip.tsx
+```
 
 **plots/**
 The plots group contains the components for the plotting functionality. Its organized in a vertical slice architecture, each plot type has its own folder, and inside it has the models, utils, controls and the plot component itself.
