@@ -1,5 +1,5 @@
 export type scatterData = Array<{
-  x: (number | string)[];
+  x: number[];
   y: number[];
   name?: string;
   visible?: boolean;
