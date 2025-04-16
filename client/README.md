@@ -232,6 +232,13 @@ The ui group contains the reusable components for the UI. These are for the most
 
 Additionally, we have a custom folder, where we have the components that are not part of shadcn, but are still generic enough to be reusable throught the app, at the highest level, basically for the application UI. In this folder, we are also using the vertical slice architecture, each component has its own folder, and inside it has the models, utils, controls and the component itself.
 
+We are using this two libraries for our UI components:
+- [shadcn](https://ui.shadcn.com/docs/components)
+- [OriginUI](https://originui.com/)
+- [radix-ui](https://www.radix-ui.com/primitives/docs/overview/introduction)
+
+Radix is the base library used by the other two, so its going to be basically a source for documentation in case we run into issues with shadcn or originUI.
+
 **Hooks**
 Here we have all the custom hooks for the app. Right now we only have two: 
 - @use-keybind.ts: Hook for handling keyboard shortcuts and bindings
@@ -266,3 +273,4 @@ Here is the process plan with each task we are going to be doing in order:
 - [ ] describe the main testing strategy
 - [ ] describe the main documentation strategy
 - [ ] describe the main logging strategy
+
