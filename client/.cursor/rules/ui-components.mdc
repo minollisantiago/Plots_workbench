@@ -26,14 +26,3 @@ Example:
 ```sh
 npx shadcn@latest add accordion
 ```
-
-## Loading Components
-Use the `LoadingContent` component to handle loading states:
-
-```tsx
-<Card>
-  <LoadingContent loading={isLoading} error={error}>
-    {data && <MyComponent data={data} />}
-  </LoadingContent>
-</Card>
-```
