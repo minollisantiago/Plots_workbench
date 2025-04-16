@@ -1,7 +1,7 @@
 import './styles/style.css';
 import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
-import { PlotCanvas } from '@/components/plots/plot-canvas';
+import { PlotLine } from '@/components/plots/line/plot-line';
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
             onFocus={handleCanvasFocus}
             onRemove={handleCanvasRemove}
           >
-            <PlotCanvas title="Line Plot" />
+            <PlotLine title="Line Plot" />
           </CanvasContainer>
         ))}
 
