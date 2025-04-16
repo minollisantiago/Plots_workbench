@@ -1,0 +1,139 @@
+---
+description: Defines rules for React component creation, including props, state management, and event handling patterns
+globs: 
+alwaysApply: false
+---
+---
+description: Defines rules for React component creation, including props, state management, and event handling patterns
+globs: ["client/src/components/**/*.tsx"]
+alwaysApply: false
+---
+
+# React Component Rules
+
+## 1. Component Declaration
+
+Components must use PascalCase naming and not declare return types.
+
+```tsx
+// ✅ Good
+export const PlotCanvas = ({ title }: Props) => {
+  return (
+    <div className="grid">
+      {/* Component content */}
+    </div>
+  );
+};
+
+// ❌ Bad
+export const plotCanvas = ({ title }: Props): JSX.Element => {
+  return (
+    <div className="grid">
+      {/* Component content */}
+    </div>
+  );
+};
+```
+
+## 2. Props Interface
+
+Props must be defined using a PascalCase interface named `Props`.
+
+```tsx
+// ✅ Good
+interface Props {
+  title: string;
+  onValueChange?: (value: string) => void;
+}
+
+export const PlotCanvas = ({ title, onValueChange }: Props) => {
+  // Component implementation
+};
+
+// ❌ Bad
+type propsType = {
+  title: string;
+  onValueChange?: (value: string) => void;
+}
+```
+
+## 3. Event Handler Naming
+
+Event handlers must use the `handle` prefix and be declared in camelCase.
+
+```tsx
+// ✅ Good
+export const PlotCanvas = ({ title }: Props) => {
+  const handleSeriesChange = (series: TimeSeriesData) => {
+    // Handler implementation
+  };
+  
+  return (
+    <div onClick={handleSeriesChange}>
+      {/* Component content */}
+    </div>
+  );
+};
+
+// ❌ Bad
+export const PlotCanvas = ({ title }: Props) => {
+  const SeriesChange = (series: TimeSeriesData) => {
+    // Handler implementation
+  };
+  
+  return (
+    <div onClick={SeriesChange}>
+      {/* Component content */}
+    </div>
+  );
+};
+```
+
+## 4. State Declaration
+
+State variables must use destructuring and include explicit types.
+
+```tsx
+// ✅ Good
+export const PlotCanvas = () => {
+  const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  return (
+    // Component content
+  );
+};
+
+// ❌ Bad
+export const PlotCanvas = () => {
+  const selectedSeriesState = useState([]);
+  const loading = useState(false);
+  
+  return (
+    // Component content
+  );
+};
+```
+
+## Project Example
+
+Reference: `@plot-canvas.tsx`
+```tsx
+interface Props {
+  title: string;
+}
+
+export const PlotCanvas = ({ title }: Props) => {
+  const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
+  
+  const handleAddSeries = (series: TimeSeriesData) => {
+    setSelectedSeries(prev => [...prev, series]);
+  };
+
+  return (
+    <div className="grid">
+      {/* Component content */}
+    </div>
+  );
+};
+``` 

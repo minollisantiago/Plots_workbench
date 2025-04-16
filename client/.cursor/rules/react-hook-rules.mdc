@@ -1,0 +1,128 @@
+---
+description: Defines rules for React custom hooks creation, including naming conventions, return types, and state management
+globs: 
+alwaysApply: false
+---
+---
+description: Defines rules for React custom hooks creation, including naming conventions, return types, and state management
+globs: ["client/src/hooks/**/*.ts", "client/src/hooks/**/*.tsx"]
+alwaysApply: false
+---
+
+# React Hook Rules
+
+## 1. Hook Naming
+
+Custom hooks must use camelCase and make a clear reference to the hook implementation (what the hook does).
+
+```ts
+// ✅ Good
+export const useToolState = () => {
+  // Hook implementation
+};
+
+// ❌ Bad
+export const ToolState = () => {
+  // Hook implementation
+};
+```
+
+## 2. Return Type Interface
+
+Custom hooks must declare their return type using an interface named `Use{Name}Return`.
+
+```ts
+// ✅ Good
+interface UseToolStateReturn {
+  selectedDockTool: DockTool;
+  canvases: string[];
+  handleToolSelect: (tool: DockTool) => void;
+}
+
+export const useToolState = (): UseToolStateReturn => {
+  // Hook implementation
+};
+
+// ❌ Bad
+export const useToolState = () => {
+  // Hook implementation without return type
+};
+```
+
+## 3. Options Parameter
+
+When a hook accepts configuration, use an options object with an interface named `Use{Name}Options`.
+
+```ts
+// ✅ Good
+interface UseKeybindOptions {
+  preventDefault?: boolean;
+  stopPropagation?: boolean;
+}
+
+export const useKeybind = (
+  keybinds: KeybindConfig[],
+  options: UseKeybindOptions = {}
+): void => {
+  // Hook implementation
+};
+
+// ❌ Bad
+export const useKeybind = (
+  keybinds: KeybindConfig[],
+  preventDefault?: boolean,
+  stopPropagation?: boolean
+): void => {
+  // Hook implementation
+};
+```
+
+## 4. State and Ref Naming
+
+State and ref variables must use descriptive names that reflect their purpose.
+
+```ts
+// ✅ Good
+export const useFormState = () => {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  return { isSubmitting, formRef };
+};
+
+// ❌ Bad
+export const useFormState = () => {
+  const [state, setState] = useState<boolean>(false);
+  const ref = useRef<HTMLFormElement>(null);
+  
+  return { state, ref };
+};
+```
+
+## Project Example
+
+Reference: `@use-keybind.ts`
+```ts
+interface UseKeybindOptions {
+  preventDefault?: boolean;
+}
+
+interface UseKeybindConfig {
+  keybind: string;
+  action: () => void;
+}
+
+export const useKeybind = (
+  keybinds: UseKeybindConfig[],
+  options: UseKeybindOptions = { preventDefault: true }
+): void => {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Implementation
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [keybinds, options.preventDefault]);
+};
+``` 

@@ -1,0 +1,105 @@
+---
+description: Defines rules for TypeScript function declarations, including return types, parameters, and generics
+globs: 
+alwaysApply: false
+---
+---
+description: Defines rules for TypeScript function declarations, including return types, parameters, and generics
+globs: ["client/src/**/*.ts", "client/src/**/*.tsx"]
+alwaysApply: false
+---
+
+# TypeScript Function Rules
+
+## 1. Return Type Declaration
+
+All functions at the module level must declare their return types.
+
+```ts
+// ✅ Good
+export const prepareLineData = (data: LineData[]): PlotData[] => {
+  return data.map(item => ({
+    x: item.x,
+    y: item.y
+  }));
+};
+
+// ❌ Bad
+export const prepareLineData = (data: LineData[]) => {
+  return data.map(item => ({
+    x: item.x,
+    y: item.y
+  }));
+};
+```
+
+## 2. Parameter Types
+
+All function parameters must have explicit type annotations.
+
+```ts
+// ✅ Good
+const calculateTotal = (values: number[], multiplier: number): number => {
+  return values.reduce((acc, val) => acc + val, 0) * multiplier;
+};
+
+// ❌ Bad
+const calculateTotal = (values, multiplier) => {
+  return values.reduce((acc, val) => acc + val, 0) * multiplier;
+};
+```
+
+## 3. Generic Type Parameters
+
+Generic type parameters must use PascalCase single uppercase letters or descriptive names.
+
+```ts
+// ✅ Good
+function transform<T, U>(input: T): U {
+  // Implementation
+}
+
+function mapValues<TInput, TOutput>(input: TInput): TOutput {
+  // Implementation
+}
+
+// ❌ Bad
+function transform<t, u>(input: t): u {
+  // Implementation
+}
+```
+
+## 4. Function Overloads
+
+Function overloads must be ordered from most specific to least specific.
+
+```ts
+// ✅ Good
+export function parseValue(value: string): string;
+export function parseValue(value: number): number;
+export function parseValue(value: string | number): string | number {
+  return typeof value === 'string' ? value.trim() : Math.floor(value);
+}
+
+// ❌ Bad
+export function parseValue(value: string | number): string | number;
+export function parseValue(value: string): string;
+export function parseValue(value: string | number): string | number {
+  return typeof value === 'string' ? value.trim() : Math.floor(value);
+}
+```
+
+## Project Example
+
+Reference: `@plot-line.tsx`
+```ts
+export const prepareLineData = (data: lineData): Plotly.Data[] => {
+  return data.map(item => ({
+    x: item.timestamps,
+    y: item.values,
+    type: 'scatter',
+    mode: 'lines',
+    name: item.name
+  }));
+};
+``` 

@@ -1,0 +1,96 @@
+---
+description: Defines naming conventions for types, variables, files, and database entities in the frontend codebas
+globs: 
+alwaysApply: false
+---
+---
+description: Defines naming conventions for types, variables, files, and database entities in the frontend codebas
+globs: ["client/src/**/*.{ts,tsx}", "client/src/**/*.{sql}"]
+alwaysApply: false
+---
+
+# Frontend Naming Conventions
+
+## 1. Types and Interfaces (PascalCase)
+
+All type definitions, interfaces, and classes must use PascalCase.
+
+```ts
+// ✅ Good
+interface TimeSeriesData {}
+type PlotLayout = {}
+class DataService {}
+
+// ❌ Bad
+interface timeSeriesData {}
+type plotLayout = {}
+class dataService {}
+```
+
+## 2. Constants (SCREAMING_SNAKE_CASE)
+
+Constants known at compile time must use SCREAMING_SNAKE_CASE.
+
+```ts
+// ✅ Good
+export const SPECIAL_KEYS: Record<string, string> = {
+  'del': 'Delete',
+  'backspace': 'Backspace'
+};
+
+// ❌ Bad
+export const specialKeys: Record<string, string> = {
+  'del': 'Delete',
+  'backspace': 'Backspace'
+};
+```
+
+## 3. File Names (dash-case)
+
+All file names must use dash-case with appropriate extensions.
+
+```plaintext
+✅ Good
+plot-canvas.tsx
+use-tool-state.ts
+time-series-data.ts
+
+❌ Bad
+plotCanvas.tsx
+useToolState.ts
+timeSeriesData.ts
+```
+
+## 4. Database Names (snake_case)
+
+All database-related names must use snake_case.
+
+```sql
+-- ✅ Good
+CREATE TABLE time_series_data (
+  series_id VARCHAR(255),
+  data_point FLOAT
+);
+
+-- ❌ Bad
+CREATE TABLE timeSeriesData (
+  seriesId VARCHAR(255),
+  dataPoint FLOAT
+);
+```
+
+## 5. Variables and Functions (camelCase)
+
+All variables, functions, methods, and properties must use camelCase.
+
+```ts
+// ✅ Good
+const handleAddSeries = (series: TimeSeriesData) => {};
+const isWorkspaceDraggable = true;
+const plotData = [];
+
+// ❌ Bad
+const HandleAddSeries = (series: TimeSeriesData) => {};
+const IsWorkspaceDraggable = true;
+const plot_data = [];
+``` 
