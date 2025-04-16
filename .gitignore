@@ -26,3 +26,7 @@ server/db/**/*.db
 
 # Server Logs
 server/*.log
+
+# markdown LLM files (excluding README)
+**/*.md
+!README.md

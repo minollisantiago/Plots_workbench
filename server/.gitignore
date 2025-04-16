@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# markdown LLM files (excluding README)
+**/*.md
+!README.md
