@@ -1,0 +1,39 @@
+---
+description: UI component and styling guidelines using Shadcn UI, Radix UI, and Tailwind
+globs: 
+alwaysApply: false
+---
+---
+description: UI component and styling guidelines using Shadcn UI, Radix UI, and Tailwind
+globs: 
+alwaysApply: false
+---
+# UI Components and Styling
+
+## UI Framework
+- Use Shadcn UI and Tailwind for components and styling
+- Implement responsive design with Tailwind CSS using a mobile-first approach
+- Use `next/image` package for images
+
+## Install new Shadcn components
+
+```sh
+npx shadcn@latest add COMPONENT
+```
+
+Example:
+
+```sh
+npx shadcn@latest add accordion
+```
+
+## Loading Components
+Use the `LoadingContent` component to handle loading states:
+
+```tsx
+<Card>
+  <LoadingContent loading={isLoading} error={error}>
+    {data && <MyComponent data={data} />}
+  </LoadingContent>
+</Card>
+```
