@@ -1,4 +1,4 @@
-import { TimeSeriesData } from "@/models";
+import { TimeSeriesData } from "@/components/plots/models";
 import { SeriesCard } from "@/components/plots/ui";
 import { SeriesSearch } from "@/components/plots/ui";
 import { ScrollArea } from "@/components/ui/scroll-area";

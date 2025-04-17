@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TimeSeriesData } from "@/models";
+import { TimeSeriesData } from "@/components/plots/models";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";

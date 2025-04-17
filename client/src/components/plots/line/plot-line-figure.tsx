@@ -1,7 +1,7 @@
 import { lineData } from './line.models';
-import { prepareLineData } from './line.utils';
 import { ThemeType } from '@/lib/plot.config';
-import { PlotFigure } from '../plot-figure';
+import { prepareLineData } from './line.utils';
+import { CanvasFigure } from '../ui/canvas-figure';
 
 interface Props {
   data: lineData;
@@ -13,7 +13,7 @@ interface Props {
 
 export const PlotLineFigure = ({ data, title, theme, width, height }: Props) => {
   return (
-    <PlotFigure
+    <CanvasFigure
       data={data}
       plotType="line"
       title={title}

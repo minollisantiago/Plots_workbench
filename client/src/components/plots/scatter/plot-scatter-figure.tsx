@@ -1,7 +1,7 @@
-import { scatterData } from './scatter.models';
-import { prepareScatterData } from './scatter.utils';
 import { ThemeType } from '@/lib/plot.config';
-import { PlotFigure } from '../plot-figure';
+import { scatterData } from './scatter.models';
+import { CanvasFigure } from '../ui/canvas-figure';
+import { prepareScatterData } from './scatter.utils';
 
 interface Props {
   data: scatterData;
@@ -13,7 +13,7 @@ interface Props {
 
 export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) => {
   return (
-    <PlotFigure
+    <CanvasFigure
       data={data}
       plotType="scatter"
       title={title}

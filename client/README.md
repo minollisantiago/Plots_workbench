@@ -10,7 +10,7 @@ A **PRD (Product Requirements Document)** is a detailed document that outlines t
 
 **Key Components of a PRD:**
 1. **Objective** – The overall goal and purpose of the product.
-2. **Features & Requirements** – A detailed breakdown of the product’s functionality.
+2. **Features & Requirements** – A detailed breakdown of the product's functionality.
 3. **User Stories** – Descriptions of how users will interact with the product.
 4. **Technical Requirements** – Any necessary infrastructure, API dependencies, performance expectations, etc.
 5. **Wireframes/Mockups** – Visual representations of UI/UX.
@@ -252,6 +252,117 @@ The current implementation of the plotting components is an experiment, but the 
 
 - The @plot-canvas.tsx component is the main component for the plotting functionality, it is the parent of all the plotting components, currently this component is hardcoded to work with the @plot-line.tsx component, but in the future it should be able to work with any plotting component using the composition pattern.
 
+### Plotting Implementation
+
+Our plotting system uses TypeScript generics to create a type-safe and reusable architecture. Here's a detailed breakdown of how it works:
+
+#### Base Types and Generic Interface
+
+First, we define our base types that any plot data must conform to:
+
+```typescript
+export type PlotType = 'line' | 'scatter';
+export type PlotData = lineData | scatterData;
+
+interface Props<T extends PlotData> {
+  data: T;
+  plotType: PlotType;
+  title?: string;
+  theme?: ThemeType;
+  width?: number | string;
+  height?: number | string;
+  prepareData: (data: T) => Data[];
+}
+```
+
+The generic interface `Props<T extends PlotData>` ensures that:
+- `T` must be a subtype of `PlotData`
+- When the interface is used, `T` will be replaced with a specific type (either `lineData` or `scatterData`)
+- The `data` prop must match whatever type `T` is
+- The `prepareData` function must accept that same type `T` and return `Data[]`
+
+#### Generic Plot Component
+
+The main plot component is defined with generics:
+
+```typescript
+export const PlotFigure = <T extends PlotData>(
+  { data, plotType, title, theme, width = "100%", height = "100%", prepareData }: Props<T>
+) => {
+  // Get the combined layout and theme configuration
+  const layout = PlotConfig.getConfig(plotType, theme);
+
+  // Transform the data to match Plotly's expected format
+  const plotData = prepareData(data);
+
+  // Add the title if provided
+  if (title) { layout.title = { ...layout.title, text: title }; }
+
+  return (
+    <Plot
+      data={plotData}
+      layout={finalLayout as Partial<Layout>}
+      useResizeHandler={true}
+      style={{ width, height }}
+      config={{
+        scrollZoom: true,
+        responsive: true,
+        autosizable: true,
+        displaylogo: false,
+        displayModeBar: 'hover',
+      }}
+      revision={data.length}
+    />
+  );
+};
+```
+
+#### Usage in Specific Plot Components
+
+The specific plot components (like `PlotLineFigure` or `PlotScatterFigure`) use the generic component with their specific types:
+
+```typescript
+export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) => {
+  return (
+    <PlotFigure
+      data={data}           // TypeScript knows this must be scatterData
+      plotType="scatter"
+      title={title}
+      theme={theme}
+      width={width}
+      height={height}
+      prepareData={prepareScatterData}  // TypeScript knows this must be (data: scatterData) => Data[]
+    />
+  );
+};
+```
+
+#### Benefits of this Approach
+
+1. **Type Safety**:
+   - TypeScript ensures data and preparation functions match
+   - Prevents mixing incompatible data types and preparation functions
+   - Compile-time error checking
+
+2. **Code Reuse with Type Specificity**:
+   - `PlotFigure` component is reusable for different plot types
+   - Each usage maintains its specific type information
+   - No duplicate code between different plot types
+
+3. **Extensibility**:
+   - Adding new plot types is straightforward:
+     ```typescript
+     export type PlotType = 'line' | 'scatter' | 'bar';
+     export type PlotData = lineData | scatterData | barData;
+     ```
+   - TypeScript enforces type safety for new plot types automatically
+
+4. **IDE Support**:
+   - Excellent autocomplete support
+   - Real-time error detection in IDE
+   - Better developer experience
+
+This generic approach gives us the perfect balance between code reuse and type safety, while keeping the codebase maintainable and extensible.
 
 ### Tasks to build the PRD
 Here is the process plan with each task we are going to be doing in order:

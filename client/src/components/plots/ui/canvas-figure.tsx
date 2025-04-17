@@ -1,8 +1,11 @@
-import { Data } from 'plotly.js';
-import { Layout } from 'plotly.js';
 import Plot from 'react-plotly.js';
-import { PlotData, PlotType } from './plot.models';
+import { Data, Layout } from 'plotly.js';
+import { lineData } from '../line/line.models';
+import { scatterData } from '../scatter/scatter.models';
 import { PlotConfig, ThemeType } from '@/lib/plot.config';
+
+type PlotType = 'line' | 'scatter';
+type PlotData = lineData | scatterData;
 
 interface Props<T extends PlotData> {
   data: T;
@@ -14,7 +17,7 @@ interface Props<T extends PlotData> {
   prepareData: (data: T) => Data[];
 }
 
-export const PlotFigure = <T extends PlotData>(
+export const CanvasFigure = <T extends PlotData>(
   { data, plotType, title, theme, width = "100%", height = "100%", prepareData }: Props<T>
 ) => {
 
@@ -25,9 +28,7 @@ export const PlotFigure = <T extends PlotData>(
   const plotData = prepareData(data);
 
   // Add the title if provided
-  if (title) {
-    layout.title = { ...layout.title, text: title };
-  }
+  if (title) { layout.title = { ...layout.title, text: title }; }
 
   // Force data refresh (and re-render on any modification that dont change the data structure)
   const finalLayout = { ...layout, datarevision: Date.now() }
@@ -49,4 +50,4 @@ export const PlotFigure = <T extends PlotData>(
       revision={data.length}
     />
   );
-}; 
+};
