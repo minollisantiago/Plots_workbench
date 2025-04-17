@@ -1,5 +1,5 @@
 import { lineData } from './line.models';
-import { ThemeType } from '@/lib/plot.config';
+import { ThemeType } from '@/config/plots';
 import { prepareLineData } from './line.utils';
 import { CanvasFigure } from '../ui/canvas-figure';
 

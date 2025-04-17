@@ -1,4 +1,4 @@
-import { ThemeType } from '@/lib/plot.config';
+import { ThemeType } from '@/config/plots';
 import { scatterData } from './scatter.models';
 import { CanvasFigure } from '../ui/canvas-figure';
 import { prepareScatterData } from './scatter.utils';
