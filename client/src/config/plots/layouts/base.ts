@@ -1,4 +1,4 @@
-import { PlotLayout, AxisLayout } from "@/config/plots/models";
+import { PlotLayout, AxisLayout } from '@/config/plots/models';
 
 export const baseLayout: Partial<PlotLayout> = {
   autosize: true,

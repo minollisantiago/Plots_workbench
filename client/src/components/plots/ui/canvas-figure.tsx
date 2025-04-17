@@ -2,9 +2,8 @@ import Plot from 'react-plotly.js';
 import { Data, Layout } from 'plotly.js';
 import { lineData } from '../line/line.models';
 import { scatterData } from '../scatter/scatter.models';
-import { PlotConfig, ThemeType } from '@/lib/plot.config';
+import { PlotConfig, ThemeType, PlotType } from '@/config/plots';
 
-type PlotType = 'line' | 'scatter';
 type PlotData = lineData | scatterData;
 
 interface Props<T extends PlotData> {

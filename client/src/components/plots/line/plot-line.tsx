@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { TimeSeriesData } from "@/components/plots/models";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
+import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 import { TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 

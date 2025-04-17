@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { themes, ThemeType } from '@/config/plots/themes';
 import { layouts, PlotType } from '@/config/plots/layouts';
-import type { PlotLayout, PlotTheme } from '@/config/plots/models';
+import { PlotLayout, PlotTheme } from '@/config/plots/models';
 
 export class PlotConfig {
   private static themes: Record<ThemeType, PlotTheme> = themes;
