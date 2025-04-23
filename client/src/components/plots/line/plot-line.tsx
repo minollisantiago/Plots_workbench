@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
-import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { TimePeriod, TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
+import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
+import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
   title: string;
@@ -14,8 +14,6 @@ export const PlotLine = ({ title }: Props) => {
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});
 
   const exampleSeries = mockTimeSeriesData.series
-
-  const periods: TimePeriod[] = ["1W", "1M", "3M", "6M", "YTD", "1Y", "All"]
 
   const handleAddSeries = (series: TimeSeriesData) => {
     setSelectedSeries((prev) => {
@@ -43,7 +41,15 @@ export const PlotLine = ({ title }: Props) => {
   };
 
   const handleSelectPeriod = (period: TimePeriod) => {
-    console.log(`Selected period: ${period}`)
+    console.log(`Selected period: ${period.label} (${period.days} days)`)
+    //Use the days value to filter the data
+    //Example:
+    // const filteredData = yourOriginalData.filter(item => {
+    //   const itemDate = new Date(item.date);
+    //   const cutoffDate = new Date();
+    //   cutoffDate.setDate(cutoffDate.getDate() - period.days);
+    //   return itemDate >= cutoffDate;
+    // });
   };
 
   return (
@@ -74,7 +80,7 @@ export const PlotLine = ({ title }: Props) => {
           <div className="flex justify-end">
             <TimePeriodSelector
               periods={periods}
-              defaultSelected="All"
+              defaultSelected={periods.find(p => p.label === "All")}
               onSelect={(period) => handleSelectPeriod(period)}
             />
           </div>

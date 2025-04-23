@@ -1,3 +1,4 @@
+
 Could you summarize these commits for me, focus on the last two weeks
 
 Okay, here's a summary of the commit history, focusing on the last two weeks (approximately April 4th, 2025 to April 17th, 2025):
@@ -21,6 +22,3 @@ Okay, here's a summary of the commit history, focusing on the last two weeks (ap
     *   Updating the relative offset of new canvases when the user pans around the screen.
     *   Ensuring new canvases are rendered at the center of the screen, even after panning.
 *   **Keybinds:** The keybind element was added to display the keybind for centering the workspace, and special keys were included in the `useKeybind` custom hook.
-
-
-

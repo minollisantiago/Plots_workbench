@@ -3,8 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DateRangePicker } from "@/components/plots/ui";
-
-export type TimePeriod = string
+import { TimePeriod } from "@/components/plots/models";
 
 interface Props {
   periods: TimePeriod[]
@@ -25,18 +24,18 @@ export const TimePeriodSelector = ({ periods, defaultSelected, onSelect }: Props
       <div className="flex gap-2 center items-center">
         {periods.map((period) => (
           <Button
-            key={period}
+            key={period.label}
             variant="ghost"
             size="sm"
             className={cn(
               "h-8 w-10 px-2 rounded-lg text-sm text-muted-foreground",
-              selected === period
+              selected.label === period.label
                 ? "text-muted-foreground bg-primary-foreground hover:bg-muted hover:text-muted-foreground"
                 : "hover:bg-muted"
             )}
             onClick={() => handleSelect(period)}
           >
-            {period}
+            {period.label}
           </Button>
         ))}
       </div>
