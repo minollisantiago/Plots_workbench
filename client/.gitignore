@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # markdown LLM files (excluding README)
-**/*.md
-!README.md
+.cursor/
