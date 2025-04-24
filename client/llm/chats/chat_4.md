@@ -372,3 +372,55 @@ By explicitly specifying the type, TypeScript can now verify that each object wi
 
 This ensures that your mock data is correctly typed and compatible with any functions or components that expect to receive data of type `TimeSeriesData[]`.
 
+
+### QUESTION
+
+Im getting a linter error here at this function
+<!-- Symbol: handleAddSeries -->
+<!-- Kind: Variable -->
+```typescriptreact
+  const handleAddSeries = (series: TimeSeriesData) => {
+    setSelectedSeriesIds(prev => {
+      if (!prev.includes(series.id)) {
+        return [...prev, series.id];
+      }
+    })
+  };
+```
+
+The error is the following: 
+Argument of type prev:string[] => string | undefined is not assignable to parameter of type: setStateAction<string[]>
+Here is the useState declaration related to this function: 
+
+
+  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([])
+The error message "Argument of type `prev: string[] => string | undefined` is not assignable to parameter of type: `setStateAction<string[]>`" indicates that the return type of the function you're passing to `setSelectedSeriesIds` is incorrect. `setStateAction<string[]>` expects either a new `string[]` state value directly, or a function that takes the previous state (`string[]`) and *returns* the new state (`string[]`).  Your function is implicitly returning `undefined` in the `else` case when `!prev.includes(series.id)` is false.
+
+Here's the corrected `handleAddSeries` function:
+
+```typescriptreact
+const handleAddSeries = (series: TimeSeriesData) => {
+  setSelectedSeriesIds(prev => {
+    if (!prev.includes(series.id)) {
+      return [...prev, series.id];
+    } else {
+      return prev; // Return the previous state unchanged
+    }
+  });
+};
+```
+
+**Explanation:**
+
+The key change is adding an `else` block that explicitly returns the `prev` state if the `series.id` is already in the `selectedSeriesIds` array.  This ensures that the function *always* returns a `string[]`, which is what `setSelectedSeriesIds` expects.
+
+**Why this fixes the problem:**
+
+- **`useState`'s `setState` function:** The `setState` function returned by `useState` (in this case, `setSelectedSeriesIds`) can accept either:
+    - A new value for the state (e.g., `setSelectedSeriesIds(['newId'])`).
+    - A function that takes the *previous* state as an argument and *returns* the *new* state. This is the preferred approach when the new state depends on the old state, as it avoids issues with stale closures.
+
+- **Return type is crucial:**  When you pass a function to `setSelectedSeriesIds`, TypeScript needs to be able to guarantee that the function *always* returns a value of the correct type (in this case, `string[]`).  If the function could potentially return `undefined` (as it did in your original code), TypeScript will throw an error.
+
+- **Immutability:**  It's important to note that in React, you should always treat state as immutable.  That's why we create a *new* array `[...prev, series.id]` when adding a new ID, rather than modifying the `prev` array directly.  Similarly, when the ID is already present, we return a *copy* of the previous state (`return prev;`) to signal that the state hasn't changed. While returning `prev` doesn't create a new array in memory, React's reconciliation algorithm is smart enough to detect that the state hasn't actually changed because the reference is the same.  If you were to modify `prev` directly (e.g., `prev.push(series.id)`), React wouldn't detect the change, and your component wouldn't re-render.
+

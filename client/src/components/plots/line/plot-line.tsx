@@ -49,6 +49,8 @@ export const PlotLine = ({ title }: Props) => {
     setSelectedSeriesIds(prev => {
       if (!prev.includes(series.id)) {
         return [...prev, series.id];
+      } else {
+        return prev
       }
     })
   };
