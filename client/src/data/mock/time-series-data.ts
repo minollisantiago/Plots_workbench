@@ -1,3 +1,5 @@
+import { TimeSeriesData } from "@/components/plots/models";
+
 // Helper function to generate dates for the last n days
 const generateDates = (days: number): string[] => {
   const dates: string[] = [];
@@ -11,10 +13,10 @@ const generateDates = (days: number): string[] => {
   return dates;
 };
 
-// Generate 30 days of mock data
-const dates = generateDates(30);
+// Generate n days of mock data
+export const dates = generateDates(90);
 
-export const mockTimeSeriesData = {
+export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
   series: [
     {
       // Metadata

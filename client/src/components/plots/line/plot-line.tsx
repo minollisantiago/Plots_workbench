@@ -10,28 +10,55 @@ interface Props {
 }
 
 export const PlotLine = ({ title }: Props) => {
-  const [selectedSeries, setSelectedSeries] = useState<TimeSeriesData[]>([]);
+  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([])
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === "All")!);
 
-  const exampleSeries = mockTimeSeriesData.series
+  const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series
+
+  const getFilteredSeries = (ids: string[], period: TimePeriod) => {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - period.days);
+
+    return exampleSeries.filter(series => ids.includes(series.id)).map(series => {
+      const { x: originalX, y: originalY } = series.plotData;
+
+      const filteredData = originalX.reduce<{ x: (number | string)[], y: number[] }>((acc, date, index) => {
+        const itemDate = new Date(date);
+
+        if (itemDate >= cutoffDate) {
+          acc.x.push(date);
+          acc.y.push(originalY[index]);
+        }
+
+        return acc;
+      }, { x: [], y: [] });
+
+      return {
+        ...series,
+        plotData: {
+          ...series.plotData,
+          x: filteredData.x,
+          y: filteredData.y,
+        },
+      };
+    });
+  };
 
   const handleAddSeries = (series: TimeSeriesData) => {
-    setSelectedSeries((prev) => {
-      if (!prev.some(s => s.id == series.id)) {
-        return [...prev, series]
+    setSelectedSeriesIds(prev => {
+      if (!prev.includes(series.id)) {
+        return [...prev, series.id];
       }
-      return prev;
     })
-    console.log("Selected series:", selectedSeries);
   };
 
   const handleRemoveSeries = (id: string) => {
-    setSelectedSeries((prev) => prev.filter(series => series.id !== id))
+    setSelectedSeriesIds((prev) => prev.filter(seriesId => seriesId !== id))
     setVisibleSeries((prev) => {
       const { [id]: _, ...rest } = prev
       return rest
     })
-    console.log("Selected series:", selectedSeries);
   }
 
   const handleTogglePlotVisibility = (id: string) => {
@@ -41,16 +68,10 @@ export const PlotLine = ({ title }: Props) => {
   };
 
   const handleSelectPeriod = (period: TimePeriod) => {
-    console.log(`Selected period: ${period.label} (${period.days} days)`)
-    //Use the days value to filter the data
-    //Example:
-    // const filteredData = yourOriginalData.filter(item => {
-    //   const itemDate = new Date(item.date);
-    //   const cutoffDate = new Date();
-    //   cutoffDate.setDate(cutoffDate.getDate() - period.days);
-    //   return itemDate >= cutoffDate;
-    // });
+    setTimePeriod(period);
   };
+
+  const filteredSeries = getFilteredSeries(selectedSeriesIds, timePeriod);
 
   return (
 
@@ -64,7 +85,7 @@ export const PlotLine = ({ title }: Props) => {
             header="Strategies"
             searchTriggerLabel="Add strategies"
             searchPlaceholder="Search strategies"
-            series={selectedSeries}
+            series={filteredSeries}
             availableSeries={exampleSeries}
             toggledSeries={visibleSeries}
             onAddSeries={handleAddSeries}
@@ -75,17 +96,17 @@ export const PlotLine = ({ title }: Props) => {
       </div>
 
       {/* Figure */}
-      {selectedSeries.length > 0 ? (
+      {filteredSeries.length > 0 ? (
         <div className="flex flex-col space-y-4 p-2 h-full">
           <div className="flex justify-end">
             <TimePeriodSelector
               periods={periods}
               defaultSelected={periods.find(p => p.label === "All")}
-              onSelect={(period) => handleSelectPeriod(period)}
+              onSelect={handleSelectPeriod}
             />
           </div>
           <PlotLineFigure
-            data={selectedSeries.map(series => ({
+            data={filteredSeries.map(series => ({
               ...series.plotData, visible: visibleSeries[series.id] ?? true
             }))}
             theme="dark"
