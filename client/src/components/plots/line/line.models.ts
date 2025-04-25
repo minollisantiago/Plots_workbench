@@ -4,4 +4,9 @@ export type lineData = Array<{
   name?: string;
   yaxis?: 'y' | 'y2';
   visible?: boolean;
+  opacity?: number;
+  line: {
+    width?: number;
+    color: string;
+  }
 }>;

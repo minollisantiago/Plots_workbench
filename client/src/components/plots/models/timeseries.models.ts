@@ -31,9 +31,6 @@ export interface PlotData {
   x: (number | string)[];
   y: number[];
   name: string;
-  line: {
-    color: string;
-  };
 }
 
 export interface TimeSeriesData extends SeriesMetadata {

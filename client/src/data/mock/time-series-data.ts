@@ -30,9 +30,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 800 + 400),
         name: "NVDA",
-        line: {
-          color: "#E9EC89"
-        }
       }
     },
     {
@@ -45,9 +42,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 150 + 120),
         name: "AMZN",
-        line: {
-          color: "#489FFA"
-        }
       }
     },
     {
@@ -60,9 +54,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 100 + 150),
         name: "TSLA",
-        line: {
-          color: "#C88FCF"
-        }
       }
     },
     {
@@ -75,9 +66,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 120 + 200),
         name: "GOOG",
-        line: {
-          color: "#D84F68"
-        }
       }
     },
     {
@@ -90,9 +78,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 250 + 300),
         name: "MSFT",
-        line: {
-          color: "#4DBE95"
-        }
       }
     },
     {
@@ -105,9 +90,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 180 + 150),
         name: "AAPL",
-        line: {
-          color: "#F6C86A"
-        }
       }
     },
     {
@@ -120,9 +102,6 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
         x: dates,
         y: dates.map(() => Math.random() * 200 + 250),
         name: "META",
-        line: {
-          color: "#8085FF"
-        }
       }
     }
 

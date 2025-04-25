@@ -82,7 +82,10 @@ export const PlotLine = ({ title }: Props) => {
           </div>
           <PlotLineFigure
             data={filteredSeries.map(series => ({
-              ...series.plotData, visible: visibleSeries[series.id] ?? true
+              ...series.plotData,
+              opacity: 1,
+              line: { color: series.color },
+              visible: visibleSeries[series.id] ?? true,
             }))}
             theme="dark"
           />
