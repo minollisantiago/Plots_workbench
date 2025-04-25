@@ -1,18 +1,22 @@
-import { useState } from "react"
-import { X } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Card } from "@/components/ui/card"
+import { useState } from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
 
 interface Props {
-  label: string
-  subLabel?: string
-  color: string
-  toggled?: boolean
-  onRemove?: () => void
-  onToggleVisibility?: () => void
+  label: string;
+  subLabel?: string;
+  color: string;
+  toggled?: boolean;
+  onRemove?: () => void;
+  onToggleVisibility?: () => void;
+  onHighlight?: () => void;
+  onResetHighlight?: () => void;
 }
 
-export const SeriesCard = ({ label, subLabel, color, toggled, onRemove, onToggleVisibility }: Props) => {
+export const SeriesCard = ({
+  label, subLabel, color, toggled, onRemove, onToggleVisibility, onHighlight, onResetHighlight
+}: Props) => {
   const [isVisible, setIsVisible] = useState(true)
 
   const handleRemove = (e: React.MouseEvent) => {
@@ -45,6 +49,8 @@ export const SeriesCard = ({ label, subLabel, color, toggled, onRemove, onToggle
       )}
       style={{ backgroundColor: getRgbaBackground(color) }}
       onClick={onToggleVisibility}
+      onMouseEnter={onHighlight}
+      onMouseLeave={onResetHighlight}
     >
 
       {/* Color indicator */}

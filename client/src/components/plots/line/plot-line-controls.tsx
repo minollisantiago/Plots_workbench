@@ -4,19 +4,23 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
-  header: string
-  searchTriggerLabel: string
-  searchPlaceholder: string
-  series: TimeSeriesData[]
-  availableSeries: TimeSeriesData[]
-  toggledSeries: Record<string, boolean>
-  onRemoveSeries: (id: string) => void
-  onAddSeries: (series: TimeSeriesData) => void
-  onTogglePlotVisibility: (id: string) => void
+  header: string;
+  searchTriggerLabel: string;
+  searchPlaceholder: string;
+  series: TimeSeriesData[];
+  availableSeries: TimeSeriesData[];
+  toggledSeries: Record<string, boolean>;
+  highlightedSeries: Record<string, number>;
+  onRemoveSeries: (id: string) => void;
+  onAddSeries: (series: TimeSeriesData) => void;
+  onTogglePlotVisibility: (id: string) => void;
+  onTogglePlotHighlight: (id: string) => void;
+  onToggleResetHighlight: () => void;
 }
 
 export const LineControls = ({
-  header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries, onRemoveSeries, onAddSeries, onTogglePlotVisibility
+  header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries,
+  onRemoveSeries, onAddSeries, onTogglePlotVisibility, onTogglePlotHighlight, onToggleResetHighlight
 }: Props) => {
   return (
     <div className="flex flex-col space-y-4 h-full bg-background">
@@ -48,6 +52,8 @@ export const LineControls = ({
                     toggled={toggledSeries[item.id] ?? true}
                     onRemove={() => onRemoveSeries(item.id)}
                     onToggleVisibility={() => onTogglePlotVisibility(item.id)}
+                    onHighlight={() => onTogglePlotHighlight(item.id)}
+                    onResetHighlight={onToggleResetHighlight}
                   />
                 ))}
               </div>

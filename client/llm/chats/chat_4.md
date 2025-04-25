@@ -1,3 +1,4 @@
+# 24-04-2025
 ### QUESTION
 
 I need to reconcile the types between these two arrays:
@@ -423,4 +424,5 @@ The key change is adding an `else` block that explicitly returns the `prev` stat
 - **Return type is crucial:**  When you pass a function to `setSelectedSeriesIds`, TypeScript needs to be able to guarantee that the function *always* returns a value of the correct type (in this case, `string[]`).  If the function could potentially return `undefined` (as it did in your original code), TypeScript will throw an error.
 
 - **Immutability:**  It's important to note that in React, you should always treat state as immutable.  That's why we create a *new* array `[...prev, series.id]` when adding a new ID, rather than modifying the `prev` array directly.  Similarly, when the ID is already present, we return a *copy* of the previous state (`return prev;`) to signal that the state hasn't changed. While returning `prev` doesn't create a new array in memory, React's reconciliation algorithm is smart enough to detect that the state hasn't actually changed because the reference is the same.  If you were to modify `prev` directly (e.g., `prev.push(series.id)`), React wouldn't detect the change, and your component wouldn't re-render.
+
 

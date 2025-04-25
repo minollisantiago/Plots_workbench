@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useFilteredTimeSeries } from "@/hooks";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
@@ -8,15 +8,34 @@ import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
   title: string;
-}
+};
 
 // Example data
-const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series
+const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
 
 export const PlotLine = ({ title }: Props) => {
-  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([])
-  const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});
+  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
+  const [hiddenSeries, setHiddenSeries] = useState<Record<string, boolean>>({});
+  const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === "All")!);
+
+  // Ref to store the timeout ID
+  const resetHighlightTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const filteredSeries = useFilteredTimeSeries({
+    allSeries: exampleSeries,
+    selectedSeriesIds: selectedSeriesIds,
+    period: timePeriod,
+  });
+
+  // Initialize highlightedSeries with all IDs from exampleSeries
+  useEffect(() => {
+    const initialHighlighted: Record<string, number> = {};
+    filteredSeries.forEach(series => {
+      initialHighlighted[series.id] = 1;
+    });
+    setHighlightedSeries(initialHighlighted);
+  }, [filteredSeries]);
 
   const handleAddSeries = (series: TimeSeriesData) => {
     setSelectedSeriesIds((prev) => (
@@ -26,27 +45,63 @@ export const PlotLine = ({ title }: Props) => {
 
   const handleRemoveSeries = (id: string) => {
     setSelectedSeriesIds((prev) => prev.filter(seriesId => seriesId !== id))
-    setVisibleSeries((prev) => {
+    setHiddenSeries((prev) => {
       const { [id]: _, ...rest } = prev
       return rest
-    })
-  }
+    });
+  };
 
   const handleTogglePlotVisibility = (id: string) => {
-    setVisibleSeries(prev => ({
+    setHiddenSeries(prev => ({
       ...prev, [id]: !(prev[id] ?? true)
-    }))
+    }));
   };
 
   const handleSelectPeriod = (period: TimePeriod) => {
     setTimePeriod(period);
   };
 
-  const filteredSeries = useFilteredTimeSeries({
-    allSeries: exampleSeries,
-    selectedSeriesIds: selectedSeriesIds,
-    period: timePeriod,
-  });
+  const handleTogglePlotHighlight = (id: string) => {
+    // Clear any existing timeout
+    if (resetHighlightTimeout.current) {
+      clearTimeout(resetHighlightTimeout.current);
+    }
+
+    setHighlightedSeries(prev => {
+      const updatedOpacities: Record<string, number> = { ...prev };
+      for (const key in updatedOpacities) {
+        if (key === id) {
+          updatedOpacities[key] = 1;
+        } else {
+          updatedOpacities[key] = 0.2;
+        };
+      };
+      console.log('opacity - current: ', updatedOpacities);
+      return updatedOpacities;
+    });
+  };
+
+  const handleResetHighlight = () => {
+    setHighlightedSeries(prev => {
+      const updatedOpacities: Record<string, number> = { ...prev };
+      for (const key in updatedOpacities) {
+        updatedOpacities[key] = 1;
+      };
+      return updatedOpacities;
+    })
+    console.log('opacity: ', highlightedSeries);
+  };
+
+  const debouncedHandleResetHighlight = () => {
+    // Set a timeout to reset the highlight after a delay
+    // We wrap the handleResetHighlight on a timeout to debouce the effect
+    // and avoid unecessary flickering when quickly moving the mouse over the
+    // time series cards
+    resetHighlightTimeout.current = setTimeout(() => {
+      handleResetHighlight();
+      resetHighlightTimeout.current = null; // Clear the timeout
+    }, 100);
+  };
 
   return (
 
@@ -62,10 +117,13 @@ export const PlotLine = ({ title }: Props) => {
             searchPlaceholder="Search strategies"
             series={filteredSeries}
             availableSeries={exampleSeries}
-            toggledSeries={visibleSeries}
+            toggledSeries={hiddenSeries}
+            highlightedSeries={highlightedSeries}
             onAddSeries={handleAddSeries}
             onRemoveSeries={handleRemoveSeries}
             onTogglePlotVisibility={handleTogglePlotVisibility}
+            onTogglePlotHighlight={handleTogglePlotHighlight}
+            onToggleResetHighlight={debouncedHandleResetHighlight}
           />
         </div>
       </div>
@@ -83,9 +141,9 @@ export const PlotLine = ({ title }: Props) => {
           <PlotLineFigure
             data={filteredSeries.map(series => ({
               ...series.plotData,
-              opacity: 1,
+              opacity: highlightedSeries[series.id] ?? 1,
               line: { color: series.color },
-              visible: visibleSeries[series.id] ?? true,
+              visible: hiddenSeries[series.id] ?? true,
             }))}
             theme="dark"
           />

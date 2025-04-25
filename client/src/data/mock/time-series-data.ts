@@ -14,7 +14,7 @@ const generateDates = (days: number): string[] => {
 };
 
 // Generate n days of mock data
-export const dates = generateDates(90);
+export const dates = generateDates(120);
 
 export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
   series: [
