@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useFilteredTimeSeries } from "@/hooks";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
@@ -9,50 +10,18 @@ interface Props {
   title: string;
 }
 
+// Example data
+const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series
+
 export const PlotLine = ({ title }: Props) => {
   const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([])
   const [visibleSeries, setVisibleSeries] = useState<Record<string, boolean>>({});
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === "All")!);
 
-  const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series
-
-  const getFilteredSeries = (ids: string[], period: TimePeriod) => {
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - period.days);
-
-    return exampleSeries.filter(series => ids.includes(series.id)).map(series => {
-      const { x: originalX, y: originalY } = series.plotData;
-
-      const filteredData = originalX.reduce<{ x: (number | string)[], y: number[] }>((acc, date, index) => {
-        const itemDate = new Date(date);
-
-        if (itemDate >= cutoffDate) {
-          acc.x.push(date);
-          acc.y.push(originalY[index]);
-        }
-
-        return acc;
-      }, { x: [], y: [] });
-
-      return {
-        ...series,
-        plotData: {
-          ...series.plotData,
-          x: filteredData.x,
-          y: filteredData.y,
-        },
-      };
-    });
-  };
-
   const handleAddSeries = (series: TimeSeriesData) => {
-    setSelectedSeriesIds(prev => {
-      if (!prev.includes(series.id)) {
-        return [...prev, series.id];
-      } else {
-        return prev
-      }
-    })
+    setSelectedSeriesIds((prev) => (
+      prev.includes(series.id) ? prev : [...prev, series.id]
+    ));
   };
 
   const handleRemoveSeries = (id: string) => {
@@ -73,7 +42,11 @@ export const PlotLine = ({ title }: Props) => {
     setTimePeriod(period);
   };
 
-  const filteredSeries = getFilteredSeries(selectedSeriesIds, timePeriod);
+  const filteredSeries = useFilteredTimeSeries({
+    allSeries: exampleSeries,
+    selectedSeriesIds: selectedSeriesIds,
+    period: timePeriod,
+  });
 
   return (
 
