@@ -5,11 +5,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
-  numberOfMonths: number;
+  numberOfMonths?: number;
   dateRange?: DateRange | undefined;
   onDateRangeChange?: (range: DateRange | undefined) => void;
 };
-export const DateRangePicker = ({ numberOfMonths = 2, dateRange = undefined, onDateRangeChange }: Props) => {
+export const DateRangePicker = ({ numberOfMonths = 3, dateRange = undefined, onDateRangeChange }: Props) => {
 
   const today = new Date();
   const defaultStartMonth = new Date(today);
@@ -26,7 +26,7 @@ export const DateRangePicker = ({ numberOfMonths = 2, dateRange = undefined, onD
         <Calendar
           initialFocus
           mode="range"
-          defaultMonth={defaultStartMonth}
+          defaultMonth={dateRange?.from ?? defaultStartMonth}
           selected={dateRange}
           onSelect={onDateRangeChange}
           numberOfMonths={numberOfMonths}

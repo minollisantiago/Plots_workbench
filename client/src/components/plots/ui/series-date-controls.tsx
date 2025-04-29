@@ -38,7 +38,6 @@ export const TimePeriodSelector = ({
       </div>
       <Separator orientation="vertical" />
       <DateRangePicker
-        numberOfMonths={3}
         dateRange={selectedDateRange}
         onDateRangeChange={onDateRangeSelect}
       />
