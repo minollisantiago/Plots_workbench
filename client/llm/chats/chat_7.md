@@ -1749,3 +1749,132 @@ With these changes, you can now customize the default time period for the `PlotL
 *   **More flexible default values:** You could allow the `defaultPeriod` prop to accept a `TimePeriod` object directly, rather than just a label.
 
 
+Could you please add docstrings to the `useFilteredTimeSeries` hook? Here is the updated version: 
+
+<llm_context filetype="ts" path="/home/santiago/projects/testApps/components_workbench/client/src/hooks/use-filtered-timeseries.ts" name="use-filtered-timeseries.ts">
+```ts
+import { useMemo } from "react";
+import { DateRange } from "react-day-picker";
+import { TimePeriod, TimeSeriesData } from "@/components/plots/models";
+
+interface props {
+  allSeries: TimeSeriesData[];
+  selectedSeriesIds: string[];
+  period: TimePeriod;
+  dateRange?: DateRange | undefined;
+};
+
+export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period, dateRange }: props): TimeSeriesData[] =&gt; {
+
+  return useMemo(() =&gt; {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - period.days);
+
+    return allSeries.filter(series =&gt; selectedSeriesIds.includes(series.id)).map(series =&gt; {
+      const { x: originalX, y: originalY } = series.plotData;
+
+      const filteredData = originalX.reduce&lt;{ x: (number | string)[], y: number[] }&gt;((acc, date, index) =&gt; {
+        const itemDate = new Date(date);
+
+        if (
+          itemDate &gt;= cutoffDate &amp;&amp;
+          (!dateRange?.from || itemDate &gt;= dateRange.from) &amp;&amp;
+          (!dateRange?.to || itemDate &lt;= dateRange.to)
+        ) {
+          acc.x.push(date);
+          acc.y.push(originalY[index]);
+        }
+
+        return acc;
+      }, { x: [], y: [] });
+
+      return {
+        ...series,
+        plotData: {
+          ...series.plotData,
+          x: filteredData.x,
+          y: filteredData.y,
+        },
+      };
+    });
+  }, [allSeries, selectedSeriesIds, period, dateRange]);
+};
+```
+</llm_context>
+
+```ts
+import { useMemo } from "react";
+import { DateRange } from "react-day-picker";
+import { TimePeriod, TimeSeriesData } from "@/components/plots/models";
+
+interface props {
+  allSeries: TimeSeriesData[];
+  selectedSeriesIds: string[];
+  period: TimePeriod;
+  dateRange?: DateRange | undefined;
+};
+
+/**
+ * useFilteredTimeSeries Hook
+ *
+ * Filters an array of time series data based on selected series IDs, a time period, and a date range.
+ *
+ * @param {Object} props - The props object.
+ * @param {TimeSeriesData[]} props.allSeries - An array of all available time series data.
+ * @param {string[]} props.selectedSeriesIds - An array of IDs of the series that should be included in the filtered result.
+ * @param {TimePeriod} props.period - A TimePeriod object that defines the time period to filter the data by.
+ * @param {DateRange | undefined} props.dateRange - An optional DateRange object that defines the date range to filter the data by.
+ *
+ * @returns {TimeSeriesData[]} A new array containing the filtered time series data.
+ */
+export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period, dateRange }: props): TimeSeriesData[] => {
+
+  return useMemo(() => {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - period.days);
+
+    return allSeries.filter(series => selectedSeriesIds.includes(series.id)).map(series => {
+      const { x: originalX, y: originalY } = series.plotData;
+
+      const filteredData = originalX.reduce<{ x: (number | string }[], y: number[] }>((acc, date, index) => {
+        const itemDate = new Date(date);
+
+        if (
+          itemDate >= cutoffDate &&
+          (!dateRange?.from || itemDate >= dateRange.from) &&
+          (!dateRange?.to || itemDate <= dateRange.to)
+        ) {
+          acc.x.push(date);
+          acc.y.push(originalY[index]);
+        }
+
+        return acc;
+      }, { x: [], y: [] });
+
+      return {
+        ...series,
+        plotData: {
+          ...series.plotData,
+          x: filteredData.x,
+          y: filteredData.y,
+        },
+      };
+    });
+  }, [allSeries, selectedSeriesIds, period, dateRange]);
+};
+```
+
+**Improvements:**
+
+*   **Comprehensive Description:** The docstring provides a clear and concise description of the hook's purpose.
+*   **Parameter Documentation:** Each parameter in the `props` object is documented, including its type and a brief description.
+*   **Return Value Documentation:** The docstring clearly states the type and meaning of the hook's return value.
+*   **Readability:** The docstring is formatted for readability, making it easy to understand the hook's functionality.
+
+**Next Steps:**
+
+*   **JSDoc Standards:** Ensure that your docstrings adhere to JSDoc standards for consistency and compatibility with documentation generators.
+*   **Examples:** Consider adding usage examples to the docstring to further illustrate how to use the hook.
+*   **IDE Integration:** Use a code editor or IDE that supports JSDoc to take full advantage of the docstrings (e.g., for autocompletion and inline documentation).
+
+
