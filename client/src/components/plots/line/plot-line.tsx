@@ -61,15 +61,29 @@ export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
     }));
   };
 
+  /**
+   * Handles the selection of a time period.
+   *
+   * This function updates the `timePeriod` state with the newly selected period and resets the `dateRange` state to `undefined`.
+   * This ensures that the time period and date range filters are mutually exclusive.
+   *
+   * @param {TimePeriod} period - The selected time period.
+   */
   const handleSelectPeriod = (period: TimePeriod) => {
     setTimePeriod(period);
-    // Reset dateRange when a period is selected
     setDateRange(undefined);
   };
 
+  /**
+   * Handles the selection of a date range.
+   *
+   * This function updates the `dateRange` state with the newly selected date range and resets the `timePeriod` state to the `defaultPeriod`.
+   * This ensures that the time period and date range filters are mutually exclusive.
+   *
+   * @param {DateRange | undefined} range - The selected date range.
+   */
   const handleSetDateRange = (range: DateRange | undefined) => {
     setDateRange(range);
-    // Reset period to default
     setTimePeriod(periods.find(p => p.label === defaultPeriod)!);
   };
 
