@@ -915,3 +915,299 @@ Creating `debouncedHandleResetHighlight` as a separate function ensures that the
 
     *   **Fewer Function Creations:**  Creating inline functions within JSX can lead to a lot of function objects being created and garbage collected on each render.
     *   **Single Debounced Function:**  The `debouncedHandleResetHighlight` function is created only *once* when the `PlotLine` component mounts.  This reduces
+    o
+
+
+### QUESTION
+
+I want to up the alpha on the SeriesCard when its being hovered over, check out the updated version of it: 
+
+```typescriptreact
+
+import { SeriesCard } from "@/components/plots/ui";
+import { SeriesSearch } from "@/components/plots/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { TimeSeriesData } from "@/components/plots/models";
+
+interface Props {
+  header: string;
+  searchTriggerLabel: string;
+  searchPlaceholder: string;
+  series: TimeSeriesData[];
+  availableSeries: TimeSeriesData[];
+  toggledSeries: Record<string, boolean>;
+  highlightedSeries: Record<string, number>;
+  onRemoveSeries: (id: string) => void;
+  onAddSeries: (series: TimeSeriesData) => void;
+  onTogglePlotVisibility: (id: string) => void;
+  onTogglePlotHighlight: (id: string) => void;
+  onToggleResetHighlight: () => void;
+}
+
+export const LineControls = ({
+  header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries,
+  onRemoveSeries, onAddSeries, onTogglePlotVisibility, onTogglePlotHighlight, onToggleResetHighlight
+}: Props) => {
+  return (
+    <div className="flex flex-col space-y-4 h-full bg-background">
+
+      {/* Series Search */}
+      <div className="pr-3">
+        <SeriesSearch
+          options={availableSeries}
+          onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
+          searchPlaceholder={searchPlaceholder}
+          triggerLabel={searchTriggerLabel}
+        />
+      </div>
+
+      {/* Selected series group */}
+      <div className="flex flex-col space-y-2 overflow-hidden">
+        {series.length > 0 &&
+          <>
+            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+            <ScrollArea className="h-full w-full pr-3">
+              <div className="space-y-2">
+                {/* Selected series card */}
+                {series.map((item) => (
+                  <SeriesCard
+                    key={item.id}
+                    label={item.label}
+                    subLabel={item.subLabel}
+                    color={item.color}
+                    toggled={toggledSeries[item.id] ?? true}
+                    onRemove={() => onRemoveSeries(item.id)}
+                    onToggleVisibility={() => onTogglePlotVisibility(item.id)}
+                    onHighlight={() => onTogglePlotHighlight(item.id)}
+                    onResetHighlight={onToggleResetHighlight}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          </>
+        }
+      </div>
+    </div>
+  )
+}
+
+```
+
+```typescriptreact
+import { useState } from "react";
+import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+
+interface Props {
+  label: string;
+  subLabel?: string;
+  color: string;
+  toggled?: boolean;
+  onRemove?: () => void;
+  onToggleVisibility?: () => void;
+  onHighlight?: () => void;
+  onResetHighlight: () => void;
+}
+
+export const SeriesCard = ({
+  label, subLabel, color, toggled, onRemove, onToggleVisibility, onHighlight, onResetHighlight
+}: Props) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const [isHovered, setIsHovered] = useState(false); // <-- Add this state
+
+  const handleRemove = (e: React.MouseEvent) => {
+    // Stop propagation to avoid triggering onToggleVisibility
+    e.stopPropagation();
+    setIsVisible(false);
+    // Wait for animation to complete before calling onRemove
+    // The state change triggers a re-render of the card with the close animation
+    if (onRemove) {
+      setTimeout(onRemove, 100);
+    }
+  }
+
+  const getRgbaBackground = (hexColor: string, alpha: number = 0.15) => { // <-- Modify this function
+    const hex = hexColor.replace("#", "");
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  return (
+    <Card
+      className={cn(
+        "relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8 cursor-pointer",
+        isVisible
+          ? "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
+          : "animate-out fade-out-0 zoom-out-95",
+        !toggled && "opacity-50"
+      )}
+      style={{ backgroundColor: getRgbaBackground(color, isHovered ? 0.3 : 0.15) }} // <-- Modify this line
+      onClick={onToggleVisibility}
+      onMouseEnter={() => {
+        setIsHovered(true); // <-- Set isHovered to true
+        onHighlight();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false); // <-- Set isHovered to false
+        onResetHighlight();
+      }}
+    >
+
+      {/* Color indicator */}
+      <div className="absolute w-[0.60rem] h-full rounded-l-lg" style={{ backgroundColor: color }} />
+
+      {/* Label */}
+      <div className="flex flex-row items-center gap-2 ml-6">
+        <span className="text-sm font-medium">{label}</span>
+        {subLabel && (<span className="text-sm text-muted-foreground">{subLabel}</span>)}
+      </div>
+
+      {/* Remove Button */}
+      {onRemove && (
+        <button onClick={handleRemove} className="absolute right-2 p-1 hover:bg-accent rounded-sm">
+          <X className="h-4 w-4 text-muted-foreground" />
+        </button>
+      )}
+    </Card>
+  )
+}
+```
+
+Key Changes and Explanations:
+
+1.  **`isHovered` State:**
+    *   We introduce a new state variable `isHovered` using `useState(false)`. This state tracks whether the mouse is currently hovering over the `SeriesCard`.
+
+2.  **Modified `getRgbaBackground` Function:**
+    *   The `getRgbaBackground` function is updated to accept an optional `alpha` parameter with a default value of `0.15`.  This allows us to control the alpha value of the background color.
+
+3.  **Conditional Alpha Value in `style`:**
+    *   The `style` prop of the `Card` component is modified to use the `getRgbaBackground` function with a conditional alpha value:
+        *   `isHovered ? 0.3 : 0.15`:  If `isHovered` is `true` (the mouse is hovering), the alpha value is set to `0.3` (more opaque). Otherwise, it's set to `0.15` (less opaque).
+
+4.  **`onMouseEnter` and `onMouseLeave` Handlers:**
+    *   The `onMouseEnter` and `onMouseLeave` event handlers are updated to set the `isHovered` state:
+        *   `onMouseEnter`: Sets `isHovered` to `true` when the mouse enters the card.
+        *   `onMouseLeave`: Sets `isHovered` to `false` when the mouse leaves the card.
+    *   The `onHighlight` and `onResetHighlight` functions are called within these handlers, ensuring that the highlighting logic is still triggered correctly.  We use arrow functions for these event handlers to pass the events.
+
+**How it works:**
+
+*   When the mouse enters the `SeriesCard`, the `onMouseEnter` handler is called, setting `isHovered` to `true`. This triggers a re-render of the `Card` component.
+*   During the re-render, the `style` prop is updated to use `getRgbaBackground` with an alpha value of `0.3`, making the card's background more opaque.
+*   When the mouse leaves the `SeriesCard`, the `onMouseLeave` handler is called, setting `isHovered` to `false`. This triggers another re-render.
+*   During this re-render, the `style` prop is updated to use `getRgbaBackground` with an alpha value of `0.15`, making the card's background less opaque.
+
+This approach provides a smooth visual indication of which `SeriesCard` is currently being hovered over, enhancing the user experience.
+
+
+### QUESTION
+Is this not doable with css/tailwind?
+
+Yes, absolutely! You're right, this effect is very easily achievable with CSS and Tailwind CSS, and it's generally the preferred approach for simple hover effects like this. Using CSS/Tailwind is more performant because it avoids unnecessary React state updates and re-renders.
+
+Here's how you can achieve the same effect using Tailwind CSS:
+
+**1. Modify the `SeriesCard` Component:**
+
+   Remove the `isHovered` state and the inline `style` prop, and instead use Tailwind's `hover:` modifier classes.
+
+   ```typescriptreact
+   import { useState } from "react";
+   import { X } from "lucide-react";
+   import { cn } from "@/lib/utils";
+   import { Card } from "@/components/ui/card";
+
+   interface Props {
+     label: string;
+     subLabel?: string;
+     color: string;
+     toggled?: boolean;
+     onRemove?: () => void;
+     onToggleVisibility?: () => void;
+     onHighlight?: () => void;
+     onResetHighlight: () => void;
+   }
+
+   export const SeriesCard = ({
+     label, subLabel, color, toggled, onRemove, onToggleVisibility, onHighlight, onResetHighlight
+   }: Props) => {
+     const [isVisible, setIsVisible] = useState(true);
+
+     const handleRemove = (e: React.MouseEvent) => {
+       // Stop propagation to avoid triggering onToggleVisibility
+       e.stopPropagation();
+       setIsVisible(false);
+       // Wait for animation to complete before calling onRemove
+       // The state change triggers a re-render of the card with the close animation
+       if (onRemove) {
+         setTimeout(onRemove, 100);
+       }
+     }
+
+     const getRgbaBackground = (hexColor: string, alpha: number = 0.15) => {
+       const hex = hexColor.replace("#", "");
+       const r = parseInt(hex.substring(0, 2), 16);
+       const g = parseInt(hex.substring(2, 4), 16);
+       const b = parseInt(hex.substring(4, 6), 16);
+       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+     }
+
+     return (
+       <Card
+         className={cn(
+           "relative flex items-center gap-3 p-2 pl-0 pr-8 rounded-lg border-0 h-8 cursor-pointer",
+           isVisible
+             ? "animate-in fade-in-0 zoom-in-95 slide-in-from-top-2"
+             : "animate-out fade-out-0 zoom-out-95",
+           !toggled && "opacity-50",
+           "hover:bg-opacity-30" // <-- Add this line
+         )}
+         style={{ backgroundColor: getRgbaBackground(color) }} //  Keep this line
+         onClick={onToggleVisibility}
+         onMouseEnter={onHighlight} // Call the highlight function
+         onMouseLeave={onResetHighlight} // Call the reset highlight function
+       >
+
+         {/* Color indicator */}
+         <div className="absolute w-[0.60rem] h-full rounded-l-lg" style={{ backgroundColor: color }} />
+
+         {/* Label */}
+         <div className="flex flex-row items-center gap-2 ml-6">
+           <span className="text-sm font-medium">{label}</span>
+           {subLabel && (<span className="text-sm text-muted-foreground">{subLabel}</span>)}
+         </div>
+
+         {/* Remove Button */}
+         {onRemove && (
+           <button onClick={handleRemove} className="absolute right-2 p-1 hover:bg-accent rounded-sm">
+             <X className="h-4 w-4 text-muted-foreground" />
+           </button>
+         )}
+       </Card>
+     )
+   }
+   ```
+
+**Explanation:**
+
+*   **`hover:bg-opacity-30`:** This Tailwind class does the following:
+    *   `hover:`:  This is the Tailwind modifier that applies the styles only when the element is being hovered over.
+    *   `bg-opacity-30`: This sets the background opacity to 30% (which is equivalent to an alpha of 0.3).  It's important to note that this requires you to have defined a background *color* on the element already (which you are doing with the inline style).
+
+**Why this is better:**
+
+*   **Performance:**  CSS hover effects are handled directly by the browser, without involving React re-renders. This is significantly more efficient.
+*   **Simplicity:** The code is cleaner and easier to understand.  You're using Tailwind's declarative syntax to express the desired styling.
+*   **Maintainability:**  CSS styles are generally easier to maintain and modify than inline styles that are dependent on React state.
+
+**Important Note:**
+
+This approach assumes that the `Card` component (or whatever element you're applying the hover effect to) already has a background color set. The `bg-opacity-*` classes in Tailwind modify the opacity of an existing background color. In this case, the background color is set using the inline style: `style={{ backgroundColor: getRgbaBackground(color) }}`.
+
+This Tailwind CSS solution is the recommended way to implement this type of hover effect in React. It's more performant, cleaner, and easier to maintain than using React state.
+
+
