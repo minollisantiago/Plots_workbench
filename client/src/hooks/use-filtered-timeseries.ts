@@ -1,13 +1,15 @@
 import { useMemo } from "react";
+import { DateRange } from "react-day-picker";
 import { TimePeriod, TimeSeriesData } from "@/components/plots/models";
 
 interface props {
-  allSeries: TimeSeriesData[],
-  selectedSeriesIds: string[],
-  period: TimePeriod,
+  allSeries: TimeSeriesData[];
+  selectedSeriesIds: string[];
+  period: TimePeriod;
+  dateRange?: DateRange | undefined;
 };
 
-export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period }: props): TimeSeriesData[] => {
+export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period, dateRange }: props): TimeSeriesData[] => {
 
   return useMemo(() => {
     const cutoffDate = new Date();
@@ -19,7 +21,11 @@ export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period }: 
       const filteredData = originalX.reduce<{ x: (number | string)[], y: number[] }>((acc, date, index) => {
         const itemDate = new Date(date);
 
-        if (itemDate >= cutoffDate) {
+        if (
+          itemDate >= cutoffDate &&
+          (!dateRange?.from || itemDate >= dateRange.from) &&
+          (!dateRange?.to || itemDate <= dateRange.to)
+        ) {
           acc.x.push(date);
           acc.y.push(originalY[index]);
         }
@@ -36,5 +42,5 @@ export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period }: 
         },
       };
     });
-  }, [allSeries, selectedSeriesIds, period]);
+  }, [allSeries, selectedSeriesIds, period, dateRange]);
 };

@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
+import { useState, useEffect, useRef } from "react";
 import { PlotLineFigure } from "./plot-line-figure";
 import { LineControls } from "./plot-line-controls";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
@@ -8,16 +9,18 @@ import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
   title: string;
+  defaultPeriod?: string;
 };
 
 // Example data
 const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
 
-export const PlotLine = ({ title }: Props) => {
+export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
   const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
   const [hiddenSeries, setHiddenSeries] = useState<Record<string, boolean>>({});
   const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});
-  const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === "All")!);
+  const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   // Ref to store the timeout ID
   const resetHighlightTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -26,6 +29,7 @@ export const PlotLine = ({ title }: Props) => {
     allSeries: exampleSeries,
     selectedSeriesIds: selectedSeriesIds,
     period: timePeriod,
+    dateRange: dateRange,
   });
 
   // Initialize highlightedSeries with all IDs from exampleSeries
@@ -59,6 +63,14 @@ export const PlotLine = ({ title }: Props) => {
 
   const handleSelectPeriod = (period: TimePeriod) => {
     setTimePeriod(period);
+    // Reset dateRange when a period is selected
+    setDateRange(undefined);
+  };
+
+  const handleSetDateRange = (range: DateRange | undefined) => {
+    setDateRange(range);
+    // Reset period to default
+    setTimePeriod(periods.find(p => p.label === defaultPeriod)!);
   };
 
   const handleTogglePlotHighlight = (id: string) => {
@@ -76,7 +88,6 @@ export const PlotLine = ({ title }: Props) => {
           updatedOpacities[key] = 0.2;
         };
       };
-      console.log('opacity - current: ', updatedOpacities);
       return updatedOpacities;
     });
   };
@@ -89,7 +100,6 @@ export const PlotLine = ({ title }: Props) => {
       };
       return updatedOpacities;
     })
-    console.log('opacity: ', highlightedSeries);
   };
 
   const debouncedHandleResetHighlight = () => {
@@ -134,8 +144,10 @@ export const PlotLine = ({ title }: Props) => {
           <div className="flex justify-end">
             <TimePeriodSelector
               periods={periods}
-              defaultSelected={periods.find(p => p.label === "All")}
-              onSelect={handleSelectPeriod}
+              selectedPeriod={timePeriod}
+              selectedDateRange={dateRange}
+              onPeriodSelect={handleSelectPeriod}
+              onDateRangeSelect={handleSetDateRange}
             />
           </div>
           <PlotLineFigure

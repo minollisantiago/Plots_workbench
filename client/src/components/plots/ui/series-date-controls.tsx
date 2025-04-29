@@ -1,23 +1,20 @@
-import { cn } from "@/lib/utils"
-import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DateRangePicker } from "@/components/plots/ui";
 import { TimePeriod } from "@/components/plots/models";
 
 interface Props {
-  periods: TimePeriod[]
-  defaultSelected?: TimePeriod
-  onSelect?: (period: TimePeriod) => void
-}
-
-export const TimePeriodSelector = ({ periods, defaultSelected, onSelect }: Props) => {
-  const [selected, setSelected] = useState<TimePeriod>(defaultSelected ?? periods[0])
-
-  const handleSelect = (period: TimePeriod) => {
-    setSelected(period)
-    onSelect?.(period)
-  }
+  periods: TimePeriod[];
+  selectedPeriod: TimePeriod;
+  selectedDateRange?: DateRange | undefined;
+  onPeriodSelect?: (period: TimePeriod) => void;
+  onDateRangeSelect?: (range: DateRange | undefined) => void;
+};
+export const TimePeriodSelector = ({
+  periods, selectedPeriod, selectedDateRange, onPeriodSelect, onDateRangeSelect
+}: Props) => {
 
   return (
     <div className="flex gap-2 bg-background/95">
@@ -29,18 +26,22 @@ export const TimePeriodSelector = ({ periods, defaultSelected, onSelect }: Props
             size="sm"
             className={cn(
               "h-8 w-10 px-2 rounded-lg text-sm text-muted-foreground",
-              selected.label === period.label
+              selectedPeriod.label === period.label
                 ? "text-muted-foreground bg-primary-foreground hover:bg-muted hover:text-muted-foreground"
                 : "hover:bg-muted"
             )}
-            onClick={() => handleSelect(period)}
+            onClick={() => onPeriodSelect?.(period)}
           >
             {period.label}
           </Button>
         ))}
       </div>
       <Separator orientation="vertical" />
-      <DateRangePicker numberOfMonths={3} />
+      <DateRangePicker
+        numberOfMonths={3}
+        dateRange={selectedDateRange}
+        onDateRangeChange={onDateRangeSelect}
+      />
     </div>
   )
 }
