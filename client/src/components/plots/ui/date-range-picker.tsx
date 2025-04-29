@@ -11,6 +11,7 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 };
 export const DateRangePicker = ({ numberOfMonths = 3, dateRange = undefined, onDateRangeChange }: Props) => {
 
+  // Set default defaultStartMonth based on the current date
   const today = new Date();
   const defaultStartMonth = new Date(today);
   defaultStartMonth.setMonth(today.getMonth() - numberOfMonths + 1);
