@@ -240,46 +240,125 @@ We are using this two libraries for our UI components:
 Radix is the base library used by the other two, so its going to be basically a source for documentation in case we run into issues with shadcn or originUI.
 
 **Hooks**
-Here we have all the custom hooks for the app. Right now we only have two: 
-- @use-keybind.ts: Hook for handling keyboard shortcuts and bindings
-- @use-tool-state.ts: Hook for managing the state of the currently selected tool from the @dock.tsx component.
 
-**How plotting works in the app currently**
+Here we have all the custom hooks for the app:
 
-The current implementation of the plotting components is an experiment, but the pattern we are using is the one we want to keep, albeit more generic and reusable: 
-
-- The @plot-line.tsx component is the main component for the line plot.
-
-- The @plot-canvas.tsx component is the main component for the plotting functionality, it is the parent of all the plotting components, currently this component is hardcoded to work with the @plot-line.tsx component, but in the future it should be able to work with any plotting component using the composition pattern.
+*   `@use-keybind.ts`: Hook for handling keyboard shortcuts and bindings
+*   `@use-tool-state.ts`: Hook for managing the state of the currently selected tool from the `@dock.tsx` component.
+*   `@use-filtered-timeseries.ts`: Hook for managing the filtering of timeseries by series selection as well as time periods or date range selection.
 
 ### Plotting Implementation
 
+The current implementation of the plotting components is an experiment, but the pattern we are using is the one we want to keep, albeit more generic and reusable:
+
+*   The `@plot-line-figure.tsx` component is the main component for rendering a line plot. It takes an array of `LineData` objects as input.
+*   The `@plot-scatter-figure.tsx` component is the main component for rendering a scatter plot. It takes an array of `ScatterData` objects as input.
+*   The `@plot-canvas.tsx` component is a generic canvas component that handles the common plotting logic. It uses a `prepareData` function (e.g., `prepareLineData`, `prepareScatterData`) to transform the data into a format that Plotly.js can understand.  It's designed to work with different plotting components using the composition pattern.
+
 Our plotting system uses TypeScript generics to create a type-safe and reusable architecture. Here's a detailed breakdown of how it works:
 
-#### Base Types and Generic Interface
+#### Defining Plot Data Types
+
+First, we define our base `PlotData` interface:
+
+```typescript
+/**
+ * @interface PlotData
+ * @property {(number | string)[]} x - The x-axis data (e.g., dates or numbers).
+ * @property {number[]} y - The y-axis data (e.g., stock prices).
+ * @property {string} name - The name of the data series.
+ */
+export interface PlotData {
+  x: (number | string)[];
+  y: number[];
+  name: string;
+};
+```
+
+This interface defines the basic structure for all plot data, including the `x` and `y` values, and a `name` for the series.
+
+#### Extending PlotData for Specific Plot Types
+
+We then extend the `PlotData` interface for specific plot types, such as line plots and scatter plots:
+
+```typescript
+/**
+ * @interface LineData
+ * @extends {PlotData}
+ * @property {('y' | 'y2')=} yaxis - The y-axis to use for the line plot (optional, defaults to 'y').
+ * @property {boolean=} visible - Whether the line plot is visible (optional, defaults to true).
+ * @property {number=} opacity - The opacity of the line plot (optional, defaults to 1).
+ * @property {Object} line - The line styling properties.
+ * @property {number=} line.width - The width of the line (optional).
+ * @property {string} line.color - The color of the line.
+ */
+export interface LineData extends PlotData {
+  yaxis?: 'y' | 'y2';
+  visible?: boolean;
+  opacity?: number;
+  line: {
+    width?: number;
+    color: string;
+  };
+};
+
+/**
+ * @interface ScatterData
+ * @extends {PlotData}
+ * @property {boolean=} visible - Whether the scatter plot is visible (optional, defaults to true).
+ * @property {number=} opacity - The opacity of the scatter plot (optional, defaults to 1).
+ * @property {Object} marker - The marker styling properties.
+ * @property {number=} marker.size - The size of the markers (optional).
+ * @property {string=} marker.symbol - The symbol to use for the markers (optional).
+ * @property {string=} marker.color - The color of the markers.
+ * @property {number=} marker.opacity - The opacity of the markers (optional).
+ * @property {Object} marker.line - The line styling properties for the marker outline (optional).
+ * @property {number=} marker.line.width - The width of the marker outline (optional).
+ * @property {string=} marker.line.color - The color of the marker outline (optional).
+ */
+export interface ScatterData extends PlotData {
+  visible?: boolean;
+  opacity?: number;
+  marker: {
+    size?: number;
+    symbol?: string;
+    color: string;
+    opacity?: number;
+    line?: {
+      width?: number;
+      color: string;
+    }
+  }
+}
+```
+
+These interfaces inherit the properties of `PlotData` and add additional properties that are specific to each plot type.
+
+#### Base Types and Generic Interface on plot-canvas.tsx
 
 First, we define our base types that any plot data must conform to:
 
 ```typescript
 export type PlotType = 'line' | 'scatter';
-export type PlotData = lineData | scatterData;
+type PlotData = LineData | ScatterData;
 
 interface Props<T extends PlotData> {
-  data: T;
+  data: Array<T>;
   plotType: PlotType;
   title?: string;
   theme?: ThemeType;
   width?: number | string;
   height?: number | string;
-  prepareData: (data: T) => Data[];
+  prepareData: (data: Array<T>) => Data[];
 }
+
 ```
 
 The generic interface `Props<T extends PlotData>` ensures that:
-- `T` must be a subtype of `PlotData`
-- When the interface is used, `T` will be replaced with a specific type (either `lineData` or `scatterData`)
-- The `data` prop must match whatever type `T` is
-- The `prepareData` function must accept that same type `T` and return `Data[]`
+- `T` must be a subtype of `PlotData`.
+- When the interface is used, `T` will be replaced with a specific type (either `LineData` or `ScatterData`).
+- The `data` prop is an array of elements that must match whatever type `T` is.
+- The `prepareData` function must accept an array of elements with that same type `T` and return `Data[]`, a valid plotly model (see imports @/components/plots/models/timeseries.models.ts for more info on plotly types).
 
 #### Generic Plot Component
 
@@ -317,21 +396,31 @@ export const PlotFigure = <T extends PlotData>(
 };
 ```
 
-#### Usage in Specific Plot Components
 
-The specific plot components (like `PlotLineFigure` or `PlotScatterFigure`) use the generic component with their specific types:
+#### Using Plot Data Types in Components
+
+The plot data types are used in the `PlotLineFigure` and `PlotScatterFigure` components to ensure that the correct data is passed to the `CanvasFigure` component:
 
 ```typescript
-export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) => {
+// In PlotLineFigure.tsx:
+interface Props {
+  data: Array<LineData>;
+  title?: string;
+  theme?: ThemeType;
+  width?: number | string;
+  height?: number | string;
+}
+
+export const PlotLineFigure = ({ data, title, theme, width, height }: Props) => {
   return (
-    <PlotFigure
-      data={data}           // TypeScript knows this must be scatterData
-      plotType="scatter"
+    <CanvasFigure
+      data={data}
+      plotType="line"
       title={title}
       theme={theme}
       width={width}
       height={height}
-      prepareData={prepareScatterData}  // TypeScript knows this must be (data: scatterData) => Data[]
+      prepareData={prepareLineData}
     />
   );
 };
@@ -350,19 +439,12 @@ export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) 
    - No duplicate code between different plot types
 
 3. **Extensibility**:
-   - Adding new plot types is straightforward:
+   - Adding new plot types is straightforward once the new model is created (in this case BarData):
      ```typescript
      export type PlotType = 'line' | 'scatter' | 'bar';
-     export type PlotData = lineData | scatterData | barData;
+     export type PlotData = LineData | ScatterData | BarData;
      ```
    - TypeScript enforces type safety for new plot types automatically
-
-4. **IDE Support**:
-   - Excellent autocomplete support
-   - Real-time error detection in IDE
-   - Better developer experience
-
-This generic approach gives us the perfect balance between code reuse and type safety, while keeping the codebase maintainable and extensible.
 
 ### Tasks to build the PRD
 Here is the process plan with each task we are going to be doing in order:
