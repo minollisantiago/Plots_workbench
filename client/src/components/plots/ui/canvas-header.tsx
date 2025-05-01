@@ -36,7 +36,7 @@ export const CanvasHeader = ({ title, onTitleChange }: Props) => {
           autoFocus
         />
       ) : (
-        <h3 className="text-medium font-semibold truncate">{editedTitle ?? title}</h3>
+        <h3 className="text-lg font-semibold truncate">{editedTitle ?? title}</h3>
       )}
       <Toggle
         aria-label="Toggle italic"

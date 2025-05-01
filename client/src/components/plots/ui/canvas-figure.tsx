@@ -1,19 +1,18 @@
 import Plot from 'react-plotly.js';
 import { Data, Layout } from 'plotly.js';
-import { lineData } from '../line/line.models';
-import { scatterData } from '../scatter/scatter.models';
+import { LineData, ScatterData } from '@/components/plots/models';
 import { PlotConfig, ThemeType, PlotType } from '@/config/plots';
 
-type PlotData = lineData | scatterData;
+type PlotData = LineData | ScatterData;
 
 interface Props<T extends PlotData> {
-  data: T;
+  data: Array<T>;
   plotType: PlotType;
   title?: string;
   theme?: ThemeType;
   width?: number | string;
   height?: number | string;
-  prepareData: (data: T) => Data[];
+  prepareData: (data: Array<T>) => Data[];
 }
 
 export const CanvasFigure = <T extends PlotData>(

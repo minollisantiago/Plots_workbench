@@ -25,3 +25,7 @@ dist-ssr
 
 # markdown LLM files (excluding README)
 .cursor/
+
+#Custom plugin chats
+chat_*.md
+!chat.md

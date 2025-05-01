@@ -116,11 +116,14 @@ export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
     })
   };
 
+  /**
+   * Debounced function to reset the highlight after a delay.
+   *
+   * This function sets a timeout to call `handleResetHighlight` after a specified delay.
+   * The timeout is used to debounce the effect, preventing unnecessary flickering
+   * when quickly moving the mouse over the time series cards.
+   */
   const debouncedHandleResetHighlight = () => {
-    // Set a timeout to reset the highlight after a delay
-    // We wrap the handleResetHighlight on a timeout to debouce the effect
-    // and avoid unecessary flickering when quickly moving the mouse over the
-    // time series cards
     resetHighlightTimeout.current = setTimeout(() => {
       handleResetHighlight();
       resetHighlightTimeout.current = null; // Clear the timeout

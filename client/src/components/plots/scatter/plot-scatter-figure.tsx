@@ -1,10 +1,10 @@
 import { ThemeType } from '@/config/plots';
-import { scatterData } from './scatter.models';
 import { CanvasFigure } from '../ui/canvas-figure';
 import { prepareScatterData } from './scatter.utils';
+import { ScatterData } from '@/components/plots/models';
 
 interface Props {
-  data: scatterData;
+  data: Array<ScatterData>;
   title?: string;
   theme?: ThemeType;
   width?: number | string;

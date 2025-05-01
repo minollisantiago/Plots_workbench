@@ -1,10 +1,10 @@
-import { lineData } from './line.models';
 import { ThemeType } from '@/config/plots';
 import { prepareLineData } from './line.utils';
 import { CanvasFigure } from '../ui/canvas-figure';
+import { LineData } from '@/components/plots/models';
 
 interface Props {
-  data: lineData;
+  data: Array<LineData>;
   title?: string;
   theme?: ThemeType;
   width?: number | string;

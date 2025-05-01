@@ -1,7 +1,7 @@
 import { Data } from 'plotly.js';
-import { lineData } from './line.models';
+import { LineData } from '@/components/plots/models';
 
-export const prepareLineData = (data: lineData): Data[] => {
+export const prepareLineData = (data: Array<LineData>): Data[] => {
   const plotData: Data[] = data.map(series => ({
     type: 'scatter',
     mode: 'lines',
