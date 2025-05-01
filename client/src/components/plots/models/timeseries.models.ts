@@ -1,7 +1,6 @@
 import { calculateYTD } from "@/components/plots/utils";
 
 /**
- * @typedef {Object} TimePeriod
  * @property {string} label - The label for the time period (e.g., "1W", "1M", "YTD").
  * @property {number} days - The number of trading days in the time period.
  */
@@ -14,7 +13,7 @@ export type TimePeriod = {
  * An array of pre-defined time periods with labels and corresponding trading days.
  */
 export const periods: TimePeriod[] = [
-  { label: "1W", days: 5 }, // Changed from 1 week to 5 days, assuming only weekdays
+  { label: "1W", days: 5 }, // 5 trading days in a week
   { label: "1M", days: 22 }, // Assuming 22 trading days in a month
   { label: "3M", days: 66 }, // 3 months * 22 trading days
   { label: "6M", days: 132 }, // 6 months * 22 trading days
