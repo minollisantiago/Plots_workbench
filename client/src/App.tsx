@@ -1,11 +1,15 @@
 import './styles/style.css';
 import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
+import { TimeSeriesData } from "@/components/plots/models";
 import { PlotLine } from '@/components/plots/line/plot-line';
+import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 
-function App() {
+// Example data
+const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
 
+export default function App() {
   const {
     selectedDockTool,
     canvases,
@@ -41,7 +45,7 @@ function App() {
             onFocus={handleCanvasFocus}
             onRemove={handleCanvasRemove}
           >
-            <PlotLine title="Line Plot" />
+            <PlotLine title="Line Plot" SeriesData={exampleSeries} />
           </CanvasContainer>
         ))}
 
@@ -49,5 +53,3 @@ function App() {
     </>
   )
 }
-
-export default App

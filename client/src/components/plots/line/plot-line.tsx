@@ -1,21 +1,17 @@
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
 import { useState, useEffect, useRef } from "react";
-import { PlotLineFigure } from "./plot-line-figure";
-import { LineControls } from "./plot-line-controls";
-import { mockTimeSeriesData } from "@/data/mock/time-series-data";
+import { PlotLineFigure, LineControls } from "@/components/plots/line";
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
   title: string;
   defaultPeriod?: string;
+  SeriesData: TimeSeriesData[];
 };
 
-// Example data
-const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
-
-export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
+export const PlotLine = ({ title, defaultPeriod = "All", SeriesData }: Props) => {
   const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
   const [hiddenSeries, setHiddenSeries] = useState<Record<string, boolean>>({});
   const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});
@@ -26,13 +22,13 @@ export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
   const resetHighlightTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const filteredSeries = useFilteredTimeSeries({
-    allSeries: exampleSeries,
+    allSeries: SeriesData,
     selectedSeriesIds: selectedSeriesIds,
     period: timePeriod,
     dateRange: dateRange,
   });
 
-  // Initialize highlightedSeries with all IDs from exampleSeries
+  // Initialize highlightedSeries with all IDs from SeriesData
   useEffect(() => {
     const initialHighlighted: Record<string, number> = {};
     filteredSeries.forEach(series => {
@@ -143,7 +139,7 @@ export const PlotLine = ({ title, defaultPeriod = "All" }: Props) => {
             searchTriggerLabel="Add strategies"
             searchPlaceholder="Search strategies"
             series={filteredSeries}
-            availableSeries={exampleSeries}
+            availableSeries={SeriesData}
             toggledSeries={hiddenSeries}
             highlightedSeries={highlightedSeries}
             onAddSeries={handleAddSeries}
