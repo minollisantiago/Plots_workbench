@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Grip, X } from "lucide-react";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 
 interface Props {
@@ -133,6 +133,6 @@ export const CanvasContainer = ({
 
       </div>
     )
-  )
-}
+  );
+};
 

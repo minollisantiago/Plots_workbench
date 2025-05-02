@@ -6,7 +6,7 @@ import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 import { PlotScatterFigure, ScatterControls } from "@/components/plots/scatter";
 
 interface Props {
-  title: string;
+  title?: string;
   defaultPeriod?: string;
   SeriesData: TimeSeriesData[];
 };

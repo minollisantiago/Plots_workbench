@@ -1,12 +1,18 @@
+import { PlotType } from '@/config/plots';
 import { useState, useCallback } from "react";
 import { DockTool } from '@/components/ui/custom';
 
 type xyPosition = { x: number, y: number };
 type canvasOffset = Record<string, number>;
 
+interface CanvasState {
+  id: string;
+  plotType: PlotType;
+};
+
 interface UseToolStateReturn {
   selectedDockTool: DockTool;
-  canvases: string[];
+  canvases: CanvasState[];
   IsWorkspaceDraggable: boolean;
   IsCanvasDraggable: boolean;
   workspacePosition: xyPosition;
@@ -34,7 +40,7 @@ interface UseToolStateReturn {
  */
 export function useToolState(): UseToolStateReturn {
   const [selectedDockTool, setSelectedDockTool] = useState<DockTool>("hand");
-  const [canvases, setCanvases] = useState<string[]>([]);
+  const [canvases, setCanvases] = useState<CanvasState[]>([]);
   const [workspacePosition, setWorkspacePosition] = useState<xyPosition>({ x: 0, y: 0 });
   const [offsetIndex, setOffsetIndex] = useState<canvasOffset>({});
 
@@ -59,18 +65,33 @@ export function useToolState(): UseToolStateReturn {
 
   const handleCanvasFocus = useCallback((id: string) => {
     setCanvases(prev => {
-      const filtered = prev.filter(canvasId => canvasId !== id);
-      return [...filtered, id];
+      const focusedCanvas = prev.find(canvas => canvas.id === id);
+      if (!focusedCanvas) return prev;
+      const filtered = prev.filter(canvas => canvas.id !== id);
+      return [...filtered, focusedCanvas];
     });
   }, []);
 
   const handleCanvasRemove = useCallback((id: string) => {
-    setCanvases(prev => prev.filter(canvasId => canvasId !== id));
+    setCanvases(prev => prev.filter(canvas => canvas.id !== id));
   }, []);
 
-  const addCanvas = useCallback(() => {
+  /**
+   * Adds a new canvas to the workspace.
+   *
+   * This function performs the following steps:
+   * 1. Generates a unique ID for the new canvas using the `canvas-${Date.now()}` template.
+   * 2. Adds the new canvas ID to the `canvases` state, triggering a re-render of the workspace.
+   * 3. Calculates the offset index for the new canvas based on the number of existing canvases.
+   *    This offset index is used to position the new canvas relative to the other canvases in the workspace.
+   * 4. Updates the `offsetIndex` state with the new canvas ID and its corresponding offset index.
+   *
+   * The offset index is reset when the workspace position changes (e.g., when the user pans the workspace),
+   * ensuring that new canvases are positioned correctly relative to the workspace origin.
+   */
+  const addCanvas = useCallback((plotType: PlotType) => {
     const newCanvasId = `canvas-${Date.now()}`;
-    setCanvases(prev => [...prev, newCanvasId]);
+    setCanvases(prev => [...prev, { id: newCanvasId, plotType: plotType }]);
 
     /**
      * As new canvases are created we store their index for position offseting purposes (set at the App level).
@@ -93,15 +114,15 @@ export function useToolState(): UseToolStateReturn {
    * An object that maps each DockTool to a function that should be executed when that tool is selected.
    * If a tool does not need to perform any action, its function can be an empty function (`() => {}`).
    */
-  const toolActions: Record<DockTool, () => void> = {
+  const toolActions: Partial<Record<DockTool, () => void>> = {
     "hand": () => { },
     "selection": () => { },
     "clear": clearCanvases,
-    "line": addCanvas,
-    "scatter": addCanvas,
-    "bar": addCanvas,
-    "histogram": addCanvas,
-    "curve": addCanvas,
+    "line": () => addCanvas("line"),
+    "scatter": () => addCanvas("scatter"),
+    "bar": () => addCanvas("bar"),
+    "histogram": () => addCanvas("histogramH"),
+    "curve": () => { },
   };
 
   return {
