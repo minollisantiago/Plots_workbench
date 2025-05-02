@@ -41,35 +41,15 @@ export function useToolState(): UseToolStateReturn {
   const IsWorkspaceDraggable: boolean = selectedDockTool === "hand";
   const IsCanvasDraggable: boolean = !IsWorkspaceDraggable;
 
+  /**
+   * Handles the selection of a tool from the dock.
+   * Makes use of the toolActions object to map tool IDs to their associated functions
+   *
+   * @param {DockTool} tool The selected tool.
+   */
   const handleToolSelect = useCallback((tool: DockTool) => {
     setSelectedDockTool(tool);
-
-    switch (tool) {
-      case "line":
-      case "scatter":
-      case "bar":
-      case "histogram":
-      case "curve":
-        const newCanvasId = `canvas-${Date.now()}`;
-        setCanvases(prev => [...prev, newCanvasId]);
-
-        /**
-         * As new canvases are created we store their index for position offseting purposes (set at the App level).
-         * If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0.
-         * This way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
-         * after the user is done panning. - Wrote by monke.
-         */
-        setOffsetIndex(prev => {
-          const newOffset = Object.keys(prev).length;
-          return { ...prev, [newCanvasId]: newOffset };
-        })
-        break;
-
-      case "clear":
-        setCanvases([]);
-        setOffsetIndex({});
-        break;
-    }
+    toolActions[tool]?.();
   }, []);
 
   const handleWorkspacePositionChange = useCallback((position: xyPosition) => {
@@ -87,6 +67,42 @@ export function useToolState(): UseToolStateReturn {
   const handleCanvasRemove = useCallback((id: string) => {
     setCanvases(prev => prev.filter(canvasId => canvasId !== id));
   }, []);
+
+  const addCanvas = useCallback(() => {
+    const newCanvasId = `canvas-${Date.now()}`;
+    setCanvases(prev => [...prev, newCanvasId]);
+
+    /**
+     * As new canvases are created we store their index for position offseting purposes (set at the App level).
+     * If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0.
+     * This way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
+     * after the user is done panning. - Written by monke.
+     */
+    setOffsetIndex(prev => {
+      const newOffset = Object.keys(prev).length;
+      return { ...prev, [newCanvasId]: newOffset };
+    })
+  }, [setCanvases, setOffsetIndex]);
+
+  const clearCanvases = useCallback(() => {
+    setCanvases([]);
+    setOffsetIndex({});
+  }, [setCanvases, setOffsetIndex]);
+
+  /**
+   * An object that maps each DockTool to a function that should be executed when that tool is selected.
+   * If a tool does not need to perform any action, its function can be an empty function (`() => {}`).
+   */
+  const toolActions: Record<DockTool, () => void> = {
+    "hand": () => { },
+    "selection": () => { },
+    "clear": clearCanvases,
+    "line": addCanvas,
+    "scatter": addCanvas,
+    "bar": addCanvas,
+    "histogram": addCanvas,
+    "curve": addCanvas,
+  };
 
   return {
     selectedDockTool,

@@ -776,3 +776,337 @@ Here are some follow-up ideas:
 ---
 
 
+Add JSDoc documentation to the toolActions object please, include the explanation you just gave me for tools that dont need to perform actions as well
+
+
+---
+## >>>>>>>>>>>>> LLM RESPONSE STARTS <<<<<<<<<<<<<<
+
+```typescript
+import { useState, useCallback } from "react";
+import { DockTool } from '@/components/ui/custom';
+
+type xyPosition = { x: number, y: number };
+type canvasOffset = Record<string, number>;
+
+interface UseToolStateReturn {
+  selectedDockTool: DockTool;
+  canvases: string[];
+  IsWorkspaceDraggable: boolean;
+  IsCanvasDraggable: boolean;
+  workspacePosition: xyPosition;
+  offsetIndex: canvasOffset;
+  handleToolSelect: (tool: DockTool) => void;
+  handleCanvasFocus: (id: string) => void;
+  handleCanvasRemove: (id: string) => void;
+  setWorkspacePosition: (position: xyPosition) => void;
+}
+
+/**
+ * Custom hook for managing the state of tools and canvases in the workspace.
+ *
+ * @returns {UseToolStateReturn} An object containing the state and functions for managing tools and canvases.
+ * @property {DockTool} selectedDockTool - The currently selected dock tool.
+ * @property {string[]} canvases - An array of canvas IDs.
+ * @property {boolean} IsWorkspaceDraggable - A boolean indicating whether the workspace is draggable.
+ * @property {boolean} IsCanvasDraggable - A boolean indicating whether the canvas is draggable.
+ * @property {xyPosition} workspacePosition - The current position of the workspace.
+ * @property {canvasOffset} offsetIndex - An object mapping canvas IDs to their offset index.
+ * @property {function} handleToolSelect - A function to handle the selection of a tool.
+ * @property {function} handleCanvasFocus - A function to handle focusing a canvas.
+ * @property {function} handleCanvasRemove - A function to handle removing a canvas.
+ * @property {function} setWorkspacePosition - A function to set the workspace position.
+ */
+export function useToolState(): UseToolStateReturn {
+  const [selectedDockTool, setSelectedDockTool] = useState<DockTool>("hand");
+  const [canvases, setCanvases] = useState<string[]>([]);
+  const [workspacePosition, setWorkspacePosition] = useState<xyPosition>({ x: 0, y: 0 });
+  const [offsetIndex, setOffsetIndex] = useState<canvasOffset>({});
+
+  const IsWorkspaceDraggable: boolean = selectedDockTool === "hand";
+  const IsCanvasDraggable: boolean = !IsWorkspaceDraggable;
+
+  /**
+   * Handles the selection of a tool from the dock.
+   *
+   * @param {DockTool} tool The selected tool.
+   */
+  const handleToolSelect = useCallback((tool: DockTool) => {
+    setSelectedDockTool(tool);
+    toolActions[tool]?.();
+  }, [toolActions, setSelectedDockTool]);
+
+  /**
+   * Handles changes to the workspace position.
+   *
+   * @param {xyPosition} position The new workspace position.
+   */
+  const handleWorkspacePositionChange = useCallback((position: xyPosition) => {
+    setWorkspacePosition(position);
+    setOffsetIndex({});
+  }, [setOffsetIndex, setWorkspacePosition]);
+
+  /**
+   * Handles focusing a canvas by moving it to the end of the canvases array.
+   *
+   * @param {string} id The ID of the canvas to focus.
+   */
+  const handleCanvasFocus = useCallback((id: string) => {
+    setCanvases(prev => {
+      const filtered = prev.filter(canvasId => canvasId !== id);
+      return [...filtered, id];
+    });
+  }, [setCanvases]);
+
+  /**
+   * Handles removing a canvas from the workspace.
+   *
+   * @param {string} id The ID of the canvas to remove.
+   */
+  const handleCanvasRemove = useCallback((id: string) => {
+    setCanvases(prev => prev.filter(canvasId => canvasId !== id));
+  }, [setCanvases]);
+
+  const addCanvas = useCallback(() => {
+    const newCanvasId = `canvas-${Date.now()}`;
+    setCanvases(prev => [...prev, newCanvasId]);
+
+    /**
+     * As new canvases are created we store their index for position offseting purposes (set at the App level).
+     * If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0.
+     * This way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
+     * after the user is done panning. - Wrote by monke.
+     */
+    setOffsetIndex(prev => {
+      const newOffset = Object.keys(prev).length;
+      return { ...prev, [newCanvasId]: newOffset };
+    })
+  }, [setCanvases, setOffsetIndex]);
+
+  const clearCanvases = useCallback(() => {
+    setCanvases([]);
+    setOffsetIndex({});
+  }, [setCanvases, setOffsetIndex]);
+
+  /**
+   * An object that maps each DockTool to a function that should be executed when that tool is selected.
+   * If a tool does not need to perform any action, its function can be an empty function (`() => {}`).
+   */
+  const toolActions: Record<DockTool, () => void> = {
+    "hand": () => { },
+    "selection": () => { },
+    "clear": clearCanvases,
+    "line": addCanvas,
+    "scatter": addCanvas,
+    "bar": addCanvas,
+    "histogram": addCanvas,
+    "curve": addCanvas,
+  };
+
+  return {
+    selectedDockTool,
+    canvases,
+    IsWorkspaceDraggable,
+    IsCanvasDraggable,
+    workspacePosition,
+    offsetIndex,
+    handleToolSelect,
+    handleCanvasFocus,
+    handleCanvasRemove,
+    setWorkspacePosition: handleWorkspacePositionChange,
+  };
+
+};
+```
+
+I've added a JSDoc comment to the `toolActions` object, explaining its purpose and how it handles tools that don't require any specific action. I also included `toolActions` and `setSelectedDockTool` on the `handleToolSelect` useCallback dependencies, and `setOffsetIndex` and `setWorkspacePosition` on the `handleWorkspacePositionChange` useCallback dependencies, and `setCanvases` on the `handleCanvasFocus` and `handleCanvasRemove` useCallback dependencies.
+
+Here are some follow-up ideas:
+
+*   Consider adding more specific JSDoc comments to each individual action within the `toolActions` object to describe what they do.
+*   You could create a custom type for the action functions to ensure that they all have the same signature.
+*   Think about whether the `toolActions` object should be configurable at runtime, perhaps by reading from a configuration file or allowing users to define their own custom tool actions.
+
+## >>>>>>>>>>>>> LLM RESPONSE ENDS <<<<<<<<<<<<<<
+---
+
+Do you think its a good idea to move toolActions outside this hook?
+
+
+---
+## >>>>>>>>>>>>> LLM RESPONSE STARTS <<<<<<<<<<<<<<
+
+## >>>>>>>>>>>>> LLM RESPONSE STARTS <<<<<<<<<<<<<<
+
+Yes, it's a good idea to move the `toolActions` object outside the `useToolState` hook, *if* it doesn't depend on any state or functions defined within the hook itself.
+
+Here's why:
+
+*   **Performance:** When `toolActions` is defined inside the hook, it's recreated on every render of the component that uses the hook. Moving it outside avoids this unnecessary recreation, which can improve performance, especially if the object is large or complex.
+*   **Readability:** Moving `toolActions` outside the hook can make the hook itself more concise and easier to read, as it separates the configuration data from the state management logic.
+*   **Testability:** Having `toolActions` defined outside the hook can make it easier to test the hook in isolation, as you don't need to mock or recreate the object in your tests.
+
+Here's how you would move the `toolActions` object outside the hook:
+
+```typescript
+import { DockTool } from '@/components/ui/custom';
+import { useCallback } from 'react';
+
+type xyPosition = { x: number; y: number };
+type canvasOffset = Record<string, number>;
+
+interface UseToolStateReturn {
+  selectedDockTool: DockTool;
+  canvases: string[];
+  IsWorkspaceDraggable: boolean;
+  IsCanvasDraggable: boolean;
+  workspacePosition: xyPosition;
+  offsetIndex: canvasOffset;
+  handleToolSelect: (tool: DockTool) => void;
+  handleCanvasFocus: (id: string) => void;
+  handleCanvasRemove: (id: string) => void;
+  setWorkspacePosition: (position: xyPosition) => void;
+}
+
+interface ToolActionsParams {
+  setCanvases: React.Dispatch<React.SetStateAction<string[]>>;
+  setOffsetIndex: React.Dispatch<React.SetStateAction<canvasOffset>>;
+}
+
+/**
+ * Creates the tool actions object.
+ * @param {ToolActionsParams} params - The parameters needed for the tool actions.
+ * @returns {Record<DockTool, () => void>} An object that maps each DockTool to a function.
+ */
+const createToolActions = (params: ToolActionsParams): Record<DockTool, () => void> => {
+  const { setCanvases, setOffsetIndex } = params;
+
+  const addCanvas = () => {
+    const newCanvasId = `canvas-${Date.now()}`;
+    setCanvases((prev) => [...prev, newCanvasId]);
+
+    // As new canvases are created we store their index for position offseting purposes (set at the App level)
+    // If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0,
+    // this way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
+    // after the user is done panning.
+    setOffsetIndex((prev) => {
+      const newOffset = Object.keys(prev).length;
+      return { ...prev, [newCanvasId]: newOffset };
+    });
+  };
+
+  const clearCanvases = () => {
+    setCanvases([]);
+    setOffsetIndex({});
+  };
+
+  return {
+    hand: () => {},
+    selection: () => {},
+    clear: clearCanvases,
+    line: addCanvas,
+    scatter: addCanvas,
+    bar: addCanvas,
+    histogram: addCanvas,
+    curve: addCanvas,
+  };
+};
+
+export function useToolState(): UseToolStateReturn {
+  const [selectedDockTool, setSelectedDockTool] = useState<DockTool>('hand');
+  const [canvases, setCanvases] = useState<string[]>([]);
+  const [workspacePosition, setWorkspacePosition] = useState<xyPosition>({ x: 0, y: 0 });
+  const [offsetIndex, setOffsetIndex] = useState<canvasOffset>({});
+
+  const IsWorkspaceDraggable: boolean = selectedDockTool === 'hand';
+  const IsCanvasDraggable: boolean = !IsWorkspaceDraggable;
+
+  const toolActions = useMemo(() => createToolActions({ setCanvases, setOffsetIndex }), [setCanvases, setOffsetIndex]);
+
+  /**
+   * Handles the selection of a tool from the dock.
+   *
+   * @param {DockTool} tool The selected tool.
+   */
+  const handleToolSelect = useCallback(
+    (tool: DockTool) => {
+      setSelectedDockTool(tool);
+      toolActions[tool]?.();
+    },
+    [toolActions, setSelectedDockTool]
+  );
+
+  /**
+   * Handles changes to the workspace position.
+   *
+   * @param {xyPosition} position The new workspace position.
+   */
+  const handleWorkspacePositionChange = useCallback(
+    (position: xyPosition) => {
+      setWorkspacePosition(position);
+      setOffsetIndex({});
+    },
+    [setOffsetIndex, setWorkspacePosition]
+  );
+
+  /**
+   * Handles focusing a canvas by moving it to the end of the canvases array.
+   *
+   * @param {string} id The ID of the canvas to focus.
+   */
+  const handleCanvasFocus = useCallback(
+    (id: string) => {
+      setCanvases((prev) => {
+        const filtered = prev.filter((canvasId) => canvasId !== id);
+        return [...filtered, id];
+      });
+    },
+    [setCanvases]
+  );
+
+  /**
+   * Handles removing a canvas from the workspace.
+   *
+   * @param {string} id The ID of the canvas to remove.
+   */
+  const handleCanvasRemove = useCallback(
+    (id: string) => {
+      setCanvases((prev) => prev.filter((canvasId) => canvasId !== id));
+    },
+    [setCanvases]
+  );
+
+  return {
+    selectedDockTool,
+    canvases,
+    IsWorkspaceDraggable,
+    IsCanvasDraggable,
+    workspacePosition,
+    offsetIndex,
+    handleToolSelect,
+    handleCanvasFocus,
+    handleCanvasRemove,
+    setWorkspacePosition: handleWorkspacePositionChange,
+  };
+}
+```
+
+Key changes:
+
+*   A `createToolActions` function was created outside the hook scope, this function receives the `setCanvases` and `setOffsetIndex` dispatchers as parameters, so the `addCanvas` and `clearCanvases` function can keep working as intended.
+*   The `toolActions` is now memoized using `useMemo` hook.
+
+However, if `toolActions` *does* depend on state or functions within the hook, you'll need to pass those dependencies as arguments to a function that returns the `toolActions` object, as shown in the example above. This ensures that the `toolActions` object is only recreated when its dependencies change.
+
+Here are some follow-up ideas:
+
+*   Consider using a more structured approach to managing the dependencies of the `toolActions` object, such as a dedicated configuration object or a dependency injection container.
+*   Think about whether the `toolActions` object should be configurable at runtime, perhaps by reading from a configuration file or allowing users to define their own custom tool actions.
+*   Explore the possibility of using a code generation tool to automatically generate the `toolActions` object based on a predefined schema or template.
+
+## >>>>>>>>>>>>> LLM RESPONSE ENDS <<<<<<<<<<<<<<
+
+## >>>>>>>>>>>>> LLM RESPONSE ENDS <<<<<<<<<<<<<<
+---
+
+
