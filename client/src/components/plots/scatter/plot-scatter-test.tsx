@@ -12,10 +12,9 @@ interface Props {
 };
 
 export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All", SeriesData }: Props) => {
+  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>(["4", "5"]);
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
-
-  const selectedSeriesIds = ["AMZN", "GOOG"]
 
   const filteredSeries = useFilteredTimeSeries({
     allSeries: SeriesData,
