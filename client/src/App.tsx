@@ -11,10 +11,23 @@ import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 // Example data
 const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
 
+/**
+ * Defines the expected props for all plot components used within the CanvasContainer.
+ * Ensures consistency in how data is passed to different plot types.
+ * @property {TimeSeriesData[]} SeriesData - The data array to be visualized by the plot.
+ * Specific plotType plots like PlotLine or PlotScatter style and layout types are handled
+ * by their specific child plotting components
+ */
 interface PlotProps {
   SeriesData: TimeSeriesData[];
 };
 
+/**
+ * A mapping from PlotType string identifiers (defined in `useToolState`)
+ * to the actual React functional component responsible for rendering that plot type.
+ * This allows for dynamic rendering of the correct plot based on the state.
+ * Each component referenced here should conform to the `PlotProps` interface.
+ */
 const PlotComponentMap: Record<PlotType, React.ComponentType<PlotProps>> = {
   line: PlotLine,
   scatter: PlotScatterTest,
@@ -24,6 +37,7 @@ const PlotComponentMap: Record<PlotType, React.ComponentType<PlotProps>> = {
 }
 
 export default function App() {
+  // Destructure state and callbacks from the custom hook
   const {
     selectedDockTool,
     canvases,

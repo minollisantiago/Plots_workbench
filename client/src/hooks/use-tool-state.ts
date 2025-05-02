@@ -28,7 +28,7 @@ interface UseToolStateReturn {
  *
  * @returns {UseToolStateReturn} An object containing the state and functions for managing tools and canvases.
  * @property {DockTool} selectedDockTool - The currently selected dock tool.
- * @property {string[]} canvases - An array of canvas IDs.
+ * @property {CanvasState[]} canvases - An array of canvas objects, each containing an ID and plot type.
  * @property {boolean} IsWorkspaceDraggable - A boolean indicating whether the workspace is draggable.
  * @property {boolean} IsCanvasDraggable - A boolean indicating whether the canvas is draggable.
  * @property {xyPosition} workspacePosition - The current position of the workspace.
@@ -88,6 +88,8 @@ export function useToolState(): UseToolStateReturn {
    *
    * The offset index is reset when the workspace position changes (e.g., when the user pans the workspace),
    * ensuring that new canvases are positioned correctly relative to the workspace origin.
+   *
+   * @param {PlotType} plotType - The type of plot to create.
    */
   const addCanvas = useCallback((plotType: PlotType) => {
     const newCanvasId = `canvas-${Date.now()}`;
@@ -112,7 +114,12 @@ export function useToolState(): UseToolStateReturn {
 
   /**
    * An object that maps each DockTool to a function that should be executed when that tool is selected.
-   * If a tool does not need to perform any action, its function can be an empty function (`() => {}`).
+   *
+   *  -  Tools like "line", "scatter", "bar", and "histogram" are mapped to the `addCanvas` function,
+   *     which creates a new canvas of the specified type.
+   *  -  The "clear" tool is mapped to the `clearCanvases` function, which removes all canvases from the workspace.
+   *  -  Other tools, like "hand", "selection", and "curve", have empty functions assigned to them,
+   *     as they don't need to perform any specific action when selected.
    */
   const toolActions: Partial<Record<DockTool, () => void>> = {
     "hand": () => { },
