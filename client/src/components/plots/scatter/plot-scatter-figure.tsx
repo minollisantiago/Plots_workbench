@@ -1,7 +1,7 @@
 import { ThemeType } from '@/config/plots';
 import { CanvasFigure } from '../ui/canvas-figure';
-import { prepareScatterData } from './scatter.utils';
 import { ScatterData } from '@/components/plots/models';
+import { prepareScatterData } from '@/components/plots/utils';
 
 interface Props {
   data: Array<ScatterData>;

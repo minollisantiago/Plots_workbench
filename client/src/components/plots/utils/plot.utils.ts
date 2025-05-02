@@ -1,4 +1,7 @@
-// Helper function to calculate Year-to-Date trading days
+/**
+ * Calculates the number of weekdays (Monday to Friday) from the beginning of the year to the current date.
+ * @returns {number} The number of weekdays from the beginning of the year to today.
+ */
 export const calculateYTD = (): number => {
   const now = new Date();
   const startOfYear = new Date(now.getFullYear(), 0, 1);

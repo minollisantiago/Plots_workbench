@@ -1,7 +1,7 @@
 import { ThemeType } from '@/config/plots';
-import { prepareLineData } from './line.utils';
 import { CanvasFigure } from '../ui/canvas-figure';
 import { LineData } from '@/components/plots/models';
+import { prepareLineData } from '@/components/plots/utils';
 
 interface Props {
   data: Array<LineData>;
