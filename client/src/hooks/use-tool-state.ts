@@ -17,6 +17,21 @@ interface UseToolStateReturn {
   setWorkspacePosition: (position: xyPosition) => void;
 }
 
+/**
+ * Custom hook for managing the state of tools and canvases in the workspace.
+ *
+ * @returns {UseToolStateReturn} An object containing the state and functions for managing tools and canvases.
+ * @property {DockTool} selectedDockTool - The currently selected dock tool.
+ * @property {string[]} canvases - An array of canvas IDs.
+ * @property {boolean} IsWorkspaceDraggable - A boolean indicating whether the workspace is draggable.
+ * @property {boolean} IsCanvasDraggable - A boolean indicating whether the canvas is draggable.
+ * @property {xyPosition} workspacePosition - The current position of the workspace.
+ * @property {canvasOffset} offsetIndex - An object mapping canvas IDs to their offset index.
+ * @property {function} handleToolSelect - A function to handle the selection of a tool.
+ * @property {function} handleCanvasFocus - A function to handle focusing a canvas.
+ * @property {function} handleCanvasRemove - A function to handle removing a canvas.
+ * @property {function} setWorkspacePosition - A function to set the workspace position.
+ */
 export function useToolState(): UseToolStateReturn {
   const [selectedDockTool, setSelectedDockTool] = useState<DockTool>("hand");
   const [canvases, setCanvases] = useState<string[]>([]);
@@ -38,11 +53,12 @@ export function useToolState(): UseToolStateReturn {
         const newCanvasId = `canvas-${Date.now()}`;
         setCanvases(prev => [...prev, newCanvasId]);
 
-        // Wrote by monke:
-        // As new canvases are created we store their index for position offseting purposes (set at the App level)
-        // If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0,
-        // this way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
-        // after the user is done panning.
+        /**
+         * As new canvases are created we store their index for position offseting purposes (set at the App level).
+         * If the workspace position changes when the user pans around the screen, the Offset index is reset back to 0.
+         * This way new canvases begin offseting their position relative to the first canvas rendered at the center of the workspace
+         * after the user is done panning. - Wrote by monke.
+         */
         setOffsetIndex(prev => {
           const newOffset = Object.keys(prev).length;
           return { ...prev, [newCanvasId]: newOffset };

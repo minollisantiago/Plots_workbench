@@ -6,12 +6,12 @@ import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
-  title: string;
+  title?: string;
   defaultPeriod?: string;
   SeriesData: TimeSeriesData[];
 };
 
-export const PlotLine = ({ title, defaultPeriod = "All", SeriesData }: Props) => {
+export const PlotLine = ({ title = "Line Plot", defaultPeriod = "All", SeriesData }: Props) => {
   const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
   const [hiddenSeries, setHiddenSeries] = useState<Record<string, boolean>>({});
   const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});

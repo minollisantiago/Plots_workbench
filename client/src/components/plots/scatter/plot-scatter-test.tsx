@@ -11,10 +11,11 @@ interface Props {
   SeriesData: TimeSeriesData[];
 };
 
-export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", SeriesData }: Props) => {
-  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
+export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All", SeriesData }: Props) => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+
+  const selectedSeriesIds = ["AMZN", "GOOG"]
 
   const filteredSeries = useFilteredTimeSeries({
     allSeries: SeriesData,
@@ -22,18 +23,6 @@ export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", Ser
     period: timePeriod,
     dateRange: dateRange,
   });
-
-  const handleAddSeries = (series: TimeSeriesData) => {
-    setSelectedSeriesIds((prev) => (
-      prev.includes(series.id) ? prev : [...prev, series.id]
-    ));
-  };
-
-  const handleRemoveSeries = (id: string) => {
-    setSelectedSeriesIds(
-      (prev) => prev.filter(seriesId => seriesId !== id)
-    );
-  };
 
   /**
    * Handles the selection of a time period.
@@ -69,20 +58,7 @@ export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", Ser
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
         <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
-          < ScatterControls
-            header="Strategies"
-            searchTriggerLabel="Add strategies"
-            searchPlaceholder="Search strategies"
-            series={filteredSeries}
-            availableSeries={SeriesData}
-            toggledSeries={hiddenSeries}
-            highlightedSeries={highlightedSeries}
-            onAddSeries={handleAddSeries}
-            onRemoveSeries={handleRemoveSeries}
-            onTogglePlotVisibility={handleTogglePlotVisibility}
-            onTogglePlotHighlight={handleTogglePlotHighlight}
-            onToggleResetHighlight={debouncedHandleResetHighlight}
-          />
+          {/* ScatterControls */}
         </div>
       </div>
 

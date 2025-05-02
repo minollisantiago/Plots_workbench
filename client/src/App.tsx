@@ -45,7 +45,7 @@ export default function App() {
             onFocus={handleCanvasFocus}
             onRemove={handleCanvasRemove}
           >
-            <PlotLine title="Line Plot" SeriesData={exampleSeries} />
+            <PlotLine SeriesData={exampleSeries} />
           </CanvasContainer>
         ))}
 
