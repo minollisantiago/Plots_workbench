@@ -16,5 +16,6 @@ export const prepareLineData = (data: Array<LineData>): Data[] => {
     visible: series.visible ?? true,
     ...series
   }));
+  console.log("Line plot Series:", plotData);
   return plotData;
 };

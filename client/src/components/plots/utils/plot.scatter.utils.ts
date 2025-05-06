@@ -15,12 +15,13 @@ export const prepareScatterData = (data: Array<ScatterData>): Data[] => {
     mode: 'markers',
     visible: series.visible ?? true,
     opacity: series.opacity ?? 1,
-    "marker.size": series.marker.size ?? 6,
-    "marker.symbol": series.marker.symbol ?? 'circle',
-    "marker.opacity": series.marker.opacity ?? 1,
-    "marker.line.width": series.marker.line?.width ?? 1,
+    // "marker.size": series.marker.size ?? 6,
+    // "marker.symbol": series.marker.symbol ?? 'circle',
+    // "marker.opacity": series.marker.opacity ?? 1,
+    // "marker.line.width": series.marker.line?.width ?? 1,
     ...series
   }));
+  console.log("Plotly Data array:", plotData);
   return plotData;
 };
 
@@ -34,6 +35,8 @@ export const prepareScatterData = (data: Array<ScatterData>): Data[] => {
  * @param {TimeSeriesData} series2 - The second time series data. The y values of this series will be the y values of the new series.
  * @param {string} newSeriesId - The id of the new series.
  * @param {string} newSeriesLabel - The label of the new series.
+ * @param {string} newSeriesGroup - The group of the new series. Defaults to "".
+ * @param {string} newSeriesColor - The color of the new series. Defaults to "#FFFFFF".
  * @returns {TimeSeriesData | undefined} A new TimeSeriesData object or undefined if the input series are invalid.
  */
 export const combineSeriesToScatter = (

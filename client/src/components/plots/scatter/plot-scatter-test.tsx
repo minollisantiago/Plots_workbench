@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
+import { combineSeriesToScatter } from '@/components/plots/utils';
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 import { PlotScatterFigure, ScatterControls } from "@/components/plots/scatter";
@@ -22,6 +23,20 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
     period: timePeriod,
     dateRange: dateRange,
   });
+
+  const combinedSeries = useMemo(() => {
+    if (filteredSeries.length === 2) {
+      const comb = combineSeriesToScatter(
+        filteredSeries[0],
+        filteredSeries[1],
+        "combined",
+        "combined"
+      );
+      console.log("The new series is:", comb);
+      return comb;
+    };
+    return undefined;
+  }, [filteredSeries])
 
   /**
    * Handles the selection of a time period.
@@ -62,7 +77,7 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
       </div>
 
       {/* Figure */}
-      {filteredSeries.length > 0 ? (
+      {combinedSeries ? (
         <div className="flex flex-col space-y-4 p-2 h-full">
           <div className="flex justify-end">
             <TimePeriodSelector
@@ -74,9 +89,9 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
             />
           </div>
           <PlotScatterFigure
-            data={filteredSeries.map(series => ({
+            data={[combinedSeries].map(series => ({
               ...series.plotData,
-              marker: { color: series.color },
+              marker: { color: series.color, size: 6, symbol: "circle", opacity: 1 },
             }))}
             theme="dark"
           />

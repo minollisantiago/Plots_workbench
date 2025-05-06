@@ -3,6 +3,8 @@ import { Data, Layout } from 'plotly.js';
 import { LineData, ScatterData } from '@/components/plots/models';
 import { PlotConfig, ThemeType, PlotType } from '@/config/plots';
 
+// TODO: Need to add x and yaxis titles props
+
 type PlotData = LineData | ScatterData;
 
 interface Props<T extends PlotData> {
