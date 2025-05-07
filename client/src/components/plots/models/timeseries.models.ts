@@ -49,9 +49,8 @@ export interface SeriesMetadata {
 };
 
 /**
- * @type PlotData: wraps the plotly Data structure (optional properties inherited from plotly).
- * We only enforce x, y and trace name properties, all others are optional and the main ones are
- * included on specific plot data types, like LineData and ScatterData.
+ * @type PlotData: enforces the main properties required for plotting: x, y and trace name properties.
+ * All other properties are taken from plotly's Data type, at the plotting component level.
  * @property {(number | string)[]} x - The x-axis data (e.g., dates or numbers).
  * @property {number[]} y - The y-axis data (e.g., stock prices).
  * @property {string} name - The name of the data series.
@@ -64,7 +63,7 @@ export type PlotData = {
 
 /**
  * @interface TimeSeriesData: composes SeriesMetadata and PlotData with the composition pattern.
- * TimeSeriesData is the 
+ * TimeSeriesData is the main data type for the entire app, as we are working exclusively with time series data.
  * @extends {SeriesMetadata}
  * @property {PlotData} plotData - The data to plot for the time series.
  */
