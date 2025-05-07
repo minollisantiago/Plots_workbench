@@ -1,30 +1,4 @@
-import { Data } from 'plotly.js';
-import { ScatterData } from '@/components/plots/models';
 import { TimeSeriesData } from '@/components/plots/models';
-
-/**
- * Transforms an array of ScatterData objects into an array of Plotly.js Data objects.
- * This function is used to prepare scatter plot data for rendering with Plotly.js.
- *
- * @param {Array<ScatterData>} data - An array of ScatterData objects.
- * @returns {Data[]} An array of Plotly.js Data objects.
- */
-export const prepareScatterData = (data: Array<ScatterData>): Data[] => {
-  const plotData: Data[] = data.map(series => ({
-    type: 'scatter',
-    mode: 'markers',
-    visible: series.visible ?? true,
-    opacity: series.opacity ?? 1,
-    // "marker.size": series.marker.size ?? 6,
-    // "marker.symbol": series.marker.symbol ?? 'circle',
-    // "marker.opacity": series.marker.opacity ?? 1,
-    // "marker.line.width": series.marker.line?.width ?? 1,
-    ...series
-  }));
-  console.log("Plotly Data array:", plotData);
-  return plotData;
-};
-
 
 /**
  * Combines two TimeSeriesData objects into a new TimeSeriesData object
@@ -36,7 +10,7 @@ export const prepareScatterData = (data: Array<ScatterData>): Data[] => {
  * @param {string} newSeriesId - The id of the new series.
  * @param {string} newSeriesLabel - The label of the new series.
  * @param {string} newSeriesGroup - The group of the new series. Defaults to "".
- * @param {string} newSeriesColor - The color of the new series. Defaults to "#FFFFFF".
+ * @param {string} newSeriesColor - The color of the new series. Defaults to "#4DBE95".
  * @returns {TimeSeriesData | undefined} A new TimeSeriesData object or undefined if the input series are invalid.
  */
 export const combineSeriesToScatter = (
@@ -45,7 +19,7 @@ export const combineSeriesToScatter = (
   newSeriesId: string,
   newSeriesLabel: string,
   newSeriesGroup: string = "",
-  newSeriesColor: string = "#FFFFFF"
+  newSeriesColor: string = "#4DBE95"
 ): TimeSeriesData | undefined => {
   if (
     !series1 ||

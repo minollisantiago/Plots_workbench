@@ -1,10 +1,9 @@
+import { Data } from 'plotly.js';
 import { ThemeType } from '@/config/plots';
 import { CanvasFigure } from '../ui/canvas-figure';
-import { ScatterData } from '@/components/plots/models';
-import { prepareScatterData } from '@/components/plots/utils';
 
 interface Props {
-  data: Array<ScatterData>;
+  data: Array<Data>;
   title?: string;
   theme?: ThemeType;
   width?: number | string;
@@ -20,7 +19,6 @@ export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) 
       theme={theme}
       width={width}
       height={height}
-      prepareData={prepareScatterData}
     />
   );
 };

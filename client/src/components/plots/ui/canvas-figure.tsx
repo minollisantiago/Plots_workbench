@@ -1,31 +1,25 @@
 import Plot from 'react-plotly.js';
 import { Data, Layout } from 'plotly.js';
-import { LineData, ScatterData } from '@/components/plots/models';
 import { PlotConfig, ThemeType, PlotType } from '@/config/plots';
 
 // TODO: Need to add x and yaxis titles props
+// NOTE: We are using the Data plotly type across the app for plotting data
+// see @/components/plots/models/timeseries.models.ts for our time series types
 
-type PlotData = LineData | ScatterData;
-
-interface Props<T extends PlotData> {
-  data: Array<T>;
+interface Props {
+  data: Data[];
   plotType: PlotType;
   title?: string;
   theme?: ThemeType;
   width?: number | string;
   height?: number | string;
-  prepareData: (data: Array<T>) => Data[];
 }
 
-export const CanvasFigure = <T extends PlotData>(
-  { data, plotType, title, theme, width = "100%", height = "100%", prepareData }: Props<T>
-) => {
+export const CanvasFigure = (
+  { data, plotType, title, theme, width = "100%", height = "100%" }: Props) => {
 
   // Get the combined layout and theme configuration
   const layout = PlotConfig.getConfig(plotType, theme);
-
-  // Transform the data to match Plotly's expected format
-  const plotData = prepareData(data);
 
   // Add the title if provided
   if (title) { layout.title = { ...layout.title, text: title }; }
@@ -35,7 +29,7 @@ export const CanvasFigure = <T extends PlotData>(
 
   return (
     <Plot
-      data={plotData}
+      data={data}
       layout={finalLayout as Partial<Layout>}
       useResizeHandler={true}
       style={{ width, height }}

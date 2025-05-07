@@ -1,3 +1,4 @@
+import { Data } from 'plotly.js';
 import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
@@ -37,6 +38,26 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
     };
     return undefined;
   }, [filteredSeries])
+
+  const useMapTest = (data: Array<TimeSeriesData>): Data[] => {
+    const plotData: Data[] = data.map(series => ({
+      ...series.plotData,
+      type: "scatter",
+      mode: "markers",
+      marker: {
+        size: 8,
+        opacity: 1,
+        symbol: "circle",
+        color: "rgba(0, 0, 0 ,0)",
+        line: {
+          color: series.color,
+          width: 3,
+        }
+      },
+    }));
+    console.log("Scatter plot data:", plotData);
+    return plotData;
+  };
 
   /**
    * Handles the selection of a time period.
@@ -89,10 +110,7 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
             />
           </div>
           <PlotScatterFigure
-            data={[combinedSeries].map(series => ({
-              ...series.plotData,
-              marker: { color: series.color, size: 6, symbol: "circle", opacity: 1 },
-            }))}
+            data={useMapTest([combinedSeries])}
             theme="dark"
           />
         </div>

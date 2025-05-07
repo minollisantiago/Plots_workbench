@@ -22,8 +22,18 @@ export const periods: TimePeriod[] = [
   { label: "All", days: 2000 } // -1 to signify all data
 ];
 
+// NOTE: TIME SERIES TYPES - READ THE NOTES TO UNDERSTAND THE TYPES
+// Ive designed this to follow a composition + transformation approach:
+// All raw series start as a TimeSeriesData object, with metadata information + the mandatory plotting properties.
+// We then transform the TimeSeriesData child object PlotData into a specific plot type data type: LineData, ScatterData, etc.
+// This is done for plotting only and inside the specific plotting component.
+// This transformation ensures that the Data object includes all the necessary styling properties.
+// IMPORTANT IDEA BEHIND THIS APPROACH:
+// This implementation normalizes upstream data, conforming to the TimeSeriesData model. We then handle these objects plot by plot case.
+// This means that the same data can be rendered in line, scatter, etc plots, we just need to plug in the correct transformer function to the object.
+
 /**
- * @interface SeriesMetadata
+ * @interface SeriesMetadata: encapsulates time series descriptive information: labels, sublabels, groups, etc
  * @property {string} id - A unique identifier for the series.
  * @property {string} label - The primary label for the series (e.g., stock ticker).
  * @property {string} subLabel - A secondary label for the series (e.g., "Share Price").
@@ -39,19 +49,22 @@ export interface SeriesMetadata {
 };
 
 /**
- * @interface PlotData
+ * @type PlotData: wraps the plotly Data structure (optional properties inherited from plotly).
+ * We only enforce x, y and trace name properties, all others are optional and the main ones are
+ * included on specific plot data types, like LineData and ScatterData.
  * @property {(number | string)[]} x - The x-axis data (e.g., dates or numbers).
  * @property {number[]} y - The y-axis data (e.g., stock prices).
  * @property {string} name - The name of the data series.
  */
-export interface PlotData {
+export type PlotData = {
   x: (number | string)[];
   y: number[];
   name: string;
 };
 
 /**
- * @interface TimeSeriesData
+ * @interface TimeSeriesData: composes SeriesMetadata and PlotData with the composition pattern.
+ * TimeSeriesData is the 
  * @extends {SeriesMetadata}
  * @property {PlotData} plotData - The data to plot for the time series.
  */
@@ -59,51 +72,3 @@ export interface TimeSeriesData extends SeriesMetadata {
   plotData: PlotData;
 };
 
-/**
- * @interface LineData: This interface is individual, for one specific trace, for an array of traces ==> Array<LineData> is required
- * @extends {PlotData}
- * @property {('y' | 'y2')=} yaxis - The y-axis to use for the line plot (optional, defaults to 'y').
- * @property {boolean=} visible - Whether the line plot is visible (optional, defaults to true).
- * @property {number=} opacity - The opacity of the line plot (optional, defaults to 1).
- * @property {Object} line - The line styling properties.
- * @property {number=} line.width - The width of the line (optional).
- * @property {string} line.color - The color of the line.
- */
-export interface LineData extends PlotData {
-  yaxis?: 'y' | 'y2';
-  visible?: boolean;
-  opacity?: number;
-  line: {
-    width?: number;
-    color: string;
-  };
-};
-
-/**
- * @interface ScatterData: This interface is individual, for one specific trace, for an array of traces ==> Array<ScatterData> is required
- * @extends {PlotData}
- * @property {boolean=} visible - Whether the scatter plot is visible (optional, defaults to true).
- * @property {number=} opacity - The opacity of the scatter plot (optional, defaults to 1).
- * @property {Object} marker - The marker styling properties.
- * @property {number=} marker.size - The size of the markers (optional).
- * @property {string=} marker.symbol - The symbol to use for the markers (optional).
- * @property {string=} marker.color - The color of the markers.
- * @property {number=} marker.opacity - The opacity of the markers (optional).
- * @property {Object} marker.line - The line styling properties for the marker outline (optional).
- * @property {number=} marker.line.width - The width of the marker outline (optional).
- * @property {string=} marker.line.color - The color of the marker outline (optional).
- */
-export interface ScatterData extends PlotData {
-  visible?: boolean;
-  opacity?: number;
-  marker: {
-    size?: number;
-    symbol?: string;
-    color: string;
-    opacity?: number;
-    line?: {
-      width?: number;
-      color: string;
-    }
-  }
-}
