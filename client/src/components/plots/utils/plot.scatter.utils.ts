@@ -1,4 +1,32 @@
+import { Data } from 'plotly.js';
 import { TimeSeriesData } from '@/components/plots/models';
+
+/**
+ * Generates Plotly.js data objects for a scatter plot from the provided time series data.
+ *
+ * @param {TimeSeriesData[]} data - The time series data to be plotted.
+ * @param {boolean} [verbose=false] - If true, logs the generated plot data to the console.
+ * @returns {Data[]} An array of Plotly.js data objects configured for a scatter plot.
+ */
+export const prepareScatterData = (data: Array<TimeSeriesData>, verbose: boolean = false): Data[] => {
+  const plotData: Data[] = data.map(series => ({
+    ...series.plotData,
+    type: "scatter",
+    mode: "markers",
+    marker: {
+      size: 8,
+      opacity: 1,
+      symbol: "circle",
+      color: "rgba(0, 0, 0 ,0)",
+      line: {
+        color: series.color,
+        width: 3,
+      }
+    },
+  }));
+  if (verbose) console.log("Scatter plot data:", plotData);
+  return plotData;
+};
 
 /**
  * Combines two TimeSeriesData objects into a new TimeSeriesData object

@@ -1,7 +1,7 @@
-import { Data } from 'plotly.js';
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
-import { useState, useEffect, useRef } from "react";
+import { prepareLineData } from '@/components/plots/utils';
+import { useState, useEffect, useRef, useMemo } from "react";
 import { PlotLineFigure, LineControls } from "@/components/plots/line";
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
@@ -29,17 +29,10 @@ export const PlotLine = ({ title = "Line Plot", defaultPeriod = "All", SeriesDat
     dateRange: dateRange,
   });
 
-  const useMapTest = (data: Array<TimeSeriesData>): Data[] => {
-    const plotData: Data[] = data.map(series => ({
-      ...series.plotData,
-      type: "scatter",
-      opacity: highlightedSeries[series.id] ?? 1,
-      visible: hiddenSeries[series.id] ?? true,
-      line: { color: series.color },
-    }));
-    console.log("Line plot data:", plotData);
-    return plotData;
-  };
+  const plotData = useMemo(() => {
+    return prepareLineData(filteredSeries, highlightedSeries, hiddenSeries);
+  }, [filteredSeries, highlightedSeries, hiddenSeries]);
+
 
   // Initialize highlightedSeries with all IDs from SeriesData
   useEffect(() => {
@@ -177,7 +170,7 @@ export const PlotLine = ({ title = "Line Plot", defaultPeriod = "All", SeriesDat
             />
           </div>
           <PlotLineFigure
-            data={useMapTest(filteredSeries)}
+            data={plotData}
             theme="dark"
           />
         </div>

@@ -1,11 +1,10 @@
-import { Data } from 'plotly.js';
 import { useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
-import { combineSeriesToScatter } from '@/components/plots/utils';
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 import { PlotScatterFigure, ScatterControls } from "@/components/plots/scatter";
+import { prepareScatterData, combineSeriesToScatter } from '@/components/plots/utils';
 
 interface Props {
   title?: string;
@@ -26,38 +25,20 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
   });
 
   const combinedSeries = useMemo(() => {
-    if (filteredSeries.length === 2) {
-      const comb = combineSeriesToScatter(
-        filteredSeries[0],
-        filteredSeries[1],
-        "combined",
-        "combined"
-      );
-      console.log("The new series is:", comb);
-      return comb;
-    };
-    return undefined;
-  }, [filteredSeries])
+    // only combine the series if filteredSeries has 2 TimeSeriesData objects in it.
+    if (filteredSeries.length !== 2) return undefined;
+    return combineSeriesToScatter(
+      filteredSeries[0],
+      filteredSeries[1],
+      "combined",
+      "combined"
+    );
+  }, [filteredSeries]);
 
-  const useMapTest = (data: Array<TimeSeriesData>): Data[] => {
-    const plotData: Data[] = data.map(series => ({
-      ...series.plotData,
-      type: "scatter",
-      mode: "markers",
-      marker: {
-        size: 8,
-        opacity: 1,
-        symbol: "circle",
-        color: "rgba(0, 0, 0 ,0)",
-        line: {
-          color: series.color,
-          width: 3,
-        }
-      },
-    }));
-    console.log("Scatter plot data:", plotData);
-    return plotData;
-  };
+  const plotData = useMemo(() => {
+    if (!combinedSeries) return undefined;
+    return (prepareScatterData([combinedSeries]));
+  }, [combinedSeries]);
 
   /**
    * Handles the selection of a time period.
@@ -98,7 +79,7 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
       </div>
 
       {/* Figure */}
-      {combinedSeries ? (
+      {plotData ? (
         <div className="flex flex-col space-y-4 p-2 h-full">
           <div className="flex justify-end">
             <TimePeriodSelector
@@ -109,10 +90,7 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
               onDateRangeSelect={handleSetDateRange}
             />
           </div>
-          <PlotScatterFigure
-            data={useMapTest([combinedSeries])}
-            theme="dark"
-          />
+          <PlotScatterFigure data={plotData} theme="dark" />
         </div>
       ) : (
         <div className="flex items-center justify-center text-muted-foreground">
