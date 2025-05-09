@@ -85,7 +85,8 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
           < ScatterControls
             searchTriggerLabel="Select a strategy"
             searchPlaceholder="Search strategies"
-            series={filteredSeries}
+            seriesX={filteredSeries[0]}
+            seriesY={filteredSeries[1]}
             availableSeries={SeriesData}
             onAddSeries={handleAddSeries}
             onRemoveSeries={handleRemoveSeries}
