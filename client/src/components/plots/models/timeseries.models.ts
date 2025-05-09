@@ -43,9 +43,9 @@ export const periods: TimePeriod[] = [
 export interface SeriesMetadata {
   id: string;
   label: string;
-  subLabel: string;
+  subLabel?: string;
+  group?: string;
   color: string;
-  group: string;
 };
 
 /**

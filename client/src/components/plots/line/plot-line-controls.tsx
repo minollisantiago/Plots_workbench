@@ -7,16 +7,19 @@ interface Props {
   header: string;
   searchTriggerLabel: string;
   searchPlaceholder: string;
-  series: TimeSeriesData[];
-  availableSeries: TimeSeriesData[];
-  toggledSeries: Record<string, boolean>;
-  highlightedSeries: Record<string, number>;
-  onRemoveSeries: (id: string) => void;
+  series?: TimeSeriesData[];
+  availableSeries?: TimeSeriesData[];
+  toggledSeries?: Record<string, boolean>;
+  highlightedSeries?: Record<string, number>;
   onAddSeries: (series: TimeSeriesData) => void;
-  onTogglePlotVisibility: (id: string) => void;
-  onTogglePlotHighlight: (id: string) => void;
-  onToggleResetHighlight: () => void;
+  onRemoveSeries: (id: string) => void;
+  onTogglePlotVisibility?: (id: string) => void;
+  onTogglePlotHighlight?: (id: string) => void;
+  onToggleResetHighlight?: () => void;
 }
+
+// TODO: The onAddSeries method works with TimeSeriesData objects, but on SeriesSearch we are using
+// SeriesMetadata objects (TimeSeriesData extends SeriesMetadata with PlotData). Consider unifying types
 
 export const LineControls = ({
   header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries,
@@ -37,7 +40,7 @@ export const LineControls = ({
 
       {/* Selected series group */}
       <div className="flex flex-col space-y-2 overflow-hidden">
-        {series.length > 0 &&
+        {series &&
           <>
             <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
             <ScrollArea className="h-full w-full pr-3">
@@ -49,10 +52,10 @@ export const LineControls = ({
                     label={item.label}
                     subLabel={item.subLabel}
                     color={item.color}
-                    toggled={toggledSeries[item.id] ?? true}
+                    toggled={toggledSeries?.[item.id] ?? true}
                     onRemove={() => onRemoveSeries(item.id)}
-                    onToggleVisibility={() => onTogglePlotVisibility(item.id)}
-                    onHighlight={() => onTogglePlotHighlight(item.id)}
+                    onToggleVisibility={() => onTogglePlotVisibility?.(item.id)}
+                    onHighlight={() => onTogglePlotHighlight?.(item.id)}
                     onResetHighlight={onToggleResetHighlight}
                   />
                 ))}

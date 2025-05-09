@@ -1,29 +1,24 @@
 import { useState } from "react"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { SeriesMetadata } from "@/components/plots/models";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandList, CommandItem } from "@/components/ui/command"
-
-interface SeriesOption {
-  id: string
-  label: string
-  subLabel?: string
-  group?: string
-}
 
 interface Props {
   triggerLabel?: string
   searchPlaceholder?: string
   emptyPlaceholder?: string
-  options: SeriesOption[]
-  onSelect: (series: SeriesOption) => void
+  options?: SeriesMetadata[]
+  onSelect?: (series: SeriesMetadata) => void
 }
 
 export const SeriesSearch = ({
   triggerLabel = "Add series",
   searchPlaceholder = "Find series",
   emptyPlaceholder = "No results found.",
-  options, onSelect
+  options = [],
+  onSelect
 }: Props) => {
 
   const [open, setOpen] = useState(false)
@@ -46,8 +41,10 @@ export const SeriesSearch = ({
                 <CommandItem
                   key={series.id}
                   onSelect={() => {
-                    onSelect(series)
-                    setOpen(false)
+                    if (onSelect) {
+                      onSelect(series)
+                      setOpen(false)
+                    }
                   }}
                 >
                   <div className="flex flex-row justify-between w-full">
