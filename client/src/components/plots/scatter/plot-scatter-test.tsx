@@ -83,8 +83,7 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
         <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
           < ScatterControls
-            header="Strategies"
-            searchTriggerLabel="Add strategies"
+            searchTriggerLabel="Select a strategy"
             searchPlaceholder="Search strategies"
             series={filteredSeries}
             availableSeries={SeriesData}

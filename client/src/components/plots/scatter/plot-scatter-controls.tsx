@@ -4,7 +4,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
-  header: string;
   searchTriggerLabel: string;
   searchPlaceholder: string;
   series?: TimeSeriesData[];
@@ -14,14 +13,26 @@ interface Props {
 }
 
 export const ScatterControls = ({
-  header, searchTriggerLabel, searchPlaceholder, series, availableSeries,
+  searchTriggerLabel, searchPlaceholder, series, availableSeries,
   onRemoveSeries, onAddSeries
 }: Props) => {
   return (
     <div className="flex flex-col space-y-4 h-full bg-background">
 
-      {/* Series Search */}
-      <div className="pr-3">
+      {/* Series Search - X-axis */}
+      <div className="flex flex-col space-y-2 pr-3">
+        <h2 className="text-xs font-medium text-muted-foreground">X-axis</h2>
+        <SeriesSearch
+          options={availableSeries}
+          onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
+          searchPlaceholder={searchPlaceholder}
+          triggerLabel={searchTriggerLabel}
+        />
+      </div>
+
+      {/* Series Search - X-axis */}
+      <div className="flex flex-col space-y-2 pr-3">
+        <h2 className="text-xs font-medium text-muted-foreground">Y-axis</h2>
         <SeriesSearch
           options={availableSeries}
           onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
@@ -34,7 +45,6 @@ export const ScatterControls = ({
       <div className="flex flex-col space-y-2 overflow-hidden">
         {series &&
           <>
-            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
             <ScrollArea className="h-full w-full pr-3">
               <div className="space-y-2">
                 {/* Selected series card */}

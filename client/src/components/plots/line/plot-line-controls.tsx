@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TimeSeriesData } from "@/components/plots/models";
 
 interface Props {
-  header: string;
+  header?: string;
   searchTriggerLabel: string;
   searchPlaceholder: string;
   series?: TimeSeriesData[];
@@ -42,7 +42,7 @@ export const LineControls = ({
       <div className="flex flex-col space-y-2 overflow-hidden">
         {series &&
           <>
-            <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>
+            {header && <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>}
             <ScrollArea className="h-full w-full pr-3">
               <div className="space-y-2">
                 {/* Selected series card */}
