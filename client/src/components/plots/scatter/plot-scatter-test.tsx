@@ -40,6 +40,14 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
     return (prepareScatterData([combinedSeries]));
   }, [combinedSeries]);
 
+  const handleAddSeries = () => void {
+
+  };
+
+  const handleRemoveSeries = () => {
+
+  };
+
   /**
    * Handles the selection of a time period.
    *
@@ -74,7 +82,15 @@ export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All",
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
         <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
-          {/* ScatterControls */}
+          < ScatterControls
+            header="Strategies"
+            searchTriggerLabel="Add strategies"
+            searchPlaceholder="Search strategies"
+            series={filteredSeries}
+            availableSeries={SeriesData}
+            onAddSeries={handleAddSeries}
+            onRemoveSeries={handleRemoveSeries}
+          />
         </div>
       </div>
 

@@ -9,14 +9,12 @@ interface Props {
   searchPlaceholder: string;
   series?: TimeSeriesData[];
   availableSeries?: TimeSeriesData[];
-  toggledSeries?: Record<string, boolean>;
-  highlightedSeries?: Record<string, number>;
   onAddSeries: (series: TimeSeriesData) => void;
   onRemoveSeries: (id: string) => void;
 }
 
 export const ScatterControls = ({
-  header, searchTriggerLabel, searchPlaceholder, series, availableSeries, toggledSeries,
+  header, searchTriggerLabel, searchPlaceholder, series, availableSeries,
   onRemoveSeries, onAddSeries
 }: Props) => {
   return (
@@ -46,7 +44,6 @@ export const ScatterControls = ({
                     label={item.label}
                     subLabel={item.subLabel}
                     color={item.color}
-                    toggled={toggledSeries?.[item.id] ?? true}
                     onRemove={() => onRemoveSeries(item.id)}
                   />
                 ))}
