@@ -2,6 +2,13 @@ import { useMemo } from "react";
 import { DateRange } from "react-day-picker";
 import { TimePeriod, TimeSeriesData } from "@/components/plots/models";
 
+interface props {
+  allSeries: TimeSeriesData[];
+  selectedSeriesIds: string[];
+  period: TimePeriod;
+  dateRange?: DateRange | undefined;
+};
+
 /**
  * useFilteredTimeSeries Hook
  *
@@ -15,14 +22,6 @@ import { TimePeriod, TimeSeriesData } from "@/components/plots/models";
  *
  * @returns {TimeSeriesData[]} A new array containing the filtered time series data.
  */
-
-interface props {
-  allSeries: TimeSeriesData[];
-  selectedSeriesIds: string[];
-  period: TimePeriod;
-  dateRange?: DateRange | undefined;
-};
-
 export const useFilteredTimeSeries = ({ allSeries, selectedSeriesIds, period, dateRange }: props): TimeSeriesData[] => {
 
   return useMemo(() => {
