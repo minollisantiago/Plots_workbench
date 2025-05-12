@@ -1,10 +1,9 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useFilteredTimeSeries } from "@/hooks";
+import { useScatterPlotData } from "@/hooks";
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 import { PlotScatterFigure, ScatterControls } from "@/components/plots/scatter";
-import { prepareScatterData, combineSeriesToScatter } from '@/components/plots/utils';
 
 interface Props {
   title?: string;
@@ -15,49 +14,12 @@ interface Props {
 export const PlotScatterTest = ({ title = "Scatter Plot", defaultPeriod = "All", SeriesData }: Props) => {
   const [selectedXId, setSelectedXId] = useState<string | undefined>();
   const [selectedYId, setSelectedYId] = useState<string | undefined>();
-  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-  const uniqueActiveSeriesIds = useMemo(() => {
-    const ids = new Set<string>();
-    if (selectedXId) ids.add(selectedXId);
-    if (selectedYId) ids.add(selectedYId);
-    return Array.from(ids);
-  }, [selectedXId, selectedYId]);
-
-  const filteredSeries = useFilteredTimeSeries({
-    allSeries: SeriesData,
-    selectedSeriesIds: uniqueActiveSeriesIds,
-    period: timePeriod,
-    dateRange: dateRange,
-  });
-
-  const currentSeriesX = useMemo(() => {
-    if (!selectedXId) return undefined;
-    return filteredSeries.find(series => series.id === selectedXId);
-  }, [filteredSeries]);
-
-  const currentSeriesY = useMemo(() => {
-    if (!selectedYId) return undefined;
-    return filteredSeries.find(series => series.id === selectedYId);
-  }, [filteredSeries]);
-
-  const combinedSeries = useMemo(() => {
-    if (!currentSeriesX || !currentSeriesY) return undefined;
-
-    return combineSeriesToScatter(
-      currentSeriesX,
-      currentSeriesY,
-      `${currentSeriesX.label} vs ${currentSeriesY.label}`,
-      `${currentSeriesX.label} vs ${currentSeriesY.label}`,
-    );
-  }, [currentSeriesX, currentSeriesY]);
-
-  const plotData = useMemo(() => {
-    if (!combinedSeries) return undefined;
-    return (prepareScatterData([combinedSeries]));
-  }, [combinedSeries]);
+  const { currentSeriesX, currentSeriesY, plotData } = useScatterPlotData(
+    { selectedXId, selectedYId, timePeriod, dateRange, SeriesData }
+  );
 
   const handleAddSeriesX = (series: TimeSeriesData) => {
     setSelectedXId(series.id);
