@@ -8,25 +8,27 @@ interface Props {
   seriesX?: TimeSeriesData;
   seriesY?: TimeSeriesData;
   availableSeries?: TimeSeriesData[];
-  onAddSeries: (series: TimeSeriesData) => void;
-  onRemoveSeries: (id: string) => void;
+  onAddSeriesX: (series: TimeSeriesData) => void;
+  onAddSeriesY: (series: TimeSeriesData) => void;
+  onRemoveSeriesX: (id: string) => void;
+  onRemoveSeriesY: (id: string) => void;
 }
 
 export const ScatterControls = ({
   searchTriggerLabel, searchPlaceholder, seriesX, seriesY, availableSeries,
-  onRemoveSeries, onAddSeries
+  onRemoveSeriesX, onRemoveSeriesY, onAddSeriesX, onAddSeriesY
 }: Props) => {
   return (
     <div className="flex flex-col space-y-4 h-full bg-background">
 
-      {/* Y-axis */}
+      {/* X-axis */}
       <div className="flex flex-col space-y-2 pr-3">
         <h2 className="text-xs font-medium text-muted-foreground">X-axis</h2>
 
         {/* Series Search */}
         <SeriesSearch
           options={availableSeries}
-          onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
+          onSelect={(selectedSeries) => onAddSeriesX(selectedSeries as TimeSeriesData)}
           searchPlaceholder={searchPlaceholder}
           triggerLabel={searchTriggerLabel}
         />
@@ -42,7 +44,7 @@ export const ScatterControls = ({
                   label={seriesX.label}
                   subLabel={seriesX.subLabel}
                   color={seriesX.color}
-                  onRemove={() => onRemoveSeries(seriesX.id)}
+                  onRemove={() => onRemoveSeriesX(seriesX.id)}
                 />
               </div>
             </>
@@ -50,14 +52,14 @@ export const ScatterControls = ({
         </div>
       </div>
 
-      {/* X-axis */}
+      {/* Y-axis */}
       <div className="flex flex-col space-y-2 pr-3">
         <h2 className="text-xs font-medium text-muted-foreground">Y-axis</h2>
 
         {/* Series Search */}
         <SeriesSearch
           options={availableSeries}
-          onSelect={(selectedSeries) => onAddSeries(selectedSeries as TimeSeriesData)}
+          onSelect={(selectedSeries) => onAddSeriesY(selectedSeries as TimeSeriesData)}
           searchPlaceholder={searchPlaceholder}
           triggerLabel={searchTriggerLabel}
         />
@@ -73,7 +75,7 @@ export const ScatterControls = ({
                   label={seriesY.label}
                   subLabel={seriesY.subLabel}
                   color={seriesY.color}
-                  onRemove={() => onRemoveSeries(seriesY.id)}
+                  onRemove={() => onRemoveSeriesY(seriesY.id)}
                 />
               </div>
             </>

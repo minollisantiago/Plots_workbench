@@ -1,54 +1,50 @@
+Would you combine these two constants of keep them separated? They are inside a react component:
 
-Is it a good practice to use snake case to define props on components? like this for example:
-
-<llm_context name="Props" filetype="typescriptreact" kind="Interface">
+<llm_context filetype="typescriptreact" kind="Variable" name="combinedSeries">
 ```typescriptreact
-interface Props {
-  searchTriggerLabel: string;
-  searchPlaceholder: string;
-  series?: TimeSeriesData[];
-  series_x?: TimeSeriesData[];
-  series_y?: TimeSeriesData[];
-  availableSeries?: TimeSeriesData[];
-  onAddSeries: (series: TimeSeriesData) =&gt; void;
-  onRemoveSeries: (id: string) =&gt; void;
-}
+  const combinedSeries = useMemo(() => {
+    // only combine the series if filteredSeries has 2 TimeSeriesData objects in it.
+    if (filteredSeries.length !== 2) return undefined;
+    return combineSeriesToScatter(
+      filteredSeries[0],
+      filteredSeries[1],
+      "combined",
+      "combined",
+    );
+  }, [filteredSeries]);
 ```
 </llm_context>
+
+<llm_context filetype="typescriptreact" kind="Variable" name="plotData">
+```typescriptreact
+  const plotData = useMemo(() => {
+    if (!combinedSeries) return undefined;
+    return (prepareScatterData([combinedSeries]));
+  }, [combinedSeries]);
+```
+</llm_context>
+
+
+WE first combined two series and then prepare them for plotly compliant data arrays.
 
 
 ---
 ## >>>>>>>>>>>>> LLM RESPONSE STARTS <<<<<<<<<<<<<<
 
-While the code you provided is valid TypeScript, it's generally not considered best practice to use snake_case for prop names in React components.
+It's generally better to keep `combinedSeries` and `plotData` separated for the following reasons:
 
-The React ecosystem and JavaScript/TypeScript style guides typically favor camelCase for variable and property names. This includes props passed to React components.
+*   **Clarity and Readability**: Separating the concerns of combining the series and preparing the data for plotting makes the code easier to understand. Each `useMemo` hook has a single, clear responsibility.
+*   **Testability**:  Separating the logic allows you to more easily test the `combineSeriesToScatter` and `prepareScatterData` functions independently.
+*   **Maintainability**: If the way you prepare the data for plotting changes in the future, you only need to modify the `plotData` `useMemo` hook. If you combine them, you'd have to modify a single, larger block of code.
+*   **Debugging**: When debugging, it's easier to isolate issues when the logic is separated. You can inspect `combinedSeries` to ensure the series are being combined correctly before the plotting data is prepared.
 
-Here's why:
+Given the current code, combining them would not offer significant performance benefits and would reduce readability.
 
-*   **Consistency:**  Using camelCase consistently throughout your codebase (including prop names) makes the code easier to read and understand. It aligns with the prevailing style in the JavaScript and React community.
-*   **JavaScript Conventions:** JavaScript itself uses camelCase for most things.  Sticking to camelCase for props keeps your code aligned with standard JavaScript conventions.
-*   **HTML Attributes:**  HTML attributes are case-insensitive, and React automatically converts camelCase props to their kebab-case equivalents when passing them to DOM elements (e.g., `myProp` becomes `my-prop`).  However, this conversion is for DOM attributes, not for props passed between React components.
+Some potential next steps are:
 
-Here's the `Props` interface refactored to use camelCase:
-
-```typescriptreact
-interface Props {
-  searchTriggerLabel: string;
-  searchPlaceholder: string;
-  series?: TimeSeriesData[];
-  seriesX?: TimeSeriesData[];
-  seriesY?: TimeSeriesData[];
-  availableSeries?: TimeSeriesData[];
-  onAddSeries: (series: TimeSeriesData) => void;
-  onRemoveSeries: (id: string) => void;
-}
-```
-
-**Suggested next steps:**
-
-*   **Linting:**  Configure a linter (like ESLint with the Airbnb or Standard config) to automatically enforce camelCase for prop names and other JavaScript/TypeScript code. This will help maintain consistency across your project.
-*   **Refactor Existing Code:**  If you have existing components that use snake\_case props, refactor them to use camelCase.  This will improve the overall consistency and readability of your codebase.
+*   Consider adding unit tests for `combineSeriesToScatter` and `prepareScatterData` to ensure they are working as expected.
+*   If you find that `filteredSeries` often has fewer or more than 2 elements, you could add a check at the beginning of the component to avoid unnecessary calculations.
+*   You could create a custom hook that encapsulates the combination and preparation logic if you find yourself repeating this pattern in multiple components.
 
 ## >>>>>>>>>>>>> LLM RESPONSE ENDS <<<<<<<<<<<<<<
 ---
