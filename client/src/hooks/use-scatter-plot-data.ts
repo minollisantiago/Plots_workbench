@@ -44,12 +44,12 @@ export const useScatterPlotData = ({
   const currentSeriesX = useMemo(() => {
     if (!selectedXId) return undefined;
     return filteredSeries.find(series => series.id === selectedXId);
-  }, [filteredSeries, filteredSeries]);
+  }, [selectedXId, filteredSeries]);
 
   const currentSeriesY = useMemo(() => {
     if (!selectedYId) return undefined;
     return filteredSeries.find(series => series.id === selectedYId);
-  }, [filteredSeries, filteredSeries]);
+  }, [selectedYId, filteredSeries]);
 
   const combinedSeries = useMemo(() => {
     if (!currentSeriesX || !currentSeriesY) return undefined;
