@@ -3,6 +3,7 @@ import { PlotLayout } from '@/config/plots/models';
 import { baseLayout, baseAxisConfig } from './base';
 
 export const scatterLayout: Partial<PlotLayout> = merge({}, baseLayout, {
+  hovermode: 'closest',
   margin: {
     b: 44,
     l: 60,
@@ -24,10 +25,24 @@ export const scatterLayout: Partial<PlotLayout> = merge({}, baseLayout, {
     ...baseAxisConfig,
     hoverformat: '.2f',
     side: 'left',
-    showline: true,
-    showgrid: true,
+    spikethickness: 2,
+    linewidth: 2,
+    ticks: '',
     title: {
       standoff: 8
+    }
+  },
+  yaxis2: {
+    ...baseAxisConfig,
+    automargin: true,
+    hoverformat: '.2f',
+    overlaying: 'y',
+    showgrid: false,
+    side: 'right',
+    spikethickness: 2,
+    linewidth: 2,
+    title: {
+      standoff: 20
     }
   }
 });

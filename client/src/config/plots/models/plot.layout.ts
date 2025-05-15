@@ -28,11 +28,8 @@ export interface PlotLayout {
   };
   xaxis?: AxisLayout;
   yaxis?: AxisLayout;
-  yaxis2?: AxisLayout & {
-    overlaying?: 'y';
-    automargin?: boolean;
-  };
-}
+  yaxis2?: AxisLayout;
+};
 
 export interface AxisLayout {
   hoverformat?: string;

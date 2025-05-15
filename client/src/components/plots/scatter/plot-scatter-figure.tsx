@@ -14,7 +14,7 @@ export const PlotScatterFigure = ({ data, title, theme, width, height }: Props) 
   return (
     <CanvasFigure
       data={data}
-      plotType="line"
+      plotType="scatter"
       title={title}
       theme={theme}
       width={width}

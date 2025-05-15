@@ -7,6 +7,7 @@ import { PlotLayout, AxisLayout } from '@/config/plots/models';
  * including size, legend position, margins, and transition effects.
  */
 export const baseLayout: Partial<PlotLayout> = {
+  hovermode: 'closest',
   autosize: true,
   width: undefined,
   height: undefined,
