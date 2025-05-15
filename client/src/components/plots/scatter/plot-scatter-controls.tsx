@@ -44,6 +44,7 @@ export const ScatterControls = ({
                   label={seriesX.label}
                   subLabel={seriesX.subLabel}
                   color={seriesX.color}
+                  toggled={true}
                   onRemove={() => onRemoveSeriesX(seriesX.id)}
                 />
               </div>
@@ -75,6 +76,7 @@ export const ScatterControls = ({
                   label={seriesY.label}
                   subLabel={seriesY.subLabel}
                   color={seriesY.color}
+                  toggled={true}
                   onRemove={() => onRemoveSeriesY(seriesY.id)}
                 />
               </div>

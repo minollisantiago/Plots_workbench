@@ -3,18 +3,6 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 
-/**
- * SeriesCard component that displays a series label with associated color and interactions.
- *
- * @param {string} label - The main label of the series.
- * @param {string} [subLabel] - An optional sub-label for the series.
- * @param {string} color - The color associated with the series, used for styling.
- * @param {boolean} [toggled] - A boolean indicating whether the series is toggled on/off.
- * @param {() => void} [onRemove] - Callback function to remove the series.
- * @param {() => void} [onToggleVisibility] - Callback function to toggle the visibility of the series (hidden or visible)
- * @param {() => void} [onHighlight] - Callback function to highlight the series (adjusting opacity on hover).
- * @param {() => void} [onResetHighlight] - Callback function to reset the highlight of the series.
- */
 interface Props {
   label: string;
   subLabel?: string;
