@@ -4,12 +4,6 @@ import { baseLayout, baseAxisConfig } from './base';
 
 export const barLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   hovermode: 'x',
-  legend: {
-    orientation: 'h',
-    x: -0.1,
-    xanchor: 'auto',
-    y: 1.4
-  },
   margin: {
     b: 50,
     l: 60,
@@ -19,24 +13,24 @@ export const barLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   xaxis: {
     ...baseAxisConfig,
     hoverformat: '%d-%m-%Y %H:%M',
-    showgrid: false,
     showline: true,
+    showgrid: false,
     showspikes: false,
     spikethickness: 2,
-    zeroline: false,
+    linewidth: 2,
     title: {
-      standoff: 10
+      standoff: 0
     }
   },
   yaxis: {
     ...baseAxisConfig,
     hoverformat: '.2f',
-    linewidth: 0,
-    showgrid: true,
-    showline: false,
     side: 'left',
+    spikethickness: 2,
+    linewidth: 2,
+    ticks: '',
     title: {
-      standoff: 10
+      standoff: 8
     }
   },
   yaxis2: {
@@ -45,8 +39,9 @@ export const barLayout: Partial<PlotLayout> = merge({}, baseLayout, {
     hoverformat: '.2f',
     overlaying: 'y',
     showgrid: false,
-    showline: false,
     side: 'right',
+    spikethickness: 2,
+    linewidth: 2,
     title: {
       standoff: 20
     }

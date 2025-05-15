@@ -3,9 +3,8 @@ import { PlotType } from '@/config/plots';
 import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
 import { TimeSeriesData } from "@/components/plots/models";
-import { PlotLine } from '@/components/plots/line/plot-line';
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { PlotScatter } from '@/components/plots/scatter/plot-scatter';
+import { PlotLine, PlotScatter, PlotBar } from '@/components/plots';
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 
 // Example data
@@ -31,7 +30,7 @@ interface PlotProps {
 const PlotComponentMap: Record<PlotType, React.ComponentType<PlotProps>> = {
   line: PlotLine,
   scatter: PlotScatter,
-  bar: () => <div>Under developement</div>,
+  bar: PlotBar,
   histogramH: () => <div>Under developement</div>,
   histogramV: () => <div>Under developement</div>,
 }
