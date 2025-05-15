@@ -3,33 +3,29 @@ import { PlotLayout } from '@/config/plots/models';
 import { baseLayout, baseAxisConfig } from './base';
 
 export const scatterLayout: Partial<PlotLayout> = merge({}, baseLayout, {
-  legend: {
-    orientation: 'h',
-    x: 1,
-    xanchor: 'auto',
-    y: 1.09
-  },
   margin: {
-    b: 50,
+    b: 44,
     l: 60,
-    r: 42,
-    t: 16
+    r: 0,
+    t: 0
   },
   xaxis: {
     ...baseAxisConfig,
-    hoverformat: '.2f',
     showline: true,
-    showgrid: true,
+    showgrid: false,
     showspikes: false,
     spikethickness: 2,
-    linewidth: 2
+    linewidth: 2,
+    title: {
+      standoff: 0
+    }
   },
   yaxis: {
     ...baseAxisConfig,
     hoverformat: '.2f',
+    side: 'left',
     showline: true,
     showgrid: true,
-    side: 'left',
     title: {
       standoff: 8
     }

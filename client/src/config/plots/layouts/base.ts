@@ -1,5 +1,11 @@
 import { PlotLayout, AxisLayout } from '@/config/plots/models';
 
+/**
+ * Base layout configuration for all plot types.
+ *
+ * This configuration provides default settings for the overall plot appearance,
+ * including size, legend position, margins, and transition effects.
+ */
 export const baseLayout: Partial<PlotLayout> = {
   autosize: true,
   width: undefined,
@@ -26,6 +32,12 @@ export const baseLayout: Partial<PlotLayout> = {
   }
 };
 
+/**
+ * Base axis configuration for all plot types.
+ *
+ * This configuration provides default settings for the appearance of x and y axes,
+ * including grid lines, ticks, line styles, and titles.
+ */
 export const baseAxisConfig: Partial<AxisLayout> = {
   showline: false,
   showgrid: true,
