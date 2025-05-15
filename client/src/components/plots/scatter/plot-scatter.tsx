@@ -1,38 +1,40 @@
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
-import { useFilteredTimeSeries } from "@/hooks";
+import { useScatterPlotData } from "@/hooks";
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
 import { TimePeriod, periods, TimeSeriesData } from "@/components/plots/models";
 import { PlotScatterFigure, ScatterControls } from "@/components/plots/scatter";
 
 interface Props {
-  title: string;
+  title?: string;
   defaultPeriod?: string;
   SeriesData: TimeSeriesData[];
 };
 
 export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", SeriesData }: Props) => {
-  const [selectedSeriesIds, setSelectedSeriesIds] = useState<string[]>([]);
+  const [selectedXId, setSelectedXId] = useState<string | undefined>();
+  const [selectedYId, setSelectedYId] = useState<string | undefined>();
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
-  const filteredSeries = useFilteredTimeSeries({
-    allSeries: SeriesData,
-    selectedSeriesIds: selectedSeriesIds,
-    period: timePeriod,
-    dateRange: dateRange,
-  });
+  const { currentSeriesX, currentSeriesY, plotData } = useScatterPlotData(
+    { selectedXId, selectedYId, timePeriod, dateRange, SeriesData }
+  );
 
-  const handleAddSeries = (series: TimeSeriesData) => {
-    setSelectedSeriesIds((prev) => (
-      prev.includes(series.id) ? prev : [...prev, series.id]
-    ));
+  const handleAddSeriesX = (series: TimeSeriesData) => {
+    setSelectedXId(series.id);
   };
 
-  const handleRemoveSeries = (id: string) => {
-    setSelectedSeriesIds(
-      (prev) => prev.filter(seriesId => seriesId !== id)
-    );
+  const handleAddSeriesY = (series: TimeSeriesData) => {
+    setSelectedYId(series.id);
+  };
+
+  const handleRemoveSeriesX = () => {
+    setSelectedXId(undefined);
+  };
+
+  const handleRemoveSeriesY = () => {
+    setSelectedYId(undefined);
   };
 
   /**
@@ -70,24 +72,21 @@ export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", Ser
         <CanvasHeader title={title} />
         <div className="flex-1 min-h-0">
           < ScatterControls
-            header="Strategies"
-            searchTriggerLabel="Add strategies"
+            searchTriggerLabel="Select a strategy"
             searchPlaceholder="Search strategies"
-            series={filteredSeries}
+            seriesX={currentSeriesX}
+            seriesY={currentSeriesY}
             availableSeries={SeriesData}
-            toggledSeries={hiddenSeries}
-            highlightedSeries={highlightedSeries}
-            onAddSeries={handleAddSeries}
-            onRemoveSeries={handleRemoveSeries}
-            onTogglePlotVisibility={handleTogglePlotVisibility}
-            onTogglePlotHighlight={handleTogglePlotHighlight}
-            onToggleResetHighlight={debouncedHandleResetHighlight}
+            onAddSeriesX={handleAddSeriesX}
+            onAddSeriesY={handleAddSeriesY}
+            onRemoveSeriesX={handleRemoveSeriesX}
+            onRemoveSeriesY={handleRemoveSeriesY}
           />
         </div>
       </div>
 
       {/* Figure */}
-      {filteredSeries.length > 0 ? (
+      {plotData ? (
         <div className="flex flex-col space-y-4 p-2 h-full">
           <div className="flex justify-end">
             <TimePeriodSelector
@@ -98,13 +97,7 @@ export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", Ser
               onDateRangeSelect={handleSetDateRange}
             />
           </div>
-          <PlotScatterFigure
-            data={filteredSeries.map(series => ({
-              ...series.plotData,
-              marker: { color: series.color },
-            }))}
-            theme="dark"
-          />
+          <PlotScatterFigure data={plotData} theme="dark" />
         </div>
       ) : (
         <div className="flex items-center justify-center text-muted-foreground">
