@@ -4,8 +4,8 @@ import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
 import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { PlotLine, PlotScatter, PlotBar } from '@/components/plots';
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
+import { PlotLine, PlotScatter, PlotBar, PlotHist } from '@/components/plots';
 
 // Example data
 const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
@@ -31,7 +31,7 @@ const PlotComponentMap: Record<PlotType, React.ComponentType<PlotProps>> = {
   line: PlotLine,
   scatter: PlotScatter,
   bar: PlotBar,
-  histogramH: () => <div>Under developement</div>,
+  histogramH: PlotHist,
   histogramV: () => <div>Under developement</div>,
 }
 

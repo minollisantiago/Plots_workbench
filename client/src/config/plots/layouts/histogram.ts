@@ -5,29 +5,47 @@ import { baseLayout, baseAxisConfig } from './base';
 export const histogramHLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   barmode: 'overlay',
   hovermode: 'x',
-  legend: {
-    orientation: 'h',
-    x: 1,
-    xanchor: 'auto',
-    y: 1.1
-  },
   margin: {
     b: 50,
     l: 60,
-    r: 42,
-    t: 16
+    r: 10,
+    t: 60
   },
   modebar: {},
   xaxis: {
     ...baseAxisConfig,
-    hoverformat: '.2f'
+    hoverformat: '.2f',
+    showline: true,
+    showgrid: false,
+    showspikes: false,
+    spikethickness: 2,
+    linewidth: 2,
+    title: {
+      standoff: 0
+    }
   },
   yaxis: {
     ...baseAxisConfig,
     hoverformat: '.2f',
     side: 'left',
+    spikethickness: 2,
+    linewidth: 2,
+    ticks: '',
     title: {
-      standoff: 0
+      standoff: 8
+    }
+  },
+  yaxis2: {
+    ...baseAxisConfig,
+    automargin: true,
+    hoverformat: '.2f',
+    overlaying: 'y',
+    showgrid: false,
+    side: 'right',
+    spikethickness: 2,
+    linewidth: 2,
+    title: {
+      standoff: 20
     }
   }
 });
@@ -35,17 +53,11 @@ export const histogramHLayout: Partial<PlotLayout> = merge({}, baseLayout, {
 export const histogramVLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   barmode: 'overlay',
   hovermode: 'y',
-  legend: {
-    orientation: 'h',
-    x: 1,
-    xanchor: 'auto',
-    y: 1.1
-  },
   margin: {
     b: 50,
     l: 60,
-    r: 42,
-    t: 16
+    r: 10,
+    t: 60
   },
   xaxis: {
     ...baseAxisConfig,
