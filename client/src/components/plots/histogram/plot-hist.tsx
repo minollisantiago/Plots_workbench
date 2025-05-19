@@ -1,4 +1,7 @@
+import { cn } from "@/lib/utils";
+import { LayoutGrid } from "lucide-react";
 import { DateRange } from "react-day-picker";
+import { Button } from "@/components/ui/button";
 import { useFilteredTimeSeries } from "@/hooks";
 import { prepareHistData } from '@/components/plots/utils';
 import { useState, useEffect, useRef, useMemo } from "react";
@@ -19,6 +22,7 @@ export const PlotHist = ({ title = "Histogram Plot", defaultPeriod = "All", Seri
   const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [isSplitView, setIsSplitView] = useState<boolean>(false);
 
   // Ref to store the timeout ID
   const resetHighlightTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -133,13 +137,37 @@ export const PlotHist = ({ title = "Histogram Plot", defaultPeriod = "All", Seri
     }, 100);
   };
 
+  const toggleSplitView = () => {
+    setIsSplitView(!isSplitView);
+  };
+
   return (
 
     <div className="grid grid-cols-[312px_1fr] gap-2 p-4 pt-0 h-full">
 
       {/* Controls */}
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
-        <CanvasHeader title={title} />
+
+        {/* Temp header */}
+        <div className="flex flex-row space-x-2 pr-3 items-center w-full">
+          <CanvasHeader title={title} />
+          {filteredSeries.length > 1 &&
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "h-8 w-10 px-2 rounded-lg text-sm text-muted-foreground",
+                isSplitView
+                  ? "text-muted-foreground bg-primary-foreground hover:bg-muted hover:text-muted-foreground"
+                  : "hover:bg-muted"
+              )}
+              onClick={toggleSplitView}
+            >
+              <LayoutGrid className="w-4 h-4 opacity-1 cursor-pointer" />
+            </Button>
+          }
+
+        </div>
         <div className="flex-1 min-h-0">
           < LineControls
             header="Strategies"
@@ -170,10 +198,22 @@ export const PlotHist = ({ title = "Histogram Plot", defaultPeriod = "All", Seri
               onDateRangeSelect={handleSetDateRange}
             />
           </div>
-          <PlotHistFigure
-            data={plotData}
-            theme="dark"
-          />
+          {isSplitView ? (
+            <div className="grid grid-cols-3 h-full">
+              {plotData.map(series => (
+                <PlotHistFigure
+                  data={[series]}
+                  theme="dark"
+                />
+              ))}
+
+            </div>
+          ) : (
+            <PlotHistFigure
+              data={plotData}
+              theme="dark"
+            />
+          )}
         </div>
       ) : (
         <div className="flex items-center justify-center text-muted-foreground">
