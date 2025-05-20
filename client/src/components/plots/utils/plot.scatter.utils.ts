@@ -11,7 +11,7 @@ import { TimeSeriesData } from '@/components/plots/models';
 export const prepareScatterData = (data: Array<TimeSeriesData>, verbose: boolean = false): Data[] => {
   const plotData: Data[] = data.map(series => ({
     ...series.plotData,
-    type: "scatter",
+    type: "scattergl",
     mode: "markers",
     marker: {
       size: 8,

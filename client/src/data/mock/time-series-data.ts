@@ -14,7 +14,7 @@ const generateDates = (days: number): string[] => {
 };
 
 // Generate n days of mock data
-export const dates = generateDates(120);
+export const dates = generateDates(2000);
 
 export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
   series: [
@@ -28,7 +28,7 @@ export const mockTimeSeriesData: { series: TimeSeriesData[] } = {
       // Plot data
       plotData: {
         x: dates,
-        y: dates.map(() => Math.random() * 800 + 400),
+        y: dates.map(() => Math.random() * 300 + 400),
         name: "NVDA",
       }
     },

@@ -19,7 +19,7 @@ export const prepareLineData = (
 ): Data[] => {
   const plotData: Data[] = data.map(series => ({
     ...series.plotData,
-    type: "scatter",
+    type: "scattergl",
     opacity: highlightedSeries[series.id] ?? 1,
     visible: hiddenSeries[series.id] ?? true,
     line: { color: series.color },

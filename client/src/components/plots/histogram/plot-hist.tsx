@@ -202,6 +202,7 @@ export const PlotHist = ({ title = "Histogram Plot", defaultPeriod = "All", Seri
             <div className="grid grid-cols-3 h-full">
               {plotData.map(series => (
                 <PlotHistFigure
+                  key={series.name}
                   data={[series]}
                   theme="dark"
                 />

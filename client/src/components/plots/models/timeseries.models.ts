@@ -19,7 +19,7 @@ export const periods: TimePeriod[] = [
   { label: "6M", days: 132 }, // 6 months * 22 trading days
   { label: "YTD", days: calculateYTD() }, // Year to date (calculated)
   { label: "1Y", days: 252 }, // Assuming 252 trading days in a year
-  { label: "All", days: 2000 } // -1 to signify all data
+  { label: "All", days: 100000 } // -1 to signify all data
 ];
 
 // NOTE: TIME SERIES TYPES - READ THE NOTES TO UNDERSTAND THE TYPES
