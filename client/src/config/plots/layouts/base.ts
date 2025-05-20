@@ -29,7 +29,7 @@ export const baseLayout: Partial<PlotLayout> = {
     t: 0
   },
   transition: {
-    duration: 150
+    duration: 500
   }
 };
 

@@ -52,7 +52,7 @@ export default function App() {
 
   return (
     <>
-      <Dock selectedTool={selectedDockTool} onSelect={handleToolSelect} />
+      <Dock dockPosition="bottom" selectedTool={selectedDockTool} onSelect={handleToolSelect} />
 
       <Bookmarks />
 
