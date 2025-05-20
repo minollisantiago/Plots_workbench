@@ -6,7 +6,7 @@ export const histogramHLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   barmode: 'overlay',
   hovermode: 'x',
   margin: {
-    b: 50,
+    b: 44,
     l: 60,
     r: 12,
     t: 10

@@ -5,7 +5,7 @@ import { baseLayout, baseAxisConfig } from './base';
 export const barLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   hovermode: 'x',
   margin: {
-    b: 50,
+    b: 44,
     l: 60,
     r: 12,
     t: 0
