@@ -1233,16 +1233,12 @@ body {
           user-select: none;
 }
 
-.grid-flow-col {
-  grid-auto-flow: column;
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .grid-cols-\[312px_1fr\] {
   grid-template-columns: 312px 1fr;
-}
-
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -1291,10 +1287,6 @@ body {
 
 .gap-4 {
   gap: 1rem;
-}
-
-.gap-0 {
-  gap: 0px;
 }
 
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
@@ -1507,11 +1499,6 @@ body {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.bg-rose-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(251 113 133 / var(--tw-bg-opacity, 1));
 }
 
 .p-0 {
