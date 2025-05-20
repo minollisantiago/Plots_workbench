@@ -7,7 +7,7 @@ export const scatterLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   margin: {
     b: 44,
     l: 60,
-    r: 0,
+    r: 12,
     t: 0
   },
   xaxis: {

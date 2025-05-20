@@ -8,8 +8,8 @@ export const histogramHLayout: Partial<PlotLayout> = merge({}, baseLayout, {
   margin: {
     b: 50,
     l: 60,
-    r: 10,
-    t: 60
+    r: 12,
+    t: 10
   },
   modebar: {},
   xaxis: {
