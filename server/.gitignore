@@ -10,5 +10,9 @@ wheels/
 .venv
 
 # markdown LLM files (excluding README)
-**/*.md
+.cursor/
 !README.md
+
+#Custom plugin chats
+chat_*.md
+!chat.md
