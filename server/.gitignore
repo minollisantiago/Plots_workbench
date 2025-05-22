@@ -16,3 +16,9 @@ wheels/
 #Custom plugin chats
 chat_*.md
 !chat.md
+
+#Notebooks
+.notebooks/
+
+#python toml (for arfima token)
+pyproject.toml
