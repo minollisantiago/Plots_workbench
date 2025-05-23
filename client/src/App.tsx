@@ -4,7 +4,7 @@ import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
 import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
+import { CanvasWorkspace, Dock, Bookmarks, ServerStatus } from '@/components/ui/custom';
 import { PlotLine, PlotScatter, PlotBar, PlotHist } from '@/components/plots';
 
 // Example data
@@ -52,6 +52,15 @@ export default function App() {
 
   return (
     <>
+      <CanvasContainer
+        id='0'
+        zIndex={20}
+        isDraggable={true}
+        onFocus={(id) => console.log('hey', id)}
+      >
+        <ServerStatus />
+      </CanvasContainer>
+
       <Dock dockPosition="bottom" selectedTool={selectedDockTool} onSelect={handleToolSelect} />
 
       <Bookmarks />
