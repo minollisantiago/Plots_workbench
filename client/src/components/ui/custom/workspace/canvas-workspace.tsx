@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Crosshair } from "lucide-react";
 import { TooltipConfig } from "@/config/ui";
 import { useKeybind } from "@/hooks/use-keybind";
+import { ServerStatus } from '@/components/ui/custom';
 import { useState, useRef, MouseEvent, ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -100,10 +101,11 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, onPositio
         </div>
       }
 
-      {/* Coordinates display */}
+      {/* Info display: Coordinates, server status */}
       <div
         className="fixed bottom-2 right-2 h-14 w-auto p-2 px-4 flex flex-row gap-4 items-center justify-center z-50"
       >
+        <ServerStatus />
         <p className="text-sm font-mono">{`x:${position.x}`}</p>
         <p className="text-sm font-mono">{`y:${position.y}`}</p>
       </div>

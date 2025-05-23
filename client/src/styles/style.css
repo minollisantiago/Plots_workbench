@@ -971,6 +971,10 @@ body {
   top: 50%;
 }
 
+.top-2 {
+  top: 0.5rem;
+}
+
 .z-20 {
   z-index: 20;
 }
@@ -1343,6 +1347,10 @@ body {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-scroll {
+  overflow: scroll;
 }
 
 .overflow-y-auto {
