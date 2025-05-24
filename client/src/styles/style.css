@@ -971,14 +971,6 @@ body {
   top: 50%;
 }
 
-.top-2 {
-  top: 0.5rem;
-}
-
-.z-20 {
-  z-index: 20;
-}
-
 .z-50 {
   z-index: 50;
 }
@@ -1403,6 +1395,10 @@ body {
   border-radius: 0.75rem;
 }
 
+.rounded {
+  border-radius: 0.25rem;
+}
+
 .rounded-l-full {
   border-top-left-radius: 9999px;
   border-bottom-left-radius: 9999px;
@@ -1745,6 +1741,16 @@ body {
   color: hsl(var(--secondary-foreground));
 }
 
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+}
+
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
 .underline-offset-4 {
   text-underline-offset: 4px;
 }
@@ -1911,10 +1917,6 @@ body {
 
 .ease-in-out {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.running {
-  animation-play-state: running;
 }
 
 .file\:border-0::file-selector-button {
