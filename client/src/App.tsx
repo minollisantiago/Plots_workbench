@@ -1,13 +1,16 @@
 import './styles/style.css';
+import { useEffect } from 'react';
 import { PlotType } from '@/config/plots';
 import { useToolState } from '@/hooks/use-tool-state';
 import { CanvasContainer } from '@/components/plots/ui';
+import { useDataStore } from './store/global.data.store';
 import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
-import { CanvasWorkspace, Dock, Bookmarks, DataTest } from '@/components/ui/custom';
+import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
 import { PlotLine, PlotScatter, PlotBar, PlotHist } from '@/components/plots';
+import { LoadingContent } from "@/components/ui/custom/loading/loading-content";
 
-// Example data
+// Mock data
 const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
 
 /**
@@ -35,8 +38,12 @@ const PlotComponentMap: Record<PlotType, React.ComponentType<PlotProps>> = {
   histogramV: () => <div>Under developement</div>,
 }
 
-export default function App() {
-  // Destructure state and callbacks from the custom hook
+interface AppProps {
+  useDataStoreData?: boolean;
+}
+
+export default function App({ useDataStoreData = false }: AppProps) {
+  // Destructure state and callbacks from the custom useToolState hook
   const {
     selectedDockTool,
     canvases,
@@ -50,46 +57,49 @@ export default function App() {
     setWorkspacePosition,
   } = useToolState()
 
+  //Global data store context
+  const { data, loading, error, fetchData } = useDataStore();
+  useEffect(() => {
+    if (useDataStoreData) {
+      fetchData();
+    };
+  }, [fetchData, useDataStoreData]);
+
+  const AppData = useDataStoreData && data ? data : exampleSeries;
+
   return (
-    <>
-      <CanvasContainer
-        id='0'
-        zIndex={20}
-        isDraggable={true}
-        onFocus={(id) => console.log('hey', id)}
-      >
-        <DataTest />
-      </CanvasContainer>
+    <LoadingContent loading={useDataStoreData && loading} error={useDataStoreData && error ? { error: error } : undefined}>
+      <>
 
-      <Dock dockPosition="bottom" selectedTool={selectedDockTool} onSelect={handleToolSelect} />
+        <Dock dockPosition="bottom" selectedTool={selectedDockTool} onSelect={handleToolSelect} />
 
-      <Bookmarks />
+        <Bookmarks />
 
-      <CanvasWorkspace
-        isDraggable={IsWorkspaceDraggable}
-        resetPositionThreshold={1000}
-        onPositionChange={setWorkspacePosition}
-      >
-        {canvases.map((canvas, index) => {
-          const { id, plotType } = canvas;
-          const PlotComponent = PlotComponentMap[plotType];
-          return (
-            <CanvasContainer
-              key={id}
-              id={id}
-              parentPosition={workspacePosition}
-              canvasOffset={offsetIndex[id] * 12}
-              zIndex={index + 1}
-              isDraggable={IsCanvasDraggable}
-              onFocus={handleCanvasFocus}
-              onRemove={handleCanvasRemove}
-            >
-              <PlotComponent SeriesData={exampleSeries} />
-            </CanvasContainer>
-          )
-        })}
-
-      </CanvasWorkspace>
-    </>
+        <CanvasWorkspace
+          isDraggable={IsWorkspaceDraggable}
+          resetPositionThreshold={1000}
+          onPositionChange={setWorkspacePosition}
+        >
+          {canvases.map((canvas, index) => {
+            const { id, plotType } = canvas;
+            const PlotComponent = PlotComponentMap[plotType];
+            return (
+              <CanvasContainer
+                key={id}
+                id={id}
+                parentPosition={workspacePosition}
+                canvasOffset={offsetIndex[id] * 12}
+                zIndex={index + 1}
+                isDraggable={IsCanvasDraggable}
+                onFocus={handleCanvasFocus}
+                onRemove={handleCanvasRemove}
+              >
+                <PlotComponent SeriesData={AppData} />
+              </CanvasContainer>
+            )
+          })}
+        </CanvasWorkspace>
+      </>
+    </LoadingContent>
   )
 }
