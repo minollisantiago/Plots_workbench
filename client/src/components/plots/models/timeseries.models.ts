@@ -45,7 +45,7 @@ export interface SeriesMetadata {
   label: string;
   subLabel?: string;
   group?: string;
-  color: string;
+  color?: string;
 };
 
 /**

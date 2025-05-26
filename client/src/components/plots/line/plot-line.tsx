@@ -1,6 +1,7 @@
 import { DateRange } from "react-day-picker";
 import { useFilteredTimeSeries } from "@/hooks";
 import { prepareLineData } from '@/components/plots/utils';
+import { useColorStore } from "@/store/global.color.store";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { PlotLineFigure, LineControls } from "@/components/plots/line";
 import { TimePeriodSelector, CanvasHeader } from "@/components/plots/ui";
@@ -18,12 +19,34 @@ export const PlotLine = ({ title = "Line Plot", defaultPeriod = "All", SeriesDat
   const [highlightedSeries, setHighlightedSeries] = useState<Record<string, number>>({});
   const [timePeriod, setTimePeriod] = useState<TimePeriod>(periods.find(p => p.label === defaultPeriod)!);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  const [seriesColors, setSeriesColors] = useState<Record<string, string>>({});
+
+  // Get the assignFixedColors function from the store
+  const assignFixedColors = useColorStore((state) => state.assignFixedColors);
+
+  // Generate colors
+  useEffect(() => {
+    const colors = assignFixedColors(SeriesData.length);
+    const colorMap: Record<string, string> = {};
+    SeriesData.forEach((series, index) => {
+      colorMap[series.id] = colors[index];
+    });
+    setSeriesColors(colorMap);
+  }, [SeriesData, assignFixedColors]);
+
+  // Add colors to the series objects
+  const seriesWithColors = useMemo(() => {
+    return SeriesData.map(series => ({
+      ...series,
+      color: seriesColors[series.id] || series.color || "#FFFFFF",
+    }));
+  }, [SeriesData, seriesColors]);
 
   // Ref to store the timeout ID
   const resetHighlightTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const filteredSeries = useFilteredTimeSeries({
-    allSeries: SeriesData,
+    allSeries: seriesWithColors,
     selectedSeriesIds: selectedSeriesIds,
     period: timePeriod,
     dateRange: dateRange,
@@ -32,7 +55,6 @@ export const PlotLine = ({ title = "Line Plot", defaultPeriod = "All", SeriesDat
   const plotData = useMemo(() => {
     return prepareLineData(filteredSeries, highlightedSeries, hiddenSeries);
   }, [filteredSeries, highlightedSeries, hiddenSeries]);
-
 
   // Initialize highlightedSeries with all IDs from SeriesData
   useEffect(() => {
