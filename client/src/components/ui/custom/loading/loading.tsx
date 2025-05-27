@@ -1,9 +1,16 @@
 import { Loader2Icon } from "lucide-react";
 
-export const Loading = () => {
+interface Props {
+  loaderSize?: string
+}
+
+export const Loading = ({ loaderSize = "2rem" }: Props) => {
   return (
     <div className="p-4">
-      <Loader2Icon className="mx-auto size-8 animate-spin" />
+      <Loader2Icon
+        className="mx-auto animate-spin"
+        style={{ height: loaderSize, width: loaderSize }}
+      />
     </div>
   );
 };

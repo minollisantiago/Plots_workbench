@@ -7,8 +7,8 @@ import { useDataStore } from './store/global.data.store';
 import { TimeSeriesData } from "@/components/plots/models";
 import { mockTimeSeriesData } from "@/data/mock/time-series-data";
 import { CanvasWorkspace, Dock, Bookmarks } from '@/components/ui/custom';
+import { LoadingContent, LoadingData } from '@/components/ui/custom/loading';
 import { PlotLine, PlotScatter, PlotBar, PlotHist } from '@/components/plots';
-import { LoadingContent } from "@/components/ui/custom/loading/loading-content";
 
 // Mock data
 const exampleSeries: TimeSeriesData[] = mockTimeSeriesData.series;
@@ -69,7 +69,7 @@ export default function App({ useDataStoreData = false }: AppProps) {
   const AppData = useDataStoreData && data ? data : exampleSeries;
 
   return (
-    <LoadingContent loading={useDataStoreData && loading} error={useDataStoreData && error ? { error: error } : undefined}>
+    <LoadingContent loading={useDataStoreData && loading} loadingComponent={<LoadingData />} error={useDataStoreData && error ? { error: error } : undefined}>
       <>
 
         <Dock dockPosition="bottom" selectedTool={selectedDockTool} onSelect={handleToolSelect} />
