@@ -59,6 +59,7 @@ export default function App({ useDataStoreData = false }: AppProps) {
 
   //Global data store context
   const { data, loading, error, fetchData } = useDataStore();
+
   useEffect(() => {
     if (useDataStoreData) {
       fetchData();

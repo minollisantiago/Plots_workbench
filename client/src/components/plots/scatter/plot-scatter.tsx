@@ -65,7 +65,7 @@ export const PlotScatter = ({ title = "Scatter Plot", defaultPeriod = "All", Ser
 
   return (
 
-    <div className="grid grid-cols-[312px_1fr] gap-2 p-4 pt-0 h-full">
+    <div className="grid grid-cols-[312px_1fr] gap-2 p-4 pt-0 h-full overflow-hidden">
 
       {/* Controls */}
       <div className="flex flex-col space-y-4 p-2 h-full overflow-hidden">
