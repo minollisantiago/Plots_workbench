@@ -25,7 +25,7 @@ export const baseLayout: Partial<PlotLayout> = {
   margin: {
     b: 44,
     l: 60,
-    r: 120,
+    r: 12,
     t: 0
   },
   transition: {

@@ -39,7 +39,7 @@ export const LineControls = ({
       </div>
 
       {/* Selected series group */}
-      <div className="flex flex-col space-y-2 overflow-hidden">
+      <div className="flex flex-col space-y-2 pb-8 overflow-hidden">
         {series &&
           <>
             {header && <h2 className="text-xs font-medium text-muted-foreground">{header}</h2>}
