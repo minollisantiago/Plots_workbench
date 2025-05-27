@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 interface Props {
   label: string;
   subLabel?: string;
-  color?: string;
+  color: string;
   toggled?: boolean;
   onRemove?: () => void;
   onToggleVisibility?: () => void;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const SeriesCard = ({
-  label, subLabel, color = "#FFFFFF", toggled, onRemove, onToggleVisibility, onHighlight, onResetHighlight
+  label, subLabel, color, toggled, onRemove, onToggleVisibility, onHighlight, onResetHighlight
 }: Props) => {
   const [isVisible, setIsVisible] = useState(true)
 
