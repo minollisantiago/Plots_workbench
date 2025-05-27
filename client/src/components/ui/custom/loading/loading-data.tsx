@@ -9,7 +9,7 @@ interface Props {
 export const LoadingData = ({ children }: Props) => {
   return (
     <Dialog open={true}>
-      <DialogContent hideClose={true} className="bg-transparent shadow-none border-none">
+      <DialogContent hideClose={true} className="bg-transparent outline-none shadow-none border-none">
         <div className="flex place-content-center">
           <DialogTitle className="font-mono">Loading test data, dont be a bitch...</DialogTitle>
         </div>
