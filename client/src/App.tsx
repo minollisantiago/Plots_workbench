@@ -61,10 +61,10 @@ export default function App({ useDataStoreData = false }: AppProps) {
   const { data, loading, error, fetchData } = useDataStore();
 
   useEffect(() => {
-    if (useDataStoreData) {
+    if (useDataStoreData && !data) {
       fetchData();
     };
-  }, [fetchData, useDataStoreData]);
+  }, [fetchData, useDataStoreData, data]);
 
   const AppData = useDataStoreData && data ? data : exampleSeries;
 
