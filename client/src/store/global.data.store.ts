@@ -12,7 +12,7 @@ interface DataStore {
   loading: boolean;
   fetchData: () => Promise<void>;
 };
-//
+
 // Define the type for the persist middleware
 type DataStorePersist = (
   config: StateCreator<DataStore>,
