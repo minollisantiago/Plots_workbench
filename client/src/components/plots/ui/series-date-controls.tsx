@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { DateRangePicker } from "@/components/plots/ui";
 import { TimePeriod } from "@/components/plots/models";
+import { DateRangePicker } from "@/components/ui/custom/datepicker/date-range-picker";
 
 interface Props {
   periods: TimePeriod[];

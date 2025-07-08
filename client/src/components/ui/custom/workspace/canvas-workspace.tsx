@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import { Crosshair } from "lucide-react";
 import { TooltipConfig } from "@/config/ui";
 import { useKeybind } from "@/hooks/use-keybind";
-import { ServerStatus } from '@/components/ui/custom';
 import { useState, useRef, MouseEvent, ReactNode } from "react";
+import { ServerStatus, DataConfigMenu } from '@/components/ui/custom';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Props {
@@ -68,6 +68,9 @@ export const CanvasWorkspace = ({ isDraggable, resetPositionThreshold, onPositio
       onMouseLeave={handleDragEnd}
       onMouseDown={handleDragStart}
     >
+
+      {/* Config menu */}
+      <DataConfigMenu />
 
       {/* Center workspace button */}
       {
